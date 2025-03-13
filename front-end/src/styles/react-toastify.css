@@ -1,0 +1,5 @@
+/* Arquivo para sobrescrever o css dos toast */
+:root {
+  --toastify-color-success: #eefac8;
+  --toastify-text-color-success: #254c12;
+}
