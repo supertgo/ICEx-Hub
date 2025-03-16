@@ -18,7 +18,6 @@ front/src-cordova/www
 # Capacitor related directories and files
 front//src-capacitor/www
 front//src-capacitor/node_modules
-front/
 front/# Log files
 front/npm-debug.log*
 front/yarn-debug.log*
@@ -27,21 +26,19 @@ front/yarn-error.log*
 # Editor directories and files
 front/.idea
 front/*.suo
-front/*.ntvs*
-front/*.njsproj
-front/*.sln
-front/
-front/# local .env files
-front/.env.local*
+       front/*.ntvs*
+       front/*.njsproj
+       front/*.sln
+       front/# local .env files
+       front/.env.local*
 
-#Back
+# -------------------------------------------------------------- #Back ------------------------------------------------------
 
 # compiled output
 #
 back/dist
 back/node_modules
 back/build
-back/
 
 # Logs
 back/logs
@@ -51,15 +48,13 @@ back/pnpm-debug.log*
 back/yarn-debug.log*
 back/yarn-error.log*
 back/lerna-debug.log*
-back/
+
 back/# OS
 back/.DS_Store
-back/
 
 # Tests
-back//coverage
+back/coverage
 back/.nyc_output
-back/
 
 # IDEs and editors
 back/.idea
@@ -69,8 +64,8 @@ back/.c9/
 back/*.launch
 back/.settings/
 back/*.sublime-workspace
-back/
-back/# IDE - VSCode
+
+# IDE - VSCode
 back/.vscode/*
 back/!.vscode/settings.json
 back/!.vscode/tasks.json
@@ -92,9 +87,11 @@ back/pids
 back/*.pid
 back/*.seed
 back/*.pid.lock
-back/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 back/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 back/.env.*
 back/!.env.example
+
+# Docker
+back/.docker
