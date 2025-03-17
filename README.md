@@ -3,12 +3,12 @@
 ## Membros e Papéis
 
 - Arthur Araujo Rabelo: Fullstack
-- Davi Porto Araujo: Fullstack, Product Owner (PO), Devops
+- Davi Porto Araujo: Fullstack
 - Thiago Roberto Magalhães: Fullstack
 
 ## Escopo
 
-O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de
+O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão e busca de salas de aula no prédio do Instituto de Ciências Exatas (ICEx) da UFMG. A aplicação terá algumas funcionalidades principais, que tem como objetivo fornecer ao usuário uma experiência mais personalizada e eficiente.
 
 ## Figma
 
@@ -20,8 +20,8 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de
 
 ### Linguagens de Programação (LP):
 
-- React para o frontend
-- Php para o backend
+- Vuejs para o frontend
+- TypeScript para o backend
 
 ### Banco de Dados (BD):
 
@@ -33,8 +33,8 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de
 - Docker e docker-compose para contêineres
 - Figma para design e prototipagem
 - GitHub para controle de versão e colaboração no código
-- Laravel para o framework do back-end
-- Nextjs para framework de front-end
+- Nest para o framework do back-end
+- Quasar para framework de front-end
 
 ### Sprint Backlog
 
