@@ -8,7 +8,7 @@
 
 ## Escopo
 
-O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão e busca de salas de aula no prédio do Instituto de Ciências Exatas (ICEx) da UFMG. A aplicação terá algumas funcionalidades principais: permitir busca por disciplina, sala ou professor, com suporte a variações gráficas e erros ortográficos; disponibilizar mapa integrado com serviços de localização, permitindo a orientação do aluno dentro da Universidade; fornecer informações em tempo real sobre salas livres em horários específicos; implementar um sistema de login para acesso a informações personalizadas, de modo que o aluno tenha uma experiência mais individualizada e apropriada para a sua situação acadêmica.
+O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão e busca de salas de aula no prédio do Instituto de Ciências Exatas (ICEx) da UFMG. A aplicação terá algumas funcionalidades principais: permitir busca por disciplina, sala ou professor, com suporte a variações gráficas e erros ortográficos; disponibilizar mapa integrado com serviços de localização, permitindo a orientação do aluno dentro da Universidade; fornecer informações em tempo real sobre salas livres em horários específicos e também implementar um sistema de login para acesso a informações personalizadas, de modo que o aluno tenha uma experiência mais individualizada e apropriada para a sua situação acadêmica.
 
 ## Figma
 
