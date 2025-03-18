@@ -4,6 +4,7 @@
 
 - Arthur Araujo Rabelo: Fullstack
 - Davi Porto Araujo: Fullstack
+- Laura Oliveira Ribeiro: Fullstack
 - Thiago Roberto Magalhães: Fullstack
 
 ## Escopo
