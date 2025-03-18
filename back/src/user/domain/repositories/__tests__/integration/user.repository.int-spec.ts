@@ -1,4 +1,3 @@
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { PrismaClient } from '@prisma/client';
@@ -6,7 +5,7 @@ import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repo
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { UserEntity } from '@/user/domain/entities/user.entity';
-import { en, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
@@ -169,9 +168,9 @@ describe('User prisma repository integration tests', () => {
     );
     await sut.insert(entity);
 
-    await expect(
-      sut.assureEmailIsAvailableToUse(entity.email),
-    ).rejects.toThrow(new EmailAlreadyInUseError(entity.email));
+    await expect(sut.assureEmailIsAvailableToUse(entity.email)).rejects.toThrow(
+      new EmailAlreadyInUseError(entity.email),
+    );
   });
 
   it('should not throw error if email is available to use', async () => {
