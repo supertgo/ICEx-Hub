@@ -40,11 +40,11 @@ module.exports = (plop) => {
               path: `${srcFolder}/{{dashCase name}}/application/usecases/__tests__/integration/${useCase}-{{dashCase name}}.usecase.int-spec.ts`,
               templateFile: `templates/entity/application/usecase/${useCase}-usecase/${useCase}-usecase-int-test.ts.hbs`,
             },
-            // {
-            //   type: 'add',
-            //   path: `${srcFolder}/{{dashCase name}}/application/usecases/__tests__/unit/${useCase}-{{dashCase name}}.usecase.spec.ts`,
-            //   templateFile: `templates/entity/application/usecase/${useCase}-usecase/${useCase}-usecase-test.ts.hbs`,
-            // },
+            {
+              type: 'add',
+              path: `${srcFolder}/{{dashCase name}}/application/usecases/__tests__/unit/${useCase}-{{dashCase name}}.usecase.spec.ts`,
+              templateFile: `templates/entity/application/usecase/${useCase}-usecase/${useCase}-usecase-test.ts.hbs`,
+            },
           );
         });
 
@@ -84,21 +84,21 @@ module.exports = (plop) => {
         //Controller
         actions.push({
           type: 'add',
-          path: `${srcFolder}/{{dashCase name}}/infraestructure/{{dashCase name}}.controller.ts`,
-          templateFile: `templates/entity/infraestructure/controller.ts.hbs`,
+          path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.controller.ts`,
+          templateFile: `templates/entity/infrastructure/controller.ts.hbs`,
         });
 
         //Presenter
         actions.push(
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/presenters/{{dashCase name}}.presenter.ts`,
-            templateFile: `templates/entity/infraestructure/presenters/presenter.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/presenters/{{dashCase name}}.presenter.ts`,
+            templateFile: `templates/entity/infrastructure/presenters/presenter.ts.hbs`,
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/presenters/__tests__/unit/{{dashCase name}}.presenter.spec.ts`,
-            templateFile: `templates/entity/infraestructure/presenters/presenter-test.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/presenters/__tests__/unit/{{dashCase name}}.presenter.spec.ts`,
+            templateFile: `templates/entity/infrastructure/presenters/presenter-test.ts.hbs`,
           },
         );
 
@@ -106,28 +106,28 @@ module.exports = (plop) => {
         actions.push(
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/database/in-memory/repositories/{{dashCase name}}-in-memory.repository.ts`,
-            templateFile: `templates/entity/infraestructure/database/in-memory/repositories/in-memory.repository.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/database/in-memory/repositories/{{dashCase name}}-in-memory.repository.ts`,
+            templateFile: `templates/entity/infrastructure/database/in-memory/repositories/in-memory.repository.ts.hbs`,
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/database/in-memory/repositories/__tests__/unit/{{dashCase name}}-in-memory.repository.spec.ts`,
-            templateFile: `templates/entity/infraestructure/database/in-memory/repositories/in-memory.repository-test.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/database/in-memory/repositories/__tests__/unit/{{dashCase name}}-in-memory.repository.spec.ts`,
+            templateFile: `templates/entity/infrastructure/database/in-memory/repositories/in-memory.repository-test.ts.hbs`,
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/database/prisma/repositories/{{dashCase name}}-prisma.repository.ts`,
-            templateFile: `templates/entity/infraestructure/database/prisma/repositories/prisma.repository.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/database/prisma/repositories/{{dashCase name}}-prisma.repository.ts`,
+            templateFile: `templates/entity/infrastructure/database/prisma/repositories/prisma.repository.ts.hbs`,
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/database/prisma/models/{{dashCase name}}-model.mapper.ts`,
-            templateFile: `templates/entity/infraestructure/database/prisma/models/model.mapper.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/database/prisma/models/{{dashCase name}}-model.mapper.ts`,
+            templateFile: `templates/entity/infrastructure/database/prisma/models/model.mapper.ts.hbs`,
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infraestructure/database/prisma/models/__tests__/integration/{{dashCase name}}-model.mapper.spec.ts`,
-            templateFile: `templates/entity/infraestructure/database/prisma/models/model.mapper-int-test.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/database/prisma/models/__tests__/integration/{{dashCase name}}-model.mapper.spec.ts`,
+            templateFile: `templates/entity/infrastructure/database/prisma/models/model.mapper-int-test.ts.hbs`,
           },
         );
 

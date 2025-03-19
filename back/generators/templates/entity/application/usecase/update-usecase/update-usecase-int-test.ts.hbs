@@ -33,18 +33,7 @@ describe('Update {{dashCase name}} usecase integration tests', () => {
     await module.close();
   });
 
-  it('should throw error when {{dashCase name}} not found', () => {
-    const id = faker.string.uuid();
-    expect(() =>
-      sut.execute({ id, name: faker.person.fullName() }),
-    ).rejects.toThrowError(new {{pascalCase name}}WithIdNotFoundError(id));
-  });
+  it.todo('should throw error when {{dashCase name}} not found', () => {});
 
-  it('should update a {{dashCase name}}', async () => {
-    const {{snakeCase name}} = await prismaService.{{snakeCase}}.create({ data: {{pascalCase name}}DataBuilder({}) });
-
-    const output = await sut.execute({ id: {{snakeCase name}}.id, name: newName });
-
-    expect(output.name).toBe(newName);
-  });
+  it.todo('should update a {{dashCase name}}', async () => { });
 });

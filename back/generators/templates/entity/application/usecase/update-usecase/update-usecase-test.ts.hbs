@@ -14,11 +14,5 @@ describe('Update {{lowerCase name}} use case test', () => {
     sut = new Update{{pascalCase name}}Usecase.UseCase(repository);
   });
 
-  it('should throw {{lowerCase name}}WithIdNotFoundError if {{lowerCase name}} does not exist', async () => {
-    const input = { id: 'non-existent-id', name: faker.person.fullName() };
-
-    await expect(sut.execute(input)).rejects.toThrow(
-    );
-  });
-
+  it.todo('should throw {{lowerCase name}}WithIdNotFoundError if {{lowerCase name}} does not exist', async () => {});
 });

@@ -1,6 +1,6 @@
 import { {{pascalCase name}}InMemoryRepository } from '@/{{dashCase name}}/infrastructure/database/in-memory/repositories/{{dashCase name}}-in-memory.repository';
 import { Get{{pascalCase name}}Usecase } from '@/{{dashCase name}}/application/usecases/get-{{dashCase name}}.usecase';
-import { {{pascalCase name}}Entity } from '@/{{dashCase name}}/domain/entities/{dashCase name}}.entity';
+import { {{pascalCase name}}Entity } from '@/{{dashCase name}}/domain/entities/{{dashCase name}}.entity';
 import { Delete{{pascalCase name}}Usecase } from '@/{{dashCase name}}/application/usecases/delete-{{dashCase name}}.usecase';
 
 describe('Delete {{lowerCase name}} use case test', () => {
@@ -26,7 +26,7 @@ describe('Delete {{lowerCase name}} use case test', () => {
 
     const spyDelete = jest.spyOn(repository, 'delete');
 
-    const input = { id: {{snakeCase name}.id };
+    const input = { id: {{snakeCase name}}.id };
 
     expect(repository.items).toHaveLength(1)
     await sut.execute(input);
