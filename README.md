@@ -18,16 +18,16 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 
 ## Tecnologias
 
-### Linguagens de Programação (LP):
+### Linguagens de Programação (LP)
 
-- Vuejs para o frontend
+- TypeScript(Vuejs) para o frontend
 - TypeScript para o backend
 
-### Banco de Dados (BD):
+### Banco de Dados (BD)
 
-- MySQL para armazenamento de dados
+- Postgres para armazenamento de dados
 
-### Outras Tecnologias:
+### Outras Tecnologias
 
 - Cypress para testes automatizados
 - Docker e docker-compose para contêineres
@@ -39,4 +39,3 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 ### Sprint Backlog
 
 ### Sprint Backlog (nova versão)
-
