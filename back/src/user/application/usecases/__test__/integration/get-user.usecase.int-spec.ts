@@ -4,11 +4,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
-import { DeleteUserUsecase } from '@/user/application/usecases/delete-user.usecase';
 import { faker } from '@faker-js/faker';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
 import { GetUserUsecase } from '@/user/application/usecases/get-user.usecase';
-import { UserEntity } from '@/user/domain/entities/user.entity';
 
 describe('Get user usecase integration tests', () => {
   const prismaService = new PrismaClient();
