@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch} from 'vue';
+import { ref, watch } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import { useRouter } from 'vue-router';
 import { Routes } from 'src/enums/Routes';
@@ -14,9 +14,12 @@ const logout = async () => {
   await router.push({ name: Routes.SIGN_IN });
 };
 
-watch(() => router.currentRoute.value, () => {
-  drawer.value = false;
-});
+watch(
+  () => router.currentRoute.value,
+  () => {
+    drawer.value = false;
+  },
+);
 </script>
 
 <template>
@@ -24,9 +27,9 @@ watch(() => router.currentRoute.value, () => {
     <q-header elevated>
       <q-toolbar>
         <q-space />
-        <q-toolbar-title
-          @click="$router.push({ name: Routes.HOME })"
-        > {{ $t('common.pageTitle') }}</q-toolbar-title>
+        <q-toolbar-title @click="$router.push({ name: Routes.HOME })">
+          {{ $t('common.pageTitle') }}</q-toolbar-title
+        >
         <q-btn icon="account_circle" round flat dense @click="drawer = !drawer"></q-btn>
       </q-toolbar>
     </q-header>
