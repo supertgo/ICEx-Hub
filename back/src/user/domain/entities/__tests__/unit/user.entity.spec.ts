@@ -5,7 +5,7 @@ import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder'
 function commonAssertions(sut: UserEntity, props: UserProps) {
   expect(sut).toBeDefined();
   expect(sut).toBeInstanceOf(UserEntity);
-  expect(UserEntity.validate).toHaveBeenCalled()
+  expect(UserEntity.validate).toHaveBeenCalled();
 
   expect(sut.props.name).toBe(props.name);
   expect(sut.props.email).toBe(props.email);
@@ -17,7 +17,7 @@ describe('User entity unit tests', () => {
 
   beforeEach(() => {
     UserEntity.validate = jest.fn();
-  })
+  });
 
   it('test constructor without createdAt', () => {
     const props = {
@@ -60,7 +60,7 @@ describe('User entity unit tests', () => {
     expect(sut.name).toBe(name);
   });
 
-  it('test update name' , () => {
+  it('test update name', () => {
     sut = new UserEntity(UserDataBuilder({}));
 
     const name = faker.person.fullName();
@@ -70,7 +70,7 @@ describe('User entity unit tests', () => {
     expect(sut.name).toBe(name);
   });
 
-  it('test update password' , () => {
+  it('test update password', () => {
     sut = new UserEntity(UserDataBuilder({}));
 
     const password = faker.internet.password();
