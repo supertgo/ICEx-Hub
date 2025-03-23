@@ -2,12 +2,16 @@ import { Prisma } from '@prisma/client';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
-import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found-error';
 import { ClassroomModelMapper } from '@/classroom/infrastructure/database/prisma/models/classroom-model.mapper';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 
-export class ClassroomPrismaRepository implements ClassroomRepository.Repository {
+export class ClassroomPrismaRepository
+  implements ClassroomRepository.Repository
+{
   constructor(private prismaService: PrismaService) {}
+
+  sortableFields: string[] = ['name', 'createdAt'];
 
   async insert(entity: ClassroomEntity): Promise<void> {
     await this.prismaService.classroom.create({
@@ -52,6 +56,79 @@ export class ClassroomPrismaRepository implements ClassroomRepository.Repository
     } catch {
       throw new ClassroomWithIdNotFoundError(id);
     }
+  }
+
+  async search(
+    searchInput: ClassroomRepository.SearchParams,
+  ): Promise<ClassroomRepository.SearchResult> {
+    const sortable = this.sortableFields.includes(searchInput.sort) || false;
+    const field = sortable ? searchInput.sort : 'createdAt';
+
+    const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
+
+    const hasFilter = searchInput.filter ? searchInput.filter : null;
+
+    const filter = hasFilter
+      ? {
+          where: {
+            name: {
+              contains: searchInput.filter,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          },
+        }
+      : undefined;
+
+    const { count, models } = await this.executeQueries(
+      filter,
+      searchInput,
+      field,
+      orderBy,
+    );
+
+    return new ClassroomRepository.SearchResult({
+      items: models.map(ClassroomModelMapper.toEntity),
+      total: count,
+      currentPage:
+        searchInput.page && searchInput.page > 0 ? searchInput.page : 1,
+      perPage:
+        searchInput.perPage && searchInput.perPage > 0
+          ? searchInput.perPage
+          : 10,
+      sort: searchInput.sort,
+      sortDir: searchInput.sortDir,
+      filter: searchInput.filter,
+    });
+  }
+
+  private async executeQueries(
+    filter: any,
+    searchInput: ClassroomRepository.SearchParams,
+    field: string,
+    orderBy: SortOrderEnum,
+  ) {
+    const [count, models] = await Promise.all([
+      this.prismaService.classroom.count(filter),
+      this.prismaService.classroom.findMany({
+        skip:
+          (searchInput.page && searchInput.page > 0
+            ? searchInput.page - 1
+            : 0) *
+          (searchInput.perPage && searchInput.perPage > 0
+            ? searchInput.perPage
+            : 10),
+        take:
+          searchInput.perPage && searchInput.perPage > 0
+            ? searchInput.perPage
+            : 10,
+        orderBy: {
+          [field]: orderBy,
+        },
+        ...(filter ? filter : {}),
+      }),
+    ]);
+
+    return { count, models };
   }
 
   private async _assureClassroomExists(id: string) {

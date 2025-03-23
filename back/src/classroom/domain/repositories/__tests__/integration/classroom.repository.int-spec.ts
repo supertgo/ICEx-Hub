@@ -1,16 +1,11 @@
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
-import { ClassroomDataBuilder } from '@/classroom/domain/testing/helper/classroom-data-builder';
 import { PrismaClient } from '@prisma/client';
 import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/classroom-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 import { faker } from '@faker-js/faker';
-import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
-import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { ClassroomWithEmailNotFoundError } from '@/classroom/domain/errors/classroom-with-email-not-found-error';
-import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found-error';
-import { EmailAlreadyInUseError } from '@/classroom/domain/errors/email-already-in-use-error';
 
 describe('Classroom prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -42,7 +37,7 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   it('should find classroom by id', async () => {
-    const entity = new ClassroomEntity(ClassroomDataBuilder({}));
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
 
     const createdClassroom = await prismaService.classroom.create({
       data: entity.toJSON(),
@@ -55,13 +50,20 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   it('should insert a new classroom', async () => {
-    const entity = new ClassroomEntity(ClassroomDataBuilder({}));
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
+
     await sut.insert(entity);
 
+    const classroom = await prismaService.classroom.findFirst({
+      where: { id: entity.id },
+    });
+
+    expect(classroom).not.toBeNull();
+    expect(classroom).toStrictEqual(entity.toJSON());
   });
 
   it('should return one classroom if theres only one with find all', async () => {
-    const entity = new ClassroomEntity(ClassroomDataBuilder({}));
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
     await sut.insert(entity);
 
     const classrooms = await sut.findAll();
@@ -72,14 +74,14 @@ describe('Classroom prisma repository integration tests', () => {
 
   it('should throw error when trying to update non-existent classroom', async () => {
     const nonExistentId = faker.string.uuid();
-    const entity = new ClassroomEntity(ClassroomDataBuilder({}), nonExistentId);
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
 
     await expect(sut.update(entity)).rejects.toThrowError(
       new ClassroomWithIdNotFoundError(nonExistentId),
     );
   });
 
-  it('should update a classroom successfully', async () => { });
+  it('should update a classroom successfully', async () => {});
 
   it('should throw error when trying to delete non-existent classroom', async () => {
     const nonExistentId = faker.string.uuid();
@@ -90,7 +92,7 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   it('should delete a classroom successfully', async () => {
-    const entity = new ClassroomEntity(ClassroomDataBuilder({ name: 'John' }));
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
     await sut.insert(entity);
 
     await sut.delete(entity.id);
@@ -102,10 +104,9 @@ describe('Classroom prisma repository integration tests', () => {
     expect(classroomCount).toBe(0);
   });
 
-
   describe('search tests', () => {
-    it.todo('should return with default values', async () => { });
+    it.todo('should return with default values');
 
-    it.todo('should paginate classrooms', async () => { });
+    it.todo('should paginate classrooms');
   });
 });

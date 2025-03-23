@@ -2,12 +2,11 @@ import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repositor
 import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classroom.usecase';
 import { ClassroomInMemoryRepository } from '@/classroom/infrastructure/database/in-memory/repositories/classroom-in-memory.repository';
 import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
-import { ClassroomEntity, classroomProps } from '@/classroom/domain/entities/classroom.entity';
-import { ClassroomDataBuilder } from '@/classroom/domain/testing/helper/classroom-data-builder';
+import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 
 describe('List classrooms use cases unit tests', () => {
-  function createClassroomEntity(classroomProps: Partial<classroomProps> = {}) {
-    return new ClassroomEntity(classroomDataBuilder(classroomProps));
+  function createClassroomEntity() {
+    return ClassroomEntity.fake().aIcexClassroom().build();
   }
 
   let sut: ListClassroomsUsecase.UseCase;
@@ -42,7 +41,7 @@ describe('List classrooms use cases unit tests', () => {
     });
 
     it('should return classroom entity result in output', () => {
-      const entity = new ClassroomEntity(classroomDataBuilder({}));
+      const entity = ClassroomEntity.fake().aCADClassroom().build();
       const result = new ClassroomRepository.SearchResult({
         items: [entity],
         total: 1,
@@ -119,12 +118,12 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.items[1].name).toBe('a');
   });
 
-  it.todo('should return second page when empty in pagination', async () => {
-  });
+  it.todo('should return second page when empty in pagination', async () => {});
 
-  it.todo('should return items in second page when having them', async () => {
-  });
+  it.todo(
+    'should return items in second page when having them',
+    async () => {},
+  );
 
-  it.todo('should return empty result when no filter found', async () => {
-  });
+  it.todo('should return empty result when no filter found', async () => {});
 });

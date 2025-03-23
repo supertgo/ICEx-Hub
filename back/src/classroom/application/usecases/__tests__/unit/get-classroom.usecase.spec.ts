@@ -1,7 +1,6 @@
 import { ClassroomInMemoryRepository } from '@/classroom/infrastructure/database/in-memory/repositories/classroom-in-memory.repository';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
-import { ClassroomDataBuilder } from '@/classroom/domain/testing/helper/classroom-data-builder';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found-error';
 
 describe('Get classroom use case test', () => {
@@ -22,7 +21,7 @@ describe('Get classroom use case test', () => {
   });
 
   it('should return classroom details if classroom exists', async () => {
-    const classroom = new ClassroomEntity(classroomDataBuilder({}));
+    const classroom = ClassroomEntity.fake().aCADClassroom().build();
     await repository.insert(classroom);
 
     const input = { id: classroom.id };
@@ -33,7 +32,7 @@ describe('Get classroom use case test', () => {
   });
 
   it('should call repository findById with correct ID', async () => {
-    const classroom = new ClassroomEntity(classroomDataBuilder({}));
+    const classroom = ClassroomEntity.fake().aCADClassroom().build();
     await repository.insert(classroom);
 
     const spyFindById = jest.spyOn(repository, 'findById');

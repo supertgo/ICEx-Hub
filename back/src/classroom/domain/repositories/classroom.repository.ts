@@ -1,4 +1,3 @@
-import { RepositoryInterface } from '@/shared/domain/repositories/repository-contracts';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import {
   SearchParams as DefaultSearchParams,
@@ -11,14 +10,15 @@ export namespace ClassroomRepository {
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 
-  export class SearchResult extends DefaultSearchResult<ClassroomEntity, Filter> {}
+  export class SearchResult extends DefaultSearchResult<
+    ClassroomEntity,
+    Filter
+  > {}
 
-  export interface Repository
-    extends SearchableRepositoryInterface<
-      ClassroomEntity,
-      Filter,
-      SearchParams,
-      SearchResult
-    > {
-  }
+  export type Repository = SearchableRepositoryInterface<
+    ClassroomEntity,
+    Filter,
+    SearchParams,
+    SearchResult
+  >;
 }

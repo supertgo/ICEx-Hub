@@ -31,8 +31,7 @@ describe('Delete Classroom usecase integration tests', () => {
     await module.close();
   });
 
-  it('should throw error when classroom not found', () => { });
+  it('should throw error when classroom not found', () => {});
 
-  it('should delete a classroom', async () => {
-  });
+  it('should delete a classroom', async () => {});
 });

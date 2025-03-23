@@ -12,7 +12,7 @@ describe('Classroom model mapper integration tests', () => {
 
   beforeAll(async () => {
     setUpPrismaTest();
-    
+
     prismaService = new PrismaService();
     props = ClassroomDataBuilder({});
     await prismaService.$connect();
@@ -42,6 +42,5 @@ describe('Classroom model mapper integration tests', () => {
     const sut = ClassroomModelMapper.toEntity(model);
 
     expect(sut).toBeInstanceOf(ClassroomEntity);
-
   });
 });

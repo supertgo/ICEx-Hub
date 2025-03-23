@@ -3,7 +3,6 @@ import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/p
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { ClassroomDataBuilder } from '@/classroom/domain/testing/helper/classroom-data-builder';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classroom.usecase';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';

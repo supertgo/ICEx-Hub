@@ -3,7 +3,6 @@ import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/p
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { ClassroomDataBuilder } from '@/classroom/domain/testing/helper/user-data-builder';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/user-with-id-not-found-error';
 import { UpdateClassroomUsecase } from '@/classroom/application/usecases/update-user.usecase';
 
@@ -35,5 +34,5 @@ describe('Update classroom usecase integration tests', () => {
 
   it.todo('should throw error when classroom not found', () => {});
 
-  it.todo('should update a classroom', async () => { });
+  it.todo('should update a classroom', async () => {});
 });

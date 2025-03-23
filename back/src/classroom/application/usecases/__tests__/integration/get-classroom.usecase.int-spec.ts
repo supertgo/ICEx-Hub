@@ -4,6 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
+import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 
 describe('Get classroom usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -39,7 +41,10 @@ describe('Get classroom usecase integration tests', () => {
   });
 
   it('should retrieve a classroom', async () => {
-    const classroom = await prismaService.classroom.create({ data: ClassroomDataBuilder({}) });
+    const entity = ClassroomEntity.fake().aIcexClassroom().build();
+    const classroom = await prismaService.classroom.create({
+      data: entity,
+    });
 
     const output = await sut.execute({ id: classroom.id });
 
