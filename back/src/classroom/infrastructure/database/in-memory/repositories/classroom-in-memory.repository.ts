@@ -1,11 +1,8 @@
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
-import { ClassroomWithEmailNotFoundError } from '@/classroom/domain/errors/classroom-with-email-not-found-error';
-import { EmailAlreadyInUseError } from '@/classroom/domain/errors/email-already-in-use-error';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { NotFoundError } from '@/shared/domain/errors/not-found-error';
-import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found-error';
 
 export class ClassroomInMemoryRepository
   extends InMemorySearchableRepository<ClassroomEntity>

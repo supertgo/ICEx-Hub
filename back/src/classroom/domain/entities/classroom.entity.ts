@@ -36,9 +36,15 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
     return this.props.building;
   }
 
+  private set building(building: CLASSROOM_BUILDING) {
+    this.building = building;
+  }
+
   get createdAt(): Date {
     return this.props.createdAt;
   }
+
+  //TODO feat/update-classroom | Create update method here -> only id is required, should update name or building
 
   static validate(props: ClassroomProps) {
     const validator = ClassroomValidatorFactory.create();

@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/user-prisma.repository';
+import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/classroom-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/user-with-id-not-found-error';
-import { UpdateClassroomUsecase } from '@/classroom/application/usecases/update-user.usecase';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
+import { UpdateClassroomUsecase } from '../../update-classroom.usecase';
 
 describe('Update classroom usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -32,7 +32,9 @@ describe('Update classroom usecase integration tests', () => {
     await module.close();
   });
 
-  it.todo('should throw error when classroom not found', () => {});
+  //TODO feat/update-classroom - Throw ClassroomWithIdNotFoundError
+  it.todo('should throw error when classroom not found');
 
-  it.todo('should update a classroom', async () => {});
+  //TODO feat/update-clasroom
+  it.todo('should update a classroom');
 });
