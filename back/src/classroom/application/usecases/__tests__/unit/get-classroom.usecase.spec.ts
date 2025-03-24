@@ -1,7 +1,7 @@
 import { ClassroomInMemoryRepository } from '@/classroom/infrastructure/database/in-memory/repositories/classroom-in-memory.repository';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
-import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found-error';
+import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 
 describe('Get classroom use case test', () => {
   let sut: GetClassroomUsecase.UseCase;

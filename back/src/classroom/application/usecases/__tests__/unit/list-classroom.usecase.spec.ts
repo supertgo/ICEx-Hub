@@ -5,10 +5,6 @@ import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.r
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 
 describe('List classrooms use cases unit tests', () => {
-  function createClassroomEntity() {
-    return ClassroomEntity.fake().aIcexClassroom().build();
-  }
-
   let sut: ListClassroomsUsecase.UseCase;
   let repository: ClassroomInMemoryRepository;
 
@@ -67,10 +63,17 @@ describe('List classrooms use cases unit tests', () => {
   it('should return sorted by created at by default', async () => {
     const initialDate = new Date();
     const classrooms = [
-      createClassroomEntity({ createdAt: initialDate }),
-      createClassroomEntity({ createdAt: new Date(initialDate.getTime() + 1) }),
-      createClassroomEntity({ createdAt: new Date(initialDate.getTime() + 2) }),
+      ClassroomEntity.fake().aCADClassroom().withCreatedAt(initialDate).build(),
+      ClassroomEntity.fake()
+        .aCADClassroom()
+        .withCreatedAt(new Date(initialDate.getTime() + 1))
+        .build(),
+      ClassroomEntity.fake()
+        .aCADClassroom()
+        .withCreatedAt(new Date(initialDate.getTime() + 2))
+        .build(),
     ];
+
     repository.items = classrooms;
 
     const result = await sut.execute({});
@@ -94,11 +97,12 @@ describe('List classrooms use cases unit tests', () => {
 
   it('should return classrooms filtered, paginated and sorted', async () => {
     const classrooms = [
-      createClassroomEntity({ name: 'a' }),
-      createClassroomEntity({ name: 'A' }),
-      createClassroomEntity({ name: 'b' }),
-      createClassroomEntity({ name: 'c' }),
+      ClassroomEntity.fake().aCADClassroom().withName('a').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('A').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('b').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('B').build(),
     ];
+
     repository.items = classrooms;
 
     const result = await sut.execute({
@@ -118,12 +122,9 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.items[1].name).toBe('a');
   });
 
-  it.todo('should return second page when empty in pagination', async () => {});
+  it.todo('should return second page when empty in pagination');
 
-  it.todo(
-    'should return items in second page when having them',
-    async () => {},
-  );
+  it.todo('should return items in second page when having them');
 
-  it.todo('should return empty result when no filter found', async () => {});
+  it.todo('should return empty result when no filter found');
 });

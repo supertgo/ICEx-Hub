@@ -9,7 +9,7 @@ import { PaginationPresenter } from '@/shared/infrastructure/presenters/paginati
 
 describe('Classroom presenter unit tests', () => {
   const id = faker.string.uuid();
-  let props = { ...ClassroomDataBuilder({}), id };
+  let props = { ClassroomDataBuilder), id };
   let sut: ClassroomPresenter;
 
   beforeEach(() => {

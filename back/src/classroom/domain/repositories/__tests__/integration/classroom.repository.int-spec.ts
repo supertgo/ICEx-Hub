@@ -31,7 +31,7 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', () => {
-    expect(() => sut.findById('1')).rejects.toThrowError(
+    expect(() => sut.findById('1')).rejects.toThrow(
       new ClassroomWithIdNotFoundError('1'),
     );
   });
@@ -76,7 +76,7 @@ describe('Classroom prisma repository integration tests', () => {
     const nonExistentId = faker.string.uuid();
     const entity = ClassroomEntity.fake().aCADClassroom().build();
 
-    await expect(sut.update(entity)).rejects.toThrowError(
+    await expect(sut.update(entity)).rejects.toThrow(
       new ClassroomWithIdNotFoundError(nonExistentId),
     );
   });
@@ -86,7 +86,7 @@ describe('Classroom prisma repository integration tests', () => {
   it('should throw error when trying to delete non-existent classroom', async () => {
     const nonExistentId = faker.string.uuid();
 
-    await expect(sut.delete(nonExistentId)).rejects.toThrowError(
+    await expect(sut.delete(nonExistentId)).rejects.toThrow(
       new ClassroomWithIdNotFoundError(nonExistentId),
     );
   });
