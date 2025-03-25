@@ -1,19 +1,24 @@
 <template>
+  <div class="q-pa-md" style="display: flex; justify-content: space-between">
+    <div class="q-pa-md" style="max-width: 1480px; margin: auto; text-align: left">
+      <p>
+        Bem vindo(a)! <br />
+        Pesquise por disciplina, ou use os filtros para encontrar sua sala.
+      </p>
+    </div>
+    <div class="q-pa-md" style="max-width: 1480px; margin: auto; text-align: right">
+      <StatusCircle status="active" text="Sala liberada no momento" />
+      <StatusCircle status="inactive" text="Sala ocupada no momento" />
+    </div>
+  </div>
   <div class="q-pa-md" style="max-width: 1480px; margin: auto">
-    <q-table
-      flat
-      bordered
-      title="Treats"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      hide-bottom
-    />
+    <q-table flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar';
+import StatusCircle from 'src/components/StatusCircle.vue';
 
 const columns: QTableColumn[] = [
   {
@@ -83,6 +88,6 @@ const rows = [
     classroom: 'LAICO B307',
     direction: 'Ver Mapa',
     status: false,
-  }
+  },
 ];
 </script>
