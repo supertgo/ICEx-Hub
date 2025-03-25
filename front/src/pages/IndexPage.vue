@@ -1,17 +1,20 @@
+<style lang="scss">
+@import '../css/index.page.scss';
+</style>
+
 <template>
-  <div class="q-pa-md" style="display: flex; justify-content: space-between">
-    <div class="q-pa-md" style="max-width: 1480px; margin: auto; text-align: left">
-      <p>
-        Bem vindo(a)! <br />
-        Pesquise por disciplina, ou use os filtros para encontrar sua sala.
-      </p>
+  <div :class="['welcome-text-and-status-circle', 'q-pa-md']">
+    <div class="q-pa-md container" style="text-align: left">
+      <AppBrand />
+      Bem vindo(a)! <br />
+      Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
-    <div class="q-pa-md" style="max-width: 1480px; margin: auto; text-align: right">
+    <div class="q-pa-md" style="text-align: right">
       <StatusCircle status="active" text="Sala liberada no momento" />
       <StatusCircle status="inactive" text="Sala ocupada no momento" />
     </div>
   </div>
-  <div class="q-pa-md" style="max-width: 1480px; margin: auto">
+  <div :class="['q-pa-md', 'table']">
     <q-table flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
   </div>
 </template>
@@ -19,6 +22,7 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar';
 import StatusCircle from 'src/components/StatusCircle.vue';
+import AppBrand from 'src/components/AppBrand.vue';
 
 const columns: QTableColumn[] = [
   {
