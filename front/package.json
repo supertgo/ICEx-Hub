@@ -1,8 +1,8 @@
 {
   "name": "auth",
   "version": "0.0.1",
-  "description": "Simple Auth",
-  "productName": "Auth",
+  "description": "ICExHub Application",
+  "productName": "ICExHub",
   "author": "davi <davi.araujo@onfly.com.br>",
   "type": "module",
   "private": true,
