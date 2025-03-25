@@ -1,0 +1,26 @@
+.status-text {
+  font-size: 14px;
+  color: #2d3748;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.red-status-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #e53e3e;
+  transition: background-color 0.3s ease;
+}
+
+.green-status-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #008000;
+  transition: background-color 0.3s ease;
+}
