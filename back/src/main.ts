@@ -14,7 +14,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: '9001',
+    origin: '9000',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
