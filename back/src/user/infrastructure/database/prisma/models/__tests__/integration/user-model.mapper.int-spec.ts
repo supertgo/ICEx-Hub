@@ -12,7 +12,7 @@ describe('User model mapper integration tests', () => {
 
   beforeAll(async () => {
     setUpPrismaTest();
-    
+
     prismaService = new PrismaService();
     props = UserDataBuilder({});
     await prismaService.$connect();
@@ -29,7 +29,7 @@ describe('User model mapper integration tests', () => {
   it('should throw error when user model is invalid', () => {
     const model: User = Object.assign({}, props, { name: null });
 
-    expect(() => UserModelMapper.toEntity(model)).toThrowError(
+    expect(() => UserModelMapper.toEntity(model)).toThrow(
       new ValidationErrors('Could not load user having id undefined'),
     );
   });

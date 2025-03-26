@@ -69,7 +69,7 @@ export class ClassroomController {
         meta: {
           type: 'object',
           properties: {
-            totalItems: { type: 'number' },
+            totalItems: { type: 'string' },
             itemCount: { type: 'number' },
             itemsPerPage: { type: 'number' },
             totalPages: { type: 'number' },
@@ -83,7 +83,6 @@ export class ClassroomController {
       },
     },
   })
-
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
@@ -111,7 +110,10 @@ export class ClassroomController {
   @ApiResponse({ status: 404, description: 'Classroom not found' })
   @UseGuards(AuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateClassroomDto: UpdateClassroomDto,
+  ) {
     const output = await this.updateClassroomUseCase.execute({
       id,
       ...updateClassroomDto,
