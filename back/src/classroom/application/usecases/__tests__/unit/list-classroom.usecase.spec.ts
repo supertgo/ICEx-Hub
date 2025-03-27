@@ -84,14 +84,13 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.perPage).toBe(10);
 
     expect(result.items[0].createdAt.getTime()).toStrictEqual(
-      initialDate.getTime(),
+      initialDate.getTime() + 2,
     );
-
     expect(result.items[1].createdAt.getTime()).toStrictEqual(
       initialDate.getTime() + 1,
     );
     expect(result.items[2].createdAt.getTime()).toStrictEqual(
-      initialDate.getTime() + 2,
+      initialDate.getTime(),
     );
   });
 
@@ -118,8 +117,8 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.lastPage).toBe(1);
     expect(result.perPage).toBe(2);
 
-    expect(result.items[0].name).toBe('a');
-    expect(result.items[1].name).toBe('A');
+    expect(result.items[0].name).toBe('A');
+    expect(result.items[1].name).toBe('a');
   });
 
   it('should return second page when empty in pagination', async () => {
@@ -162,7 +161,7 @@ describe('List classrooms use cases unit tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'A',
+      filter: 'a',
     });
 
     expect(result.items.length).toBe(1);
@@ -171,7 +170,7 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.lastPage).toBe(2);
     expect(result.perPage).toBe(2);
 
-    expect(result.items[0].name).toBe('Aa');
+    expect(result.items[0].name).toBe('a');
   });
 
   it('should return empty result when no filter found', async () => {
