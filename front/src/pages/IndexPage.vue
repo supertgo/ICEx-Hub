@@ -5,7 +5,6 @@
 <template>
   <div :class="['welcome-text-and-status-circle', 'q-pa-md']">
     <div class="q-pa-md container" style="text-align: left">
-      <AppBrand />
       Bem vindo(a)! <br />
       Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
@@ -22,7 +21,6 @@
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar';
 import StatusCircle from 'src/components/StatusCircle.vue';
-import AppBrand from 'src/components/AppBrand.vue';
 
 const columns: QTableColumn[] = [
   {

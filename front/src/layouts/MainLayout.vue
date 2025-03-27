@@ -4,6 +4,7 @@ import { useAuthStore } from 'stores/auth';
 import { useRouter } from 'vue-router';
 import { Routes } from 'src/enums/Routes';
 import UserInfo from 'src/components/UserInfo.vue';
+import AppBrand from 'src/components/AppBrand.vue';
 
 const drawer = ref(false);
 const authStore = useAuthStore();
@@ -26,6 +27,7 @@ watch(
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
+        <AppBrand />
         <q-space />
         <q-toolbar-title @click="$router.push({ name: Routes.HOME })">
           {{ $t('common.pageTitle') }}</q-toolbar-title
