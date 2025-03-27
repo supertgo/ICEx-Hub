@@ -6,8 +6,8 @@ import { {{pascalCase name}}Entity, {{dashCase name}}Props } from '@/{{dashCase 
 import { {{pascalCase name}}DataBuilder } from '@/{{dashCase name}}/domain/testing/helper/{{dashCase name}}-data-builder';
 
 describe('List {{lowerCase name}}s use cases unit tests', () => {
-  function create{{pascalCase name}}Entity({{dashCase name}}Props: Partial<{{dashCase name}}Props> = {}) {
-    return new {{pascalCase name}}Entity({{dashCase name}}DataBuilder({{dashCase name}}Props));
+  function create{{pascalCase name}}Entity({{dashCase name}}Props: Partial<{{pascalCase name}}Props> = {}) {
+    return new {{pascalCase name}}Entity({{pascalCase name}}DataBuilder({{dashCase name}}Props));
   }
 
   let sut: List{{pascalCase name}}sUsecase.UseCase;
@@ -42,7 +42,7 @@ describe('List {{lowerCase name}}s use cases unit tests', () => {
     });
 
     it('should return {{lowerCase name}} entity result in output', () => {
-      const entity = new {{pascalCase name}}Entity({{dashCase name}}DataBuilder({}));
+      const entity = new {{pascalCase name}}Entity({{pascalCase name}}DataBuilder({}));
       const result = new {{pascalCase name}}Repository.SearchResult({
         items: [entity],
         total: 1,
