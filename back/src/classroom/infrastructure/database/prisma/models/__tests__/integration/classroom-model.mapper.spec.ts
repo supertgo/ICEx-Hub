@@ -7,13 +7,18 @@ import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing
 
 describe('Classroom model mapper integration tests', () => {
   let prismaService: PrismaService;
-  let props: any;
+  const entity = ClassroomEntity.fake().aIcexClassroom().build();
+  const props = {
+    id: entity.id,
+    name: entity.name,
+    building: entity.building,
+    createdAt: entity.createdAt,
+  };
 
   beforeAll(async () => {
     setUpPrismaTest();
 
     prismaService = new PrismaService();
-    props = ClassroomEntity.fake().aCADClassroom();
     await prismaService.$connect();
   });
 
@@ -29,7 +34,7 @@ describe('Classroom model mapper integration tests', () => {
     const model: Classroom = Object.assign({}, props, { name: null });
 
     expect(() => ClassroomModelMapper.toEntity(model)).toThrow(
-      new ValidationErrors('Could not load classroom having id undefined'),
+      new ValidationErrors(`Could not load classroom having id ${props.id}`),
     );
   });
 

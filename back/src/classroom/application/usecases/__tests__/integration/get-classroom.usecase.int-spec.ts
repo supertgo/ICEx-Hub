@@ -6,6 +6,7 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
+import { faker } from '@faker-js/faker';
 
 describe('Get classroom usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -35,7 +36,7 @@ describe('Get classroom usecase integration tests', () => {
 
   it('should throw error when classroom not found', () => {
     const id = faker.string.uuid();
-    expect(() => sut.execute({ id })).rejects.toThrowError(
+    expect(() => sut.execute({ id })).rejects.toThrow(
       new ClassroomWithIdNotFoundError(id),
     );
   });

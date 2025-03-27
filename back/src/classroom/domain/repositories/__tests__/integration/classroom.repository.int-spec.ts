@@ -73,11 +73,10 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   it('should throw error when trying to update non-existent classroom', async () => {
-    const nonExistentId = faker.string.uuid();
     const entity = ClassroomEntity.fake().aCADClassroom().build();
 
     await expect(sut.update(entity)).rejects.toThrow(
-      new ClassroomWithIdNotFoundError(nonExistentId),
+      new ClassroomWithIdNotFoundError(entity.id),
     );
   });
 

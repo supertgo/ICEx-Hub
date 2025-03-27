@@ -9,7 +9,7 @@ import { PaginationPresenter } from '@/shared/infrastructure/presenters/paginati
 
 describe('User presenter unit tests', () => {
   const id = faker.string.uuid();
-  let props = { ...UserDataBuilder({}), id };
+  const props = { ...UserDataBuilder({}), id };
   let sut: UserPresenter;
 
   beforeEach(() => {
@@ -35,8 +35,6 @@ describe('User presenter unit tests', () => {
   });
 
   describe('UserCollectionPresenter', () => {
-    let sut: UserCollectionPresenter;
-
     it('Constructor', () => {
       const sut = new UserCollectionPresenter({
         items: [props],
