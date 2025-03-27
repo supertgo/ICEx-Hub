@@ -38,5 +38,8 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 - Quasar para framework de front-end
 
 ### Sprint Backlog
+- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
+- Como usuário, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
+- Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
+- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre 
 
-### Sprint Backlog (nova versão)

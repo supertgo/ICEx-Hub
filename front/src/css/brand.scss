@@ -1,15 +1,16 @@
 @import './quasar.variables.scss';
 
 .bg-dark-blue {
-  background-color: $blue-10; /* Azul mais escuro */
+  background-color: $blue-10;
+  border-radius: 8px;
   display: inline-block;
   padding: 6px;
 }
 .text-light-blue {
-  color: $blue-6; /* Azul mais claro */
+  color: $blue-6;
   font-weight: 600;
 }
 .text-white {
-  color: $white; /* Branco */
+  color: $white;
   font-weight: 600;
 }
