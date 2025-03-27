@@ -29,9 +29,6 @@ watch(
       <q-toolbar>
         <AppBrand />
         <q-space />
-        <q-toolbar-title @click="$router.push({ name: Routes.HOME })">
-          {{ $t('common.pageTitle') }}</q-toolbar-title
-        >
         <q-btn icon="account_circle" round flat dense @click="drawer = !drawer"></q-btn>
       </q-toolbar>
     </q-header>
