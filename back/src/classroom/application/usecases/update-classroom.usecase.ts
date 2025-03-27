@@ -28,7 +28,7 @@ export namespace UpdateClassroomUsecase {
 
       const entity = await this.repository.findById(input.id);
 
-      //TODO feat/update-classroom Arthur & Laura | Create update method -> should be able to update name and building
+      //TODO feat/update-classroom Arthur & Laura | Create update method -> should be able to update name or building
       // entity.update(input);
 
       return ClassroomOutputMapper.toOutput(entity);
