@@ -12,6 +12,7 @@ export type CourseProps = {
 export class CourseEntity extends Entity<CourseProps> {
   constructor(
     public readonly props: CourseProps,
+    id?: string,
   ) {
     CourseEntity.validate(props);
     super(props, id);
