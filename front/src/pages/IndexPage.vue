@@ -16,7 +16,7 @@
     </div>
   </div>
   <div :class="['q-pa-md', 'table']">
-    <q-table card-class="bg-grey-4 text-black" table-header-class="bg-blue-10 text-white font-bold"
+    <q-table card-class="bg-grey-4 text-black" table-header-class="bg-blue-10 text-white font-bold text-uppercase"
      flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
   </div>
 </template>
