@@ -6,17 +6,15 @@ import {
   HttpCode,
   Inject,
   Param,
-  Patch,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UpdateClassroomUsecase } from '@/classroom/application/usecases/update-classroom.usecase';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
-import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classrooms.usecase';
+import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classroom.usecase';
 import { DeleteClassroomUsecase } from '@/classroom/application/usecases/delete-classroom.usecase';
-import { ListClassroomsDto } from '@/classroom/infrastructure/dtos/list-classrooms.dto';
+import { ListClassroomsDto } from '@/classroom/infrastructure/dtos/list-classroom.dto';
 import { UpdateClassroomDto } from '@/classroom/infrastructure/dtos/update-classroom.dto';
 import { ClassroomOutput } from '@/classroom/application/dtos/classroom-output';
 import {

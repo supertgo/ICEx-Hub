@@ -122,9 +122,80 @@ describe('List classrooms use cases unit tests', () => {
     expect(result.items[1].name).toBe('A');
   });
 
-  it.todo('should return second page when empty in pagination');
+  it('should return second page when empty in pagination', async () => {
+    const classrooms = [
+      ClassroomEntity.fake().aCADClassroom().withName('a').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('A').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('b').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('B').build(),
+    ];
 
-  it.todo('should return items in second page when having them');
+    repository.items = classrooms;
 
-  it.todo('should return empty result when no filter found');
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'a',
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(2);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(1);
+    expect(result.perPage).toBe(2);
+  });
+
+  it('should return items in second page when having them', async () => {
+    const classrooms = [
+      ClassroomEntity.fake().aCADClassroom().withName('a').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('A').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('Aa').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('c').build(),
+    ];
+
+    repository.items = classrooms;
+
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'A',
+    });
+
+    expect(result.items.length).toBe(1);
+    expect(result.total).toBe(3);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(2);
+    expect(result.perPage).toBe(2);
+
+    expect(result.items[0].name).toBe('Aa');
+  });
+
+  it('should return empty result when no filter found', async () => {
+    const classrooms = [
+      ClassroomEntity.fake().aCADClassroom().withName('a').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('A').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('b').build(),
+      ClassroomEntity.fake().aCADClassroom().withName('c').build(),
+    ];
+
+    repository.items = classrooms;
+
+    const result = await sut.execute({
+      page: 1,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'd',
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(0);
+    expect(result.currentPage).toBe(1);
+    expect(result.lastPage).toBe(0);
+    expect(result.perPage).toBe(2);
+  });
 });
