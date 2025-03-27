@@ -1,5 +1,6 @@
 <style lang="scss">
 @import '../css/index.page.scss';
+@import '../css/quasar.variables.scss';
 </style>
 
 <template>
@@ -15,7 +16,8 @@
     </div>
   </div>
   <div :class="['q-pa-md', 'table']">
-    <q-table flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
+    <q-table card-class="bg-grey-4 text-black" table-header-class="bg-blue-10 text-white font-bold"
+     flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
   </div>
 </template>
 
@@ -32,16 +34,18 @@ const columns: QTableColumn[] = [
     align: 'center',
     field: (row: { name: string }) => row.name,
     format: (val: string) => `${val}`,
+    classes:'discipline-column',
+    
   },
-  { name: 'code', align: 'center', label: 'Código', field: 'code' },
+  { name: 'code', align: 'center', label: 'Código', field: 'code'},
   { name: 'class', align: 'center', label: 'Turma', field: 'class' },
   { name: 'start', align: 'center', label: 'Início', field: 'start' },
-  { name: 'end', align: 'center', label: 'Fim', field: 'end' },
+  { name: 'end', align: 'center', label: 'Fim', field: 'end'},
   { name: 'days', align: 'center', label: 'Dias', field: 'days' },
-  { name: 'unit', align: 'center', label: 'Unidade', field: 'unit' },
-  { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom' },
+  { name: 'unit', align: 'center', label: 'Unidade', field: 'unit'},
+  { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom'},
   { name: 'direction', align: 'center', label: 'Como chegar', field: 'direction' },
-  { name: 'status', align: 'center', label: 'Status', field: 'status' },
+  { name: 'status', align: 'center', label: 'Status', field: 'status'},
 ];
 
 const rows = [
