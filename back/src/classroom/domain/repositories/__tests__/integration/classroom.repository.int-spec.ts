@@ -86,7 +86,7 @@ describe('Classroom prisma repository integration tests', () => {
 
     await sut.insert(entity);
 
-    //feat/updatedClassroom -> call entity.upddate() passing a new name
+    //feat/update-classroom -> call entity.upddate() passing a new name
 
     const updatedClassroom = await prismaService.classroom.findUnique({
       where: {
@@ -94,17 +94,17 @@ describe('Classroom prisma repository integration tests', () => {
       },
     });
 
-    //feat/updatedClassroom -> update the assertion with the new name
+    //feat/update-classroom -> update the assertion with the new name
     expect(updatedClassroom.name).toBe(entity.name);
   });
 
-  //feat/updatedClassroom -> do almost the same thing but with building
+  //feat/update-classroom -> do almost the same thing but with building
   // it('should update a classroom building successfully', async () => {
   //   const entity = ClassroomEntity.fake().aIcexClassroom().build();
   //
   //   await sut.insert(entity);
   //
-  //   //feat/updatedClassroom -> call entity.upddate() passing a new name
+  //   //feat/update-classroom -> call entity.upddate() passing a new name
   //
   //   const updatedClassroom = await prismaService.classroom.findUnique({
   //     where: {
@@ -112,7 +112,7 @@ describe('Classroom prisma repository integration tests', () => {
   //     },
   //   });
   //
-  //   //feat/updatedClassroom -> update the assertion with the new name
+  //   //feat/update-classroom -> update the assertion with the new name
   //   expect(updatedClassroom.name).toBe(entity.name);
   // });
 
