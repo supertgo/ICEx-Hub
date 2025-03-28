@@ -82,10 +82,24 @@ module.exports = (plop) => {
         );
 
         //Controller
+        actions.push(
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.controller.ts`,
+            templateFile: `templates/entity/infrastructure/controller.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.controller.ts`,
+            templateFile: `templates/entity/infrastructure/controller.ts.hbs`,
+          },
+        );
+
+        //Module
         actions.push({
           type: 'add',
-          path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.controller.ts`,
-          templateFile: `templates/entity/infrastructure/controller.ts.hbs`,
+          path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.module.ts`,
+          templateFile: `templates/entity/infrastructure/module.ts.hbs`,
         });
 
         //Presenter
@@ -99,6 +113,20 @@ module.exports = (plop) => {
             type: 'add',
             path: `${srcFolder}/{{dashCase name}}/infrastructure/presenters/__tests__/unit/{{dashCase name}}.presenter.spec.ts`,
             templateFile: `templates/entity/infrastructure/presenters/presenter-test.ts.hbs`,
+          },
+        );
+
+        //Presenter
+        actions.push(
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/dtos/list-{{dashCase name}}.dto.ts`,
+            templateFile: `templates/entity/infrastructure/dtos/list.dto.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/dtos/update-{{dashCase name}}.dto.ts`,
+            templateFile: `templates/entity/infrastructure/dtos/update.dto.ts.hbs`,
           },
         );
 
@@ -130,6 +158,13 @@ module.exports = (plop) => {
             templateFile: `templates/entity/infrastructure/database/prisma/models/model.mapper-int-test.ts.hbs`,
           },
         );
+
+        //Erros
+        actions.push({
+          type: 'add',
+          path: `${srcFolder}/{{dashCase name}}/infrastructure/errors/{{dashCase name}}-with-id-not-found-error.ts`,
+          templateFile: `templates/entity/infrastructure/errors/entity-with-id-not-found-error.ts.hbs`,
+        });
 
         return actions;
       },
