@@ -90,8 +90,8 @@ module.exports = (plop) => {
           },
           {
             type: 'add',
-            path: `${srcFolder}/{{dashCase name}}/infrastructure/{{dashCase name}}.controller.ts`,
-            templateFile: `templates/entity/infrastructure/controller.ts.hbs`,
+            path: `${srcFolder}/{{dashCase name}}/infrastructure/__tests__/unit/{{dashCase name}}.controller.spec.ts`,
+            templateFile: `templates/entity/infrastructure/controller.spec.ts.hbs`,
           },
         );
 
