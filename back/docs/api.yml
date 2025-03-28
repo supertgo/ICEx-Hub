@@ -381,7 +381,7 @@ paths:
       security:
         - bearer: []
 info:
-  title: Nest Auth Api
+  title: ICEx Hub Api
   description: The Nest Api support creating deleting editing and authenticating users
   version: 1.0.0
   contact: {}
