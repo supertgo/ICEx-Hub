@@ -2,6 +2,7 @@ module.exports = (plop) => {
   function generateEntityConfig() {
     const srcFolder = '../src';
     //TODO add create usecase
+    //feat/create-classroom-usecase -> add 'create' into array
     const useCases = ['get', 'list', 'delete', 'update'];
 
     return {

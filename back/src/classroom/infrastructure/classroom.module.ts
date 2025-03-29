@@ -24,6 +24,7 @@ import { Module } from '@nestjs/common';
       },
       inject: ['PrismaService'],
     },
+    //feat/create-classroom-usecase -> append CreateClassroomUseCase here
     {
       provide: GetClassroomUsecase.UseCase,
       useFactory: (classroomRepository: ClassroomRepository.Repository) => {
