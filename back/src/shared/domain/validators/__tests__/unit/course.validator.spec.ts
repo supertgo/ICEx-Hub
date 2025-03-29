@@ -19,7 +19,7 @@ describe('CourseValidator Unit Tests', () => {
     });
 
     it('Should validate without data', () => {
-      const isValid = sut.validate(null);
+      const isValid = sut.validate({} as any);
 
       expect(isValid).toBeFalsy();
       expect(sut.errors).toBeDefined();
