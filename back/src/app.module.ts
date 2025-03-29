@@ -3,9 +3,16 @@ import { EnvConfigModule } from './shared/infrastructure/env-config/env-config.m
 import { UserModule } from './user/infrastructure/user.module';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { AuthModule } from './auth/infrastructure/auth.module';
+import { ClassroomModule } from './classroom/infrastructure/classroom.module';
 
 @Module({
-  imports: [EnvConfigModule, UserModule, DatabaseModule, AuthModule],
+  imports: [
+    EnvConfigModule,
+    ClassroomModule,
+    UserModule,
+    DatabaseModule,
+    AuthModule,
+  ],
   controllers: [],
   providers: [],
 })

@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import { {{pascalCase name}}PrismaRepository } from '@/{{dashCase name}}/infrastructure/database/prisma/repositories/user-prisma.repository';
+import { {{pascalCase name}}PrismaRepository } from '@/{{dashCase name}}/infrastructure/database/prisma/repositories/{{dashCase name}}-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { {{pascalCase name}}DataBuilder } from '@/{{dashCase name}}/domain/testing/helper/user-data-builder';
-import { {{pascalCase name}}WithIdNotFoundError } from '@/{{dashCase name}}/infrastructure/errors/user-with-id-not-found-error';
-import { Update{{pascalCase name}}Usecase } from '@/{{dashCase name}}/application/usecases/update-user.usecase';
+import { {{pascalCase name}}DataBuilder } from '@/{{dashCase name}}/domain/testing/helper/{{dashCase name}}-data-builder';
+import { {{pascalCase name}}WithIdNotFoundError } from '@/{{dashCase name}}/infrastructure/errors/{{dashCase name}}-with-id-not-found-error';
+import { Update{{pascalCase name}}Usecase } from '@/{{dashCase name}}/application/usecases/update-{{dashCase name}}.usecase';
 
 describe('Update {{dashCase name}} usecase integration tests', () => {
   const prismaService = new PrismaClient();

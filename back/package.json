@@ -28,7 +28,8 @@
     "prisma:migrate-test": "npx dotenv-cli -e .env.test -- npx prisma migrate deploy --schema ./src/shared/infrastructure/database/prisma/schema.prisma",
     "generate:openapi": "ts-node scripts/generate-open-api.ts",
     "plop": "plop",
-    "generate": "plop --plopfile generators/plopfile.cjs"
+    "generate": "plop --plopfile generators/plopfile.cjs",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
     "@fastify/static": "^7.0.4",

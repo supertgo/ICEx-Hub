@@ -6,24 +6,21 @@ import {
   HttpCode,
   Inject,
   Param,
-  Patch,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UpdateClassroomUsecase } from '@/classroom/application/usecases/update-classroom.usecase';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
-import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classrooms.usecase';
+import { ListClassroomsUsecase } from '@/classroom/application/usecases/list-classroom.usecase';
 import { DeleteClassroomUsecase } from '@/classroom/application/usecases/delete-classroom.usecase';
-import { ListClassroomsDto } from '@/classroom/infrastructure/dtos/list-classrooms.dto';
+import { ListClassroomsDto } from '@/classroom/infrastructure/dtos/list-classroom.dto';
 import { UpdateClassroomDto } from '@/classroom/infrastructure/dtos/update-classroom.dto';
 import { ClassroomOutput } from '@/classroom/application/dtos/classroom-output';
 import {
   ClassroomCollectionPresenter,
   ClassroomPresenter,
 } from '@/classroom/infrastructure/presenters/classroom.presenter';
-import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import {
   ApiBearerAuth,
@@ -46,9 +43,6 @@ export class ClassroomController {
 
   @Inject(DeleteClassroomUsecase.UseCase)
   private deleteClassroomUseCase: DeleteClassroomUsecase.UseCase;
-
-  @Inject(AuthService)
-  private authService: AuthService;
 
   static classroomToResponse(output: ClassroomOutput): ClassroomPresenter {
     return new ClassroomPresenter(output);

@@ -8,7 +8,7 @@ export class ClassroomInMemoryRepository
   extends InMemorySearchableRepository<ClassroomEntity>
   implements ClassroomRepository.Repository
 {
-  sortableFields = [];
+  sortableFields = ['name', 'createdAt'];
 
   protected async applyFilters(
     items: ClassroomEntity[],

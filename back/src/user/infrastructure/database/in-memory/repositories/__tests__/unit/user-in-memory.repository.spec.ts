@@ -18,14 +18,18 @@ describe('user in memory repository', () => {
   });
 
   it('should throw exception when using findByEmail without user', () => {
-    expect(sut.findByEmail('non existent')).rejects.toThrow(UserWithEmailNotFoundError);
+    expect(sut.findByEmail('non existent')).rejects.toThrow(
+      UserWithEmailNotFoundError,
+    );
   });
 
   it('should throw exception when there users but none with the desired email', async () => {
     const user = createUserEntity();
     await sut.insert(user);
 
-    expect(sut.findByEmail('non existent')).rejects.toThrow(UserWithEmailNotFoundError);
+    expect(sut.findByEmail('non existent')).rejects.toThrow(
+      UserWithEmailNotFoundError,
+    );
   });
 
   it('should return user when using findByEmail with user', async () => {
@@ -41,7 +45,9 @@ describe('user in memory repository', () => {
     const user = createUserEntity();
     await sut.insert(user);
 
-    expect(sut.assureEmailIsAvailableToUse(user.email)).rejects.toThrow(EmailAlreadyInUseError);
+    expect(sut.assureEmailIsAvailableToUse(user.email)).rejects.toThrow(
+      EmailAlreadyInUseError,
+    );
   });
 
   it('should not throw exception when using emailExists without user', async () => {
@@ -131,7 +137,11 @@ describe('user in memory repository', () => {
         createUserEntity({ createdAt: new Date('2023-01-02') }),
       ];
 
-      const result = await sut['applySort'](items, 'createdAt', SortOrderEnum.ASC);
+      const result = await sut['applySort'](
+        items,
+        'createdAt',
+        SortOrderEnum.ASC,
+      );
 
       expect(result[0].props.createdAt).toStrictEqual(new Date('2023-01-01'));
       expect(result[1].props.createdAt).toStrictEqual(new Date('2023-01-02'));

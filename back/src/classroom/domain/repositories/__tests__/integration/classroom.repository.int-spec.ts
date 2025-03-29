@@ -6,6 +6,7 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 import { faker } from '@faker-js/faker';
+import { ClassroomRepository } from '../../classroom.repository';
 
 describe('Classroom prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -80,7 +81,40 @@ describe('Classroom prisma repository integration tests', () => {
     );
   });
 
-  it('should update a classroom successfully', async () => {});
+  it('should update a classroom name successfully', async () => {
+    const entity = ClassroomEntity.fake().aIcexClassroom().build();
+
+    await sut.insert(entity);
+
+    //feat/update-classroom -> call entity.upddate() passing a new name
+
+    const updatedClassroom = await prismaService.classroom.findUnique({
+      where: {
+        id: entity.id,
+      },
+    });
+
+    //feat/update-classroom -> update the assertion with the new name
+    expect(updatedClassroom.name).toBe(entity.name);
+  });
+
+  //feat/update-classroom -> do almost the same thing but with building
+  // it('should update a classroom building successfully', async () => {
+  //   const entity = ClassroomEntity.fake().aIcexClassroom().build();
+  //
+  //   await sut.insert(entity);
+  //
+  //   //feat/update-classroom -> call entity.upddate() passing a new name
+  //
+  //   const updatedClassroom = await prismaService.classroom.findUnique({
+  //     where: {
+  //       id: entity.id,
+  //     },
+  //   });
+  //
+  //   //feat/update-classroom -> update the assertion with the new name
+  //   expect(updatedClassroom.name).toBe(entity.name);
+  // });
 
   it('should throw error when trying to delete non-existent classroom', async () => {
     const nonExistentId = faker.string.uuid();
@@ -104,8 +138,29 @@ describe('Classroom prisma repository integration tests', () => {
   });
 
   describe('search tests', () => {
-    it.todo('should return with default values');
+    it('should return with default values', async () => {
+      const entities: ClassroomEntity[] = [];
+      const createdAt = new Date();
 
-    it.todo('should paginate classrooms');
+      for (let i = 0; i < 11; i++) {
+        const entity = ClassroomEntity.fake()
+          .aIcexClassroom()
+          .withCreatedAt(new Date(createdAt.getTime() + i))
+          .build();
+
+        await sut.insert(entity);
+
+        entities.push(entity);
+      }
+
+      const searchResult = await sut.search(
+        new ClassroomRepository.SearchParams(),
+      );
+
+      expect(searchResult).not.toBeNull();
+      expect(searchResult).toBeInstanceOf(ClassroomRepository.SearchResult);
+      expect(searchResult.items).toHaveLength(10);
+      expect(searchResult.total).toBe(11);
+    });
   });
 });
