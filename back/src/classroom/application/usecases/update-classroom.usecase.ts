@@ -5,7 +5,7 @@ import {
 } from '@/classroom/application/dtos/classroom-output';
 import { UseCaseInterface } from '@/shared/application/use-cases/use-case';
 import { BadRequestError } from '@/shared/application/errors/bad-request-error';
-import { CLASSROOM_BUILDING } from '@/classroom/domain/entities/classroom.entity';
+import { CLASSROOM_BUILDING } from '@/classroom/domain/classroom.constants';
 
 export namespace UpdateClassroomUsecase {
   export type Input = {
@@ -40,8 +40,9 @@ export namespace UpdateClassroomUsecase {
         }
       }
 
-      //TODO feat/update-classroom Arthur & Laura | Create update method -> should be able to update name or building
-      // entity.update(input);
+      entity.updateBuilding(input.building as CLASSROOM_BUILDING);
+      entity.updateName(input.name);
+      await this.repository.update(entity);
 
       return ClassroomOutputMapper.toOutput(entity);
     }

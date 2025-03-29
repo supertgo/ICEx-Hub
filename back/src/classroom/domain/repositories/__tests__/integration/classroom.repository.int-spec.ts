@@ -7,6 +7,7 @@ import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
 import { faker } from '@faker-js/faker';
 import { ClassroomRepository } from '../../classroom.repository';
+import { CLASSROOM_BUILDING } from '@/classroom/domain/classroom.constants';
 
 describe('Classroom prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -81,12 +82,12 @@ describe('Classroom prisma repository integration tests', () => {
     );
   });
 
-  it('should update a classroom name successfully', async () => {
+  it('should update only a classroom name successfully', async () => {
     const entity = ClassroomEntity.fake().aIcexClassroom().build();
-
     await sut.insert(entity);
 
-    //feat/update-classroom -> call entity.upddate() passing a new name
+    entity.updateName('Sala 1026');
+    await sut.update(entity);
 
     const updatedClassroom = await prismaService.classroom.findUnique({
       where: {
@@ -94,27 +95,40 @@ describe('Classroom prisma repository integration tests', () => {
       },
     });
 
-    //feat/update-classroom -> update the assertion with the new name
-    expect(updatedClassroom.name).toBe(entity.name);
+    expect(updatedClassroom.name).toBe('Sala 1026');
   });
 
-  //feat/update-classroom -> do almost the same thing but with building
-  // it('should update a classroom building successfully', async () => {
-  //   const entity = ClassroomEntity.fake().aIcexClassroom().build();
-  //
-  //   await sut.insert(entity);
-  //
-  //   //feat/update-classroom -> call entity.upddate() passing a new name
-  //
-  //   const updatedClassroom = await prismaService.classroom.findUnique({
-  //     where: {
-  //       id: entity.id,
-  //     },
-  //   });
-  //
-  //   //feat/update-classroom -> update the assertion with the new name
-  //   expect(updatedClassroom.name).toBe(entity.name);
-  // });
+  it('should update only a classroom building successfully', async () => {
+    const entity = ClassroomEntity.fake().aCADClassroom().build();
+    await sut.insert(entity);
+
+    entity.updateBuilding(CLASSROOM_BUILDING.ICEX);
+    await sut.update(entity);
+
+    const updatedClassroom = await prismaService.classroom.findUnique({
+      where: {
+        id: entity.id,
+      },
+    });
+
+    expect(updatedClassroom.building).toBe(CLASSROOM_BUILDING.ICEX);
+  });
+
+  it('should update a classroom building and name successfully', async () => {
+    const entity = ClassroomEntity.fake().aIcexClassroom().build();
+    await sut.insert(entity);
+
+    entity.updateBuilding(CLASSROOM_BUILDING.CAD3);
+    await sut.update(entity);
+
+    const updatedClassroom = await prismaService.classroom.findUnique({
+      where: {
+        id: entity.id,
+      },
+    });
+
+    expect(updatedClassroom.building).toBe(CLASSROOM_BUILDING.CAD3);
+  });
 
   it('should throw error when trying to delete non-existent classroom', async () => {
     const nonExistentId = faker.string.uuid();

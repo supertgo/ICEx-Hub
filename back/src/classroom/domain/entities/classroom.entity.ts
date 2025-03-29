@@ -2,11 +2,7 @@ import { Entity } from '@/shared/domain/entities/entity';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 import { ClassroomFakeBuilder } from '../fake-builder/classroom-fake.builder';
 import { ClassroomValidatorFactory } from '../validators/classroom.validator';
-
-export enum CLASSROOM_BUILDING {
-  CAD3 = 'CAD3',
-  ICEX = 'ICEX',
-}
+import { CLASSROOM_BUILDING } from '../classroom.constants';
 
 export type ClassroomProps = {
   name: string;
@@ -37,14 +33,30 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
   }
 
   private set building(building: CLASSROOM_BUILDING) {
-    this.building = building;
+    this.props.building = building;
   }
 
   get createdAt(): Date {
     return this.props.createdAt;
   }
 
-  //TODO feat/update-classroom | Create update method here -> only id is required, should update name or building
+  updateBuilding(building: CLASSROOM_BUILDING) {
+    ClassroomEntity.validate({
+      ...this.props,
+      name: this.name,
+      building: building,
+    });
+    this.building = building;
+  }
+
+  updateName(name: string) {
+    ClassroomEntity.validate({
+      ...this.props,
+      name: name,
+      building: this.building,
+    });
+    this.name = name;
+  }
 
   static validate(props: ClassroomProps) {
     const validator = ClassroomValidatorFactory.create();

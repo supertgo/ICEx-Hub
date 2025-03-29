@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PropOrFactory } from '@/shared/domain/common';
+import { ClassroomEntity } from '../entities/classroom.entity';
+import { Faker } from '@faker-js/faker';
 import {
   CLASSROOM_BUILDING,
-  ClassroomEntity,
-} from '../entities/classroom.entity';
-import { Faker } from '@faker-js/faker';
-import { CLASSROOM_MAX_LENGTHS } from '../classroom.max-lengths';
+  CLASSROOM_MAX_LENGTHS,
+} from '../classroom.constants';
 import { faker } from '@faker-js/faker/locale/hr';
 
 export class ClassroomFakeBuilder<TBuild = any> {
