@@ -1,8 +1,5 @@
 import { UserInMemoryRepository } from '@/user/infrastructure/database/in-memory/repositories/user-in-memory.repository';
-import { UserEntity } from '@/user/domain/entities/user.entity';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
-import { BadRequestError } from '@/shared/application/errors/bad-request-error';
 import { UpdateUserUsecase } from '@/user/application/usecases/update-user.usecase';
 import { faker } from '@faker-js/faker';
 
@@ -22,5 +19,4 @@ describe('Update user use case test', () => {
       new UserWithIdNotFoundError(input.id),
     );
   });
-
 });

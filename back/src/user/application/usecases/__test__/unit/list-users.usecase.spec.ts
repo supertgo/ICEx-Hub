@@ -1,8 +1,4 @@
-import {
-  SearchResult,
-  SortOrderEnum,
-} from '@/shared/domain/repositories/searchable-repository-contracts';
-import { PaginationOutputMapper } from '@/shared/application/dtos/pagination-output';
+import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ListUsersUsecase } from '@/user/application/usecases/list-users.usecase';
 import { UserInMemoryRepository } from '@/user/infrastructure/database/in-memory/repositories/user-in-memory.repository';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
@@ -196,6 +192,4 @@ describe('List users use cases unit tests', () => {
     expect(result.lastPage).toBe(0);
     expect(result.perPage).toBe(2);
   });
-  
-  
 });
