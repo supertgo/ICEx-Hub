@@ -1,6 +1,8 @@
-import { CLASSROOM_MAX_LENGTHS } from '@/classroom/domain/classroom.max-lengths';
 import { ClassroomFakeBuilder } from '../../classroom-fake.builder';
-import { CLASSROOM_BUILDING } from '@/classroom/domain/entities/classroom.entity';
+import {
+  CLASSROOM_BUILDING,
+  CLASSROOM_MAX_LENGTHS,
+} from '@/classroom/domain/classroom.constants';
 
 describe('ClassroomFakeBuilder Unit Tests', () => {
   describe('name prop', () => {

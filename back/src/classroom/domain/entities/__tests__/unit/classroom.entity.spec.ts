@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import {
-  CLASSROOM_BUILDING,
   ClassroomEntity,
   ClassroomProps,
 } from '@/classroom/domain/entities/classroom.entity';
+import { CLASSROOM_BUILDING } from '@/classroom/domain/classroom.constants';
 
 function commonAssertions(sut: ClassroomEntity, props: ClassroomProps) {
   expect(sut).toBeDefined();
