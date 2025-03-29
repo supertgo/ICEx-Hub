@@ -1,3 +1,8 @@
+<style lang="scss">
+@import '../css/index.page.scss';
+@import '../css/quasar.variables.scss';
+</style>
+
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useAuthStore } from 'stores/auth';
@@ -25,7 +30,7 @@ watch(
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-blue-10">
       <q-toolbar>
         <AppBrand />
         <q-space />
