@@ -10,9 +10,11 @@ export class {{pascalCase name}}PrismaRepository implements {{pascalCase name}}R
   constructor(private prismaService: PrismaService) {}
 
   async insert(entity: {{pascalCase name}}Entity): Promise<void> {
-    await this.prismaService.{{dashCase name}}.create({
+    const {{lowerCase name}} = await this.prismaService.{{dashCase name}}.create({
       data: entity.toJSON(),
     });
+
+    return {{pascalCase name}}Mapper.toEntity({{lowerCase name}});
   }
 
   findById(id: string): Promise<{{pascalCase name}}Entity> {

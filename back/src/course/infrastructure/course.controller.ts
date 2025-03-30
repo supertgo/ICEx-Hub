@@ -1,11 +1,30 @@
-import { Body, Controller, Delete, Get, HttpCode, Inject, Param, Put, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Inject,
+  Param,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UpdateCourseUsecase } from '@/course/application/usecases/update-course.usecase';
 import { GetCourseUsecase } from '@/course/application/usecases/get-course.usecase';
 import { DeleteCourseUsecase } from '@/course/application/usecases/delete-course.usecase';
 import { CourseOutput } from '@/course/application/dtos/course-output';
-import { CourseCollectionPresenter, CoursePresenter } from '@/course/infrastructure/presenters/course.presenter';
+import {
+  CourseCollectionPresenter,
+  CoursePresenter,
+} from '@/course/infrastructure/presenters/course.presenter';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
-import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
 import { CreateCourseUsecase } from '@/course/application/usecases/create-course.usecase';
 import { CreateCourseDto } from '@/course/infrastructure/dtos/create-course.dto';
@@ -102,9 +121,7 @@ export class CourseController {
   @UseGuards(AuthGuard)
   @Put(':id')
   async create(@Param('id') id: string, @Body() courseDto: CreateCourseDto) {
-    const output = await this.createCourseUseCase.execute(
-      courseDto,
-    );
+    const output = await this.createCourseUseCase.execute(courseDto);
 
     return CourseController.courseToResponse(output);
   }

@@ -67,6 +67,39 @@ module.exports = (plop) => {
           },
         );
 
+        // Validators
+        actions.push(
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/validators/{{dashCase name}}.validator.ts`,
+            templateFile: `templates/entity/domain/validators/entity.validator.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/validators/__tests__/unit/{{dashCase name}}.validator.spec.ts`,
+            templateFile: `templates/entity/domain/validators/entity.validator.spec.ts.hbs`,
+          },
+        );
+
+        //DataBuilder and FakeBuilder
+        actions.push(
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/testing/helper/{{dashCase name}}-data-builder.ts`,
+            templateFile: `templates/entity/domain/testing/helper/entity-data-builder.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/fake-builder/{{dashCase name}}-fake.builder.ts`,
+            templateFile: `templates/entity/domain/fake-builder/entity-fake.builder.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/fake-builder/__tests__/unit/{{dashCase name}}-fake.builder.spec.ts`,
+            templateFile: `templates/entity/domain/fake-builder/entity-fake.builder.spec.ts.hbs`,
+          },
+        );
+
         //Repositories
         actions.push(
           {
