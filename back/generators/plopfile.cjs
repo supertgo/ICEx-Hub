@@ -67,6 +67,20 @@ module.exports = (plop) => {
           },
         );
 
+        // Validators
+        actions.push(
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/validators/{{dashCase name}}.validator.ts`,
+            templateFile: `templates/entity/domain/validators/entity.validator.ts.hbs`,
+          },
+          {
+            type: 'add',
+            path: `${srcFolder}/{{dashCase name}}/domain/validators/__tests__/unit/{{dashCase name}}.validator.spec.ts`,
+            templateFile: `templates/entity/domain/validators/entity.validator.spec.ts.hbs`,
+          },
+        );
+
         //Repositories
         actions.push(
           {
