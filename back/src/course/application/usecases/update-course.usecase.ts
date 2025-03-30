@@ -10,6 +10,7 @@ export namespace UpdateCourseUsecase {
   export class UseCase implements UseCaseInterface<Input, Output> {
     constructor(private repository: CourseRepository.Repository) {}
 
+    //todo Laura
     async execute(input: Input): Promise<Output> { }
   }
 }

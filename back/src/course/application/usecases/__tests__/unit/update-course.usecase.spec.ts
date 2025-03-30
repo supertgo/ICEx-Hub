@@ -11,6 +11,6 @@ describe('Update course use case test', () => {
     repository = new CourseInMemoryRepository();
     sut = new UpdateCourseUsecase.UseCase(repository);
   });
-
+  //todo Laura
   it.todo('should throw courseWithIdNotFoundError if course does not exist', async () => {});
 });
