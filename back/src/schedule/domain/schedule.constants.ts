@@ -1,0 +1,21 @@
+export enum TimeSlotEnum {
+  MORNING_1 = ' 7:30 - 9:10',
+  MORNING_2 = ' 9:25 - 11:05',
+  MORNING_3 = ' 11:10 - 12:00',
+  AFTERNOON_1 = ' 13:00 - 14:40',
+  AFTERNOON_2 = ' 14:55 - 16:35',
+  EVENING_1 = ' 17:00 - 18:40',
+  EVENING_2 = ' 19:00 - 20:40',
+  EVENING_3 = ' 20:55 - 22:30',
+}
+
+export enum DayPatternEnum {
+  MONDAY = 'MONDAY',
+  TUESDAY = 'TUESDAY',
+  WEDNESDAY = 'WEDNESDAY',
+  THURSDAY = 'THURSDAY',
+  FRIDAY = 'FRIDAY',
+  SATURDAY = 'SATURDAY',
+  MONDAY_WEDNESDAY = 'MONDAY_WEDNESDAY',
+  TUESDAY_THURSDAY = 'TUESDAY_THURSDAY',
+}
