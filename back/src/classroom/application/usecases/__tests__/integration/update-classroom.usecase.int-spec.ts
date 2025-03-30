@@ -7,6 +7,7 @@ import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/
 import { UpdateClassroomUsecase } from '../../update-classroom.usecase';
 import { faker } from '@faker-js/faker';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
+import { CLASSROOM_BUILDING } from '@/classroom/domain/classroom.constants';
 
 describe('Update classroom usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -41,19 +42,38 @@ describe('Update classroom usecase integration tests', () => {
     );
   });
 
-  it('should update a classroom', async () => {
+  it('should update a classroom building', async () => {
     const entity = ClassroomEntity.fake().aIcexClassroom().build();
     const classroom = await prismaService.classroom.create({
       data: entity,
     });
 
+    const newBuilding = CLASSROOM_BUILDING.CAD3;
+
     const output = await sut.execute({
       id: classroom.id,
-      name: classroom.name,
-      building: classroom.building,
+      building: newBuilding,
     });
 
-    expect(output).toBeDefined();
-    expect(output).toMatchObject(classroom);
+    expect(output.building).toBe(newBuilding);
+  });
+
+  it('should update a classroom name', async () => {
+    const entity = ClassroomEntity.fake().aIcexClassroom().build();
+    const classroom = await prismaService.classroom.create({
+      data: entity,
+    });
+
+    const newName = faker.word.noun({
+      length: { min: 5, max: 10 },
+      strategy: 'closest',
+    });
+
+    const output = await sut.execute({
+      id: classroom.id,
+      name: newName,
+    });
+
+    expect(output.name).toBe(newName);
   });
 });

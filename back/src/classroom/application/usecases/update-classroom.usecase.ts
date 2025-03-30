@@ -37,12 +37,16 @@ export namespace UpdateClassroomUsecase {
           throw new BadRequestError(
             `Invalid classroom building: ${input.building}`,
           );
+        } else {
+          entity.updateBuilding(input.building as CLASSROOM_BUILDING);
+          await this.repository.update(entity);
         }
       }
 
-      entity.updateBuilding(input.building as CLASSROOM_BUILDING);
-      entity.updateName(input.name);
-      await this.repository.update(entity);
+      if (input.name) {
+        entity.updateName(input.name);
+        await this.repository.update(entity);
+      }
 
       return ClassroomOutputMapper.toOutput(entity);
     }

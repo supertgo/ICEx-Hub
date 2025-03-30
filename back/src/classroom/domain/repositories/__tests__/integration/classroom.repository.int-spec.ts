@@ -119,6 +119,7 @@ describe('Classroom prisma repository integration tests', () => {
     await sut.insert(entity);
 
     entity.updateBuilding(CLASSROOM_BUILDING.CAD3);
+    entity.updateName('212');
     await sut.update(entity);
 
     const updatedClassroom = await prismaService.classroom.findUnique({
@@ -128,6 +129,23 @@ describe('Classroom prisma repository integration tests', () => {
     });
 
     expect(updatedClassroom.building).toBe(CLASSROOM_BUILDING.CAD3);
+    expect(updatedClassroom.name).toBe('212');
+  });
+
+  it('should update neither a classroom building or name', async () => {
+    const entity = ClassroomEntity.fake().aIcexClassroom().build();
+    await sut.insert(entity);
+
+    await sut.update(entity);
+
+    const updatedClassroom = await prismaService.classroom.findUnique({
+      where: {
+        id: entity.id,
+      },
+    });
+
+    expect(updatedClassroom.building).toBe(entity.building);
+    expect(updatedClassroom.name).toBe(entity.name);
   });
 
   it('should throw error when trying to delete non-existent classroom', async () => {
