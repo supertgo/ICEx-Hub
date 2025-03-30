@@ -48,8 +48,8 @@ model User {
   student   Student?
   createdAt DateTime @default(now())
 
-  @@map("users")
   @@index([email])
+  @@map("users")
 }
 
 model Student {
@@ -64,19 +64,6 @@ model Student {
   updatedAt      DateTime     @updatedAt
 
   @@map("students")
-}
-
-model Course {
-  id          String         @id @default(uuid()) @db.Uuid
-  name        String         @db.VarChar(100)
-  code        String         @unique @db.VarChar(20)
-  periods     CoursePeriod[]
-  disciplines Discipline[]
-  Student     Student[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-   @@index([code])
-  @@map("courses")
 }
 
 model CoursePeriod {
@@ -142,12 +129,15 @@ model Classroom {
 }
 
 model Course {
-  id        String   @id @default(uuid()) @db.Uuid
-  code      String   @unique @db.VarChar(20)
-  name      String   @db.VarChar(100)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String         @id @default(uuid()) @db.Uuid
+  code        String         @unique @db.VarChar(20)
+  name        String         @db.VarChar(100)
+  periods     CoursePeriod[]
+  disciplines Discipline[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  Student     Student[]
 
-  @@map("courses")
   @@index([code])
+  @@map("courses")
 }
