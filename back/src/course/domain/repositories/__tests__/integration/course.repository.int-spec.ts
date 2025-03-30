@@ -97,11 +97,4 @@ describe('Course prisma repository integration tests', () => {
 
     expect(courseCount).toBe(0);
   });
-
-
-  describe('search tests', () => {
-    it.todo('should return with default values', async () => { });
-
-    it.todo('should paginate courses', async () => { });
-  });
 });

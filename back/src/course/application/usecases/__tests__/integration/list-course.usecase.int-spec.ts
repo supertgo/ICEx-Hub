@@ -64,13 +64,14 @@ describe('List courses usecase integration tests', () => {
       CourseEntity.fake()
         .aCourse()
         .withCreatedAt(new Date(createdAt.getTime() + 1))
-        .withCode('TEST')
+        .withCode('asdasdasd')
         .withName('asdasd')
         .build(),
       CourseEntity.fake()
         .aCourse()
         .withCreatedAt(new Date(createdAt.getTime() + 3))
         .withName('asd')
+        .withCode('jksdhgfklasdasd')
         .build(),
       CourseEntity.fake()
         .aCourse()
@@ -85,6 +86,7 @@ describe('List courses usecase integration tests', () => {
     let output = await sut.execute({
       page: 1,
       perPage: 2,
+      sort: 'createdAt',
       sortDir: SortOrderEnum.ASC,
       filter: 'TEST',
     });
@@ -106,7 +108,7 @@ describe('List courses usecase integration tests', () => {
     });
 
     expect(output).toMatchObject({
-      items: [entities[1].toJSON(), entities[4].toJSON()],
+      items: [entities[1].toJSON()],
       total: 3,
       currentPage: 2,
       perPage: 2,

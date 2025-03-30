@@ -7,7 +7,7 @@ describe('Course entity integration tests', () => {
     it('should throw error with invalid name', () => {
       const props = {
         ...CourseDataBuilder({}),
-        name: Date(),
+        name: {} as any,
       };
 
       expect(() => new CourseEntity(props)).toThrow(EntityValidationError);
@@ -16,7 +16,7 @@ describe('Course entity integration tests', () => {
     it('should throw error with invalid code', () => {
       const props = {
         ...CourseDataBuilder({}),
-        code: Date(),
+        code: {} as any,
       };
 
       expect(() => new CourseEntity(props)).toThrow(EntityValidationError);

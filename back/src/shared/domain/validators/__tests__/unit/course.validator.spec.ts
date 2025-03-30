@@ -89,13 +89,13 @@ describe('CourseValidator Unit Tests', () => {
     });
 
     it('Should validate without data', () => {
-      const isValid = sut.validate(null);
+      const isValid = sut.validate({} as any);
 
       expect(isValid).toBeFalsy();
       expect(sut.errors).toBeDefined();
       expect(sut.errors['code']).toStrictEqual([
-        'code should not be empty',
         'code must be a string',
+        'code should not be empty',
         'code must be shorter than or equal to 255 characters',
       ]);
     });
@@ -106,8 +106,8 @@ describe('CourseValidator Unit Tests', () => {
       expect(isValid).toBeFalsy();
       expect(sut.errors).toBeDefined();
       expect(sut.errors['code']).toStrictEqual([
-        'code should not be empty',
         'code must be a string',
+        'code should not be empty',
         'code must be shorter than or equal to 255 characters',
       ]);
     });

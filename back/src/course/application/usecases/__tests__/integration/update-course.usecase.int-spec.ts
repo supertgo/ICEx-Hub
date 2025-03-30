@@ -31,7 +31,7 @@ describe('Update course usecase integration tests', () => {
     await module.close();
   });
   //todo Laura
-  it.todo('should throw error when course not found', () => {});
+  it.todo('should throw error when course not found');
 
-  it.todo('should update a course', async () => { });
+  it.todo('should update a course');
 });
