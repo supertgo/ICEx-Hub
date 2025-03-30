@@ -75,7 +75,7 @@ model Course {
   Student     Student[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
-
+   @@index([code])
   @@map("courses")
 }
 
