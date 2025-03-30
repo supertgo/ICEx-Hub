@@ -8,6 +8,7 @@ import { CourseController } from '@/course/infrastructure/course.controller';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { Module } from '@nestjs/common';
+import { CreateCourseUsecase } from '@/course/application/usecases/create-course.usecase';
 
 @Module({
   imports: [AuthModule],
@@ -49,6 +50,13 @@ import { Module } from '@nestjs/common';
       provide: DeleteCourseUsecase.UseCase,
       useFactory: (courseRepository: CourseRepository.Repository) => {
         return new DeleteCourseUsecase.UseCase(courseRepository);
+      },
+      inject: ['CourseRepository'],
+    },
+    {
+      provide: CreateCourseUsecase.UseCase,
+      useFactory: (courseRepository: CourseRepository.Repository) => {
+        return new CreateCourseUsecase.UseCase(courseRepository);
       },
       inject: ['CourseRepository'],
     },
