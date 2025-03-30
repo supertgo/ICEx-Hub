@@ -1,6 +1,7 @@
 import { Entity } from '@/shared/domain/entities/entity';
 import { CourseValidatorFactory } from '@/shared/domain/validators/course.validator';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
+import { CourseFakeBuilder } from '@/course/domain/fake-builder/course-fake.builder';
 
 export type CourseProps = {
   code: string;
@@ -58,5 +59,9 @@ export class CourseEntity extends Entity<CourseProps> {
     if (!isValid) {
       throw new EntityValidationError(validator.errors);
     }
+  }
+
+  static fake(): typeof CourseFakeBuilder {
+    return CourseFakeBuilder;
   }
 }
