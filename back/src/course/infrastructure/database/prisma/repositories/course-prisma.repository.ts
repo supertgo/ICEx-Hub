@@ -64,7 +64,9 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
     }
   }
 
-  sortableFields: string[];
+  sortableFields: string[] = [
+
+  ];
 
   async search(
     searchInput: CourseRepository.SearchParams,
