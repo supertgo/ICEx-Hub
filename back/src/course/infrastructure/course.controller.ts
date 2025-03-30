@@ -8,12 +8,18 @@ import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
+import { CreateCourseUsecase } from '@/course/application/usecases/create-course.usecase';
+import { CreateCourseDto } from '@/course/infrastructure/dtos/create-course.dto';
+import { ListCoursesDto } from '@/course/infrastructure/dtos/list-course.dto';
 
 @ApiTags('course')
 @Controller('course')
 export class CourseController {
   @Inject(UpdateCourseUsecase.UseCase)
   private updateCourseUseCase: UpdateCourseUsecase.UseCase;
+
+  @Inject(CreateCourseUsecase.UseCase)
+  private createCourseUseCase: CreateCourseUsecase.UseCase;
 
   @Inject(GetCourseUsecase.UseCase)
   private getCourseUseCase: GetCourseUsecase.UseCase;
@@ -23,9 +29,6 @@ export class CourseController {
 
   @Inject(DeleteCourseUsecase.UseCase)
   private deleteCourseUseCase: DeleteCourseUsecase.UseCase;
-
-  @Inject(AuthService)
-  private authService: AuthService;
 
   static courseToResponse(output: CourseOutput): CoursePresenter {
     return new CoursePresenter(output);
@@ -37,7 +40,6 @@ export class CourseController {
     return new CourseCollectionPresenter(output);
   }
 
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     schema: {
@@ -60,10 +62,8 @@ export class CourseController {
       },
     },
   })
-
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @UseGuards(AuthGuard)
   @Get()
   async search(@Query() searchParams: ListCoursesDto) {
     const result = await this.listCoursesUseCase.execute(searchParams);
@@ -71,10 +71,8 @@ export class CourseController {
     return CourseController.listCourseToResponse(result);
   }
 
-  @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Course not found' })
-  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const output = await this.getCourseUseCase.execute({ id });
@@ -88,10 +86,10 @@ export class CourseController {
   @ApiResponse({ status: 404, description: 'Course not found' })
   @UseGuards(AuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
+  async update(@Param('id') id: string, @Body() courseDto: CreateCourseDto) {
     const output = await this.updateCourseUseCase.execute({
       id,
-      ...updateCourseDto,
+      ...courseDto,
     });
 
     return CourseController.courseToResponse(output);
@@ -99,9 +97,21 @@ export class CourseController {
 
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
+  @ApiResponse({ status: 404, description: 'Course not found' })
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  async create(@Param('id') id: string, @Body() courseDto: CreateCourseDto) {
+    const output = await this.createCourseUseCase.execute(
+      courseDto,
+    );
+
+    return CourseController.courseToResponse(output);
+  }
+
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Course not found' })
   @ApiResponse({ status: 204, description: 'Course deleted' })
-  @UseGuards(AuthGuard)
   @HttpCode(204)
   @Delete(':id')
   async remove(@Param('id') id: string) {
