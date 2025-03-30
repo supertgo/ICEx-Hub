@@ -1,9 +1,15 @@
+<style lang="scss">
+@import '../css/index.page.scss';
+@import '../css/quasar.variables.scss';
+</style>
+
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import { useRouter } from 'vue-router';
 import { Routes } from 'src/enums/Routes';
 import UserInfo from 'src/components/UserInfo.vue';
+import AppBrand from 'src/components/AppBrand.vue';
 
 const drawer = ref(false);
 const authStore = useAuthStore();
@@ -24,12 +30,10 @@ watch(
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-blue-10">
       <q-toolbar>
+        <AppBrand />
         <q-space />
-        <q-toolbar-title @click="$router.push({ name: Routes.HOME })">
-          {{ $t('common.pageTitle') }}</q-toolbar-title
-        >
         <q-btn icon="account_circle" round flat dense @click="drawer = !drawer"></q-btn>
       </q-toolbar>
     </q-header>

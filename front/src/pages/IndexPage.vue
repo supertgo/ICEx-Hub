@@ -1,11 +1,10 @@
 <style lang="scss">
 @import '../css/index.page.scss';
-</style>
+@import '../css/quasar.variables.scss';</style>
 
 <template>
   <div :class="['welcome-text-and-status-circle', 'q-pa-md']">
     <div class="q-pa-md container" style="text-align: left">
-      <AppBrand />
       Bem vindo(a)! <br />
       Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
@@ -15,14 +14,14 @@
     </div>
   </div>
   <div :class="['q-pa-md', 'table']">
-    <q-table flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
+    <q-table card-class="bg-grey-4 text-black" table-header-class="bg-blue-10 text-white font-bold text-uppercase"
+     flat bordered :rows="rows" :columns="columns" row-key="name" hide-bottom />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { QTableColumn } from 'quasar';
 import StatusCircle from 'src/components/StatusCircle.vue';
-import AppBrand from 'src/components/AppBrand.vue';
 
 const columns: QTableColumn[] = [
   {
@@ -32,6 +31,7 @@ const columns: QTableColumn[] = [
     align: 'center',
     field: (row: { name: string }) => row.name,
     format: (val: string) => `${val}`,
+    classes:'discipline-column',
   },
   { name: 'code', align: 'center', label: 'Código', field: 'code' },
   { name: 'class', align: 'center', label: 'Turma', field: 'class' },
