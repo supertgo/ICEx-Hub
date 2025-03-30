@@ -4,7 +4,6 @@ import { GetCourseUsecase } from '@/course/application/usecases/get-course.useca
 import { DeleteCourseUsecase } from '@/course/application/usecases/delete-course.usecase';
 import { CourseOutput } from '@/course/application/dtos/course-output';
 import { CourseCollectionPresenter, CoursePresenter } from '@/course/infrastructure/presenters/course.presenter';
-import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
@@ -80,20 +79,21 @@ export class CourseController {
     return CourseController.courseToResponse(output);
   }
 
-  @ApiBearerAuth()
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
-  @ApiResponse({ status: 404, description: 'Course not found' })
-  @UseGuards(AuthGuard)
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() courseDto: CreateCourseDto) {
-    const output = await this.updateCourseUseCase.execute({
-      id,
-      ...courseDto,
-    });
-
-    return CourseController.courseToResponse(output);
-  }
+  //todo Laura
+  // @ApiBearerAuth()
+  // @ApiResponse({ status: 401, description: 'Unauthorized' })
+  // @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
+  // @ApiResponse({ status: 404, description: 'Course not found' })
+  // @UseGuards(AuthGuard)
+  // @Put(':id')
+  // async update(@Param('id') id: string, @Body() courseDto: CreateCourseDto) {
+  //   const output = await this.updateCourseUseCase.execute({
+  //     id,
+  //     ...courseDto,
+  //   });
+  //
+  //   return CourseController.courseToResponse(output);
+  // }
 
   @ApiBearerAuth()
   @ApiResponse({ status: 401, description: 'Unauthorized' })
