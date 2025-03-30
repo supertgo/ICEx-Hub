@@ -2,7 +2,10 @@ import { Entity } from '@/shared/domain/entities/entity';
 import { {{pascalCase name}}ValidatorFactory } from '@/shared/domain/validators/{{dashCase name}}.validator';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 
-export type {{pascalCase name}}Props = {};
+export type {{pascalCase name}}Props = {
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export class {{pascalCase name}}Entity extends Entity<{{pascalCase name}}Props> {
   constructor(
