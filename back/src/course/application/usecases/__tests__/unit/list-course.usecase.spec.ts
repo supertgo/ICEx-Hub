@@ -1,6 +1,8 @@
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
-import { CourseInMemoryRepository } from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
+import {
+  CourseInMemoryRepository,
+} from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
 import { CourseRepository } from '@/course/domain/repositories/course.repository';
 import { CourseEntity, CourseProps } from '@/course/domain/entities/course.entity';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
@@ -120,12 +122,78 @@ describe('List courses use cases unit tests', () => {
     expect(result.items[1].name).toBe('a');
   });
 
-  it.todo('should return second page when empty in pagination', async () => {
+  it('should return second page when empty in pagination', async () => {
+    const courses = [
+      createCourseEntity({ name: 'a' }),
+      createCourseEntity({ name: 'A' }),
+      createCourseEntity({ name: 'bb' }),
+      createCourseEntity({ name: 'c' }),
+    ];
+
+    repository.items = courses;
+
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'a',
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(2);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(1);
+    expect(result.perPage).toBe(2);
   });
 
-  it.todo('should return items in second page when having them', async () => {
+  it('should return items in second page when having them', async () => {
+    const courses = [
+      createCourseEntity({ name: 'a' }),
+      createCourseEntity({ name: 'A' }),
+      createCourseEntity({ name: 'Aa' }),
+      createCourseEntity({ name: 'c' }),
+    ];
+    repository.items = courses;
+
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'a',
+    });
+
+    expect(result.items.length).toBe(1);
+    expect(result.total).toBe(3);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(2);
+    expect(result.perPage).toBe(2);
+
+    expect(result.items[0].name).toBe('a');
   });
 
-  it.todo('should return empty result when no filter found', async () => {
+  it('should return empty result when no filter found', async () => {
+    const courses = [
+      createCourseEntity({ name: 'a' }),
+      createCourseEntity({ name: 'A' }),
+      createCourseEntity({ name: 'b' }),
+      createCourseEntity({ name: 'c' }),
+    ];
+    repository.items = courses;
+
+    const result = await sut.execute({
+      page: 1,
+      perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
+      filter: 'd',
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(0);
+    expect(result.currentPage).toBe(1);
+    expect(result.lastPage).toBe(0);
+    expect(result.perPage).toBe(2);
   });
 });
