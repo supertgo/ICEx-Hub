@@ -11,8 +11,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   extends InMemoryRepository<E>
   implements SearchableRepositoryInterface<E, any, any>
 {
-  sortableFields: string[];
-
+  sortableFields = [];
   async search(params: SearchParams): Promise<SearchResult<E>> {
     const itemFiltered = await this.applyFilters(this.items, params.filter);
 

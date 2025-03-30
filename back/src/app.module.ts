@@ -4,11 +4,13 @@ import { UserModule } from './user/infrastructure/user.module';
 import { DatabaseModule } from './shared/infrastructure/database/database.module';
 import { AuthModule } from './auth/infrastructure/auth.module';
 import { ClassroomModule } from './classroom/infrastructure/classroom.module';
+import { CourseModule } from '@/course/infrastructure/course.module';
 
 @Module({
   imports: [
     EnvConfigModule,
     ClassroomModule,
+    CourseModule,
     UserModule,
     DatabaseModule,
     AuthModule,

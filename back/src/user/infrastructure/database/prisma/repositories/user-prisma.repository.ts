@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Course, Prisma, User } from '@prisma/client';
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
@@ -7,6 +7,7 @@ import { UserModelMapper } from '@/user/infrastructure/database/prisma/models/us
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
 import { EmailAlreadyInUseError } from '@/user/domain/errors/email-already-in-use-error';
+import { CourseModelMapper } from '@/course/infrastructure/database/prisma/models/course-model.mapper';
 
 export class UserPrismaRepository implements UserRepository.Repository {
   sortableFields: string[] = ['name', 'createdAt'];
@@ -103,10 +104,12 @@ export class UserPrismaRepository implements UserRepository.Repository {
     return { count, models };
   }
 
-  async insert(entity: UserEntity): Promise<void> {
-    await this.prismaService.user.create({
+  async insert(entity: UserEntity): Promise<UserEntity> {
+    const created = await this.prismaService.user.create({
       data: entity.toJSON(),
     });
+
+    return UserModelMapper.toEntity(created as User);
   }
 
   findById(id: string): Promise<UserEntity> {

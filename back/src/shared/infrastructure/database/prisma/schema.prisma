@@ -48,8 +48,8 @@ model User {
   student   Student?
   createdAt DateTime @default(now())
 
-  @@index([email])
   @@map("users")
+  @@index([email])
 }
 
 model Student {
@@ -139,4 +139,15 @@ model Classroom {
   @@index([name])
   @@index([building])
   @@map("classrooms")
+}
+
+model Course {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique @db.VarChar(20)
+  name      String   @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("courses")
+  @@index([code])
 }

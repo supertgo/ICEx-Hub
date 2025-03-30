@@ -22,7 +22,7 @@ describe('Get {{lowerCase name}} use case test', () => {
   });
 
   it('should return {{lowerCase name}} details if {{lowerCase name}} exists', async () => {
-    const {{dashCase name}} = new {{pascalCase name}}Entity({{dashCase name}}DataBuilder({}));
+    const {{dashCase name}} = new {{pascalCase name}}Entity({{pascalCase name}}DataBuilder({}));
     await repository.insert({{dashCase name}});
 
     const input = { id: {{dashCase name}}.id };
@@ -33,7 +33,7 @@ describe('Get {{lowerCase name}} use case test', () => {
   });
 
   it('should call repository findById with correct ID', async () => {
-    const {{snakeCase name}} = new {{pascalCase name}}Entity({{dashCase name}}DataBuilder({}));
+    const {{snakeCase name}} = new {{pascalCase name}}Entity({{pascalCase name}}DataBuilder({}));
     await repository.insert({{dashCase name}});
 
     const spyFindById = jest.spyOn(repository, 'findById');
