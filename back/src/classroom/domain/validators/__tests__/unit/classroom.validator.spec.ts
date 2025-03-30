@@ -1,9 +1,11 @@
-import { CLASSROOM_BUILDING } from '@/classroom/domain/entities/classroom.entity';
+import {
+  CLASSROOM_BUILDING,
+  CLASSROOM_MAX_LENGTHS,
+} from '@/classroom/domain/classroom.constants';
 import {
   ClassroomValidator,
   ClassroomValidatorFactory,
 } from '../../classroom.validator';
-import { CLASSROOM_MAX_LENGTHS } from '@/classroom/domain/classroom.max-lengths';
 
 let sut: ClassroomValidator;
 
