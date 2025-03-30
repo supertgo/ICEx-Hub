@@ -18,14 +18,14 @@ enum UserRole {
 }
 
 enum DayPattern {
-  MONDAY // Segunda
-  TUESDAY // Terça
-  WEDNESDAY // Quarta
-  THURSDAY // Quinta
-  FRIDAY // Sexta
-  SATURDAY // Sábado
-  MONDAY_WEDNESDAY // Seg-Qua
-  TUESDAY_THURSDAY // Ter-Qui
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  MONDAY_WEDNESDAY
+  TUESDAY_THURSDAY
 }
 
 enum TimeSlot {
@@ -61,6 +61,7 @@ model Student {
   coursePeriodId String       @db.Uuid
   coursePeriod   CoursePeriod @relation(fields: [coursePeriodId], references: [id])
   createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@map("students")
 }
@@ -71,8 +72,9 @@ model Course {
   code        String         @unique @db.VarChar(20)
   periods     CoursePeriod[]
   disciplines Discipline[]
-  createdAt   DateTime       @default(now())
   Student     Student[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   @@map("courses")
 }
@@ -83,8 +85,9 @@ model CoursePeriod {
   courseId    String       @db.Uuid
   course      Course       @relation(fields: [courseId], references: [id])
   disciplines Discipline[]
-  createdAt   DateTime     @default(now())
   Student     Student[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@unique([courseId, name], name: "unique_period_course")
   @@map("course_periods")
@@ -100,6 +103,7 @@ model Discipline {
   coursePeriod   CoursePeriod @relation(fields: [coursePeriodId], references: [id])
   schedules      Schedule[]
   createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   @@unique([courseId, coursePeriodId, code], name: "unique_discipline")
   @@index([code])
@@ -114,13 +118,11 @@ model Schedule {
   classroomId  String     @db.Uuid
   classroom    Classroom  @relation(fields: [classroomId], references: [id])
 
-  dayPattern DayPattern //Da para fazer assim
-  daysMask     Int        @default(0) // OU usar bitmask => ex seg e quarta seria 0101000
-
-  timeSlot TimeSlot
-
+  dayPattern DayPattern
+  timeSlot   TimeSlot
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([classroomId, dayPattern, timeSlot], name: "unique_classroom_schedule")
   @@map("schedules")
@@ -132,6 +134,7 @@ model Classroom {
   building  ClassroomBulding
   schedules Schedule[]
   createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   @@index([name])
   @@index([building])
