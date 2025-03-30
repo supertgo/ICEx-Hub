@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -18,22 +12,131 @@ enum ClassroomBulding {
   ICEX
 }
 
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+enum DayPattern {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  MONDAY_WEDNESDAY
+  TUESDAY_THURSDAY
+}
+
+enum TimeSlot {
+  MORNING_1 // 7:30 - 9:10
+  MORNING_2 // 9:25 - 11:05
+  MORNING_3 // 11:10 - 12:00
+  AFTERNOON_1 // 13:00 - 14:40
+  AFTERNOON_2 // 14:55 - 16:35
+  EVENING_1 // 17:00 - 18:40
+  EVENING_2 // 19:00 - 20:40
+  EVENING_3 // 20:55 - 22:35
+}
+
 model User {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
   password  String   @db.VarChar(100)
+  role      UserRole @default(STUDENT)
+  student   Student?
   createdAt DateTime @default(now())
 
   @@index([email])
   @@map("users")
 }
 
+model Student {
+  id             String       @id @default(uuid()) @db.Uuid
+  userId         String       @unique @db.Uuid
+  user           User         @relation(fields: [userId], references: [id])
+  courseId       String       @db.Uuid
+  course         Course       @relation(fields: [courseId], references: [id])
+  coursePeriodId String       @db.Uuid
+  coursePeriod   CoursePeriod @relation(fields: [coursePeriodId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("students")
+}
+
+model Course {
+  id          String         @id @default(uuid()) @db.Uuid
+  name        String         @db.VarChar(100)
+  code        String         @unique @db.VarChar(20)
+  periods     CoursePeriod[]
+  disciplines Discipline[]
+  Student     Student[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+   @@index([code])
+  @@map("courses")
+}
+
+model CoursePeriod {
+  id          String       @id @default(uuid()) @db.Uuid
+  name        String       @db.VarChar(50)
+  courseId    String       @db.Uuid
+  course      Course       @relation(fields: [courseId], references: [id])
+  disciplines Discipline[]
+  Student     Student[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([courseId, name], name: "unique_period_course")
+  @@map("course_periods")
+}
+
+model Discipline {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String       @db.VarChar(100)
+  code           String       @db.VarChar(20)
+  courseId       String       @db.Uuid
+  course         Course       @relation(fields: [courseId], references: [id])
+  coursePeriodId String       @db.Uuid
+  coursePeriod   CoursePeriod @relation(fields: [coursePeriodId], references: [id])
+  schedules      Schedule[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([courseId, coursePeriodId, code], name: "unique_discipline")
+  @@index([code])
+  @@index([name])
+  @@map("disciplines")
+}
+
+model Schedule {
+  id           String     @id @default(uuid()) @db.Uuid
+  disciplineId String     @db.Uuid
+  discipline   Discipline @relation(fields: [disciplineId], references: [id])
+  classroomId  String     @db.Uuid
+  classroom    Classroom  @relation(fields: [classroomId], references: [id])
+
+  dayPattern DayPattern
+  timeSlot   TimeSlot
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([classroomId, dayPattern, timeSlot], name: "unique_classroom_schedule")
+  @@map("schedules")
+}
+
 model Classroom {
-  id        String           @id @default(uuid())
+  id        String           @id @default(uuid()) @db.Uuid
   name      String           @db.VarChar(100)
   building  ClassroomBulding
-  createdAt DateTime         @default(now()) @map("created_at")
+  schedules Schedule[]
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
+  @@index([name])
+  @@index([building])
   @@map("classrooms")
 }
