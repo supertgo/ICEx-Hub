@@ -3,13 +3,12 @@ import { CourseRepository } from '@/course/domain/repositories/course.repository
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { CourseModelMapper } from '@/course/infrastructure/database/prisma/models/course-model.mapper';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
-import { Course, Prisma } from '@prisma/client';
+import { Course } from '@prisma/client';
 import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 export class CoursePrismaRepository implements CourseRepository.Repository {
-  constructor(private prismaService: PrismaService) {
-  }
+  constructor(private prismaService: PrismaService) {}
 
   async insert(entity: CourseEntity): Promise<CourseEntity> {
     const created = await this.prismaService.course.create({
@@ -64,9 +63,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
     }
   }
 
-  sortableFields: string[] = [
-
-  ];
+  sortableFields: string[] = [];
 
   async search(
     searchInput: CourseRepository.SearchParams,
@@ -80,13 +77,23 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
 
     const filter = hasFilter
       ? {
-        where: {
-          name: {
-            contains: searchInput.filter,
-            mode: Prisma.QueryMode.insensitive,
+          where: {
+            OR: [
+              {
+                name: {
+                  contains: searchInput.filter,
+                  mode: 'insensitive',
+                },
+              },
+              {
+                code: {
+                  contains: searchInput.filter,
+                  mode: 'insensitive',
+                },
+              },
+            ],
           },
-        },
-      }
+        }
       : undefined;
 
     const { count, models } = await this.executeQueries(
