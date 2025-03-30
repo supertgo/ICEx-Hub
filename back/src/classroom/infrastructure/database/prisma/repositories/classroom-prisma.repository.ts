@@ -13,10 +13,12 @@ export class ClassroomPrismaRepository
 
   sortableFields: string[] = ['name', 'createdAt'];
 
-  async insert(entity: ClassroomEntity): Promise<void> {
-    await this.prismaService.classroom.create({
+  async insert(entity: ClassroomEntity): Promise<ClassroomEntity> {
+    const classroomFromPrisma = await this.prismaService.classroom.create({
       data: entity.toJSON(),
     });
+
+    return ClassroomModelMapper.toEntity(classroomFromPrisma);
   }
 
   findById(id: string): Promise<ClassroomEntity> {
