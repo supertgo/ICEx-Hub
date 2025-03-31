@@ -1,4 +1,3 @@
-import { RepositoryInterface } from '@/shared/domain/repositories/repository-contracts';
 import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import {
   SearchParams as DefaultSearchParams,
@@ -11,14 +10,15 @@ export namespace ScheduleRepository {
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 
-  export class SearchResult extends DefaultSearchResult<ScheduleEntity, Filter> {}
+  export class SearchResult extends DefaultSearchResult<
+    ScheduleEntity,
+    Filter
+  > {}
 
-  export interface Repository
-    extends SearchableRepositoryInterface<
-      ScheduleEntity,
-      Filter,
-      SearchParams,
-      SearchResult
-    > {
-  }
+  export type Repository = SearchableRepositoryInterface<
+    ScheduleEntity,
+    Filter,
+    SearchParams,
+    SearchResult
+  >;
 }

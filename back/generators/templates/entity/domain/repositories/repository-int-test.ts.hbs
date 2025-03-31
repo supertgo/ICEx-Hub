@@ -8,9 +8,7 @@ import { {{pascalCase name}}Entity } from '@/{{dashCase name}}/domain/entities/{
 import { faker } from '@faker-js/faker';
 import { {{pascalCase name}}Repository } from '@/{{dashCase name}}/domain/repositories/{{dashCase name}}.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { {{pascalCase name}}WithEmailNotFoundError } from '@/{{dashCase name}}/domain/errors/{{dashCase name}}-with-email-not-found-error';
 import { {{pascalCase name}}WithIdNotFoundError } from '@/{{dashCase name}}/infrastructure/errors/{{dashCase name}}-with-id-not-found-error';
-import { EmailAlreadyInUseError } from '@/{{dashCase name}}/domain/errors/email-already-in-use-error';
 
 describe('{{pascalCase name}} prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
