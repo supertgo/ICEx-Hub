@@ -12,12 +12,10 @@ export namespace CourseRepository {
 
   export class SearchResult extends DefaultSearchResult<CourseEntity, Filter> {}
 
-  export interface Repository
-    extends SearchableRepositoryInterface<
-      CourseEntity,
-      Filter,
-      SearchParams,
-      SearchResult
-    > {
-  }
+  export type Repository = SearchableRepositoryInterface<
+    CourseEntity,
+    Filter,
+    SearchParams,
+    SearchResult
+  >;
 }
