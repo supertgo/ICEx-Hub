@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Schedule } from '@prisma/client';
 import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
@@ -9,12 +9,20 @@ import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repositor
 export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   constructor(private prismaService: PrismaService) {}
 
-  async insert(entity: ScheduleEntity): Promise<void> {
+  sortableFields: string[];
+
+  search(
+    searchInput: ScheduleRepository.SearchParams,
+  ): Promise<ScheduleRepository.SearchResult> {
+    throw Error('not impelemented');
+  }
+
+  async insert(entity: ScheduleEntity): Promise<ScheduleEntity> {
     const schedule = await this.prismaService.schedule.create({
       data: entity.toJSON(),
     });
 
-    return ScheduleMapper.toEntity(schedule);
+    return ScheduleModelMapper.toEntity(schedule);
   }
 
   findById(id: string): Promise<ScheduleEntity> {
