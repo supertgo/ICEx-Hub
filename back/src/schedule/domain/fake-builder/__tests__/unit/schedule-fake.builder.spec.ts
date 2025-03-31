@@ -1,88 +1,110 @@
 import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { ScheduleFakeBuilder } from '@/schedule/domain/fake-builder/schedule-fake.builder';
+import {
+  DayPatternEnum,
+  TimeSlotEnum,
+} from '@/schedule/domain/schedule.constants';
+import { faker } from '@faker-js/faker';
 
 describe('ScheduleFakeBuilder Unit Tests', () => {
-  describe('code prop', () => {
-    const faker = ScheduleFakeBuilder.aSchedule();
+  const fakeEntity = ScheduleFakeBuilder.aSchedule();
 
-    it('_code should be a function', () => {
-      expect(typeof faker['_code']).toBe('function');
+  describe('classroomId prop', () => {
+    test('should be defined', () => {
+      expect(fakeEntity['_classroomId']).toBeDefined();
     });
 
+    test('withClasroomId()', () => {
+      const uuid = faker.string.uuid();
+      const fakerSchedule =
+        ScheduleFakeBuilder.aSchedule().withClasroomId(uuid);
 
-  describe('name prop', () => {
-    const faker = ScheduleFakeBuilder.aSchedule();
+      expect(fakerSchedule['_classroomId']).toBe(uuid);
+    });
+  });
 
-    it('_name should be a function', () => {
-      expect(typeof faker['_name']).toBe('function');
+  describe('discplineId prop', () => {
+    test('should be defined', () => {
+      expect(fakeEntity['_discplineId']).toBeDefined();
     });
 
-    it('withName()', () => {
-      const scheduleName = 'Introduction to Programming';
-      const $this = faker.withName(scheduleName);
+    test('discplineId()', () => {
+      const uuid = faker.string.uuid();
+      const fakerSchedule =
+        ScheduleFakeBuilder.aSchedule().withDisciplineId(uuid);
 
-      expect($this).toBeInstanceOf(ScheduleFakeBuilder);
-      expect(faker['_name']).toBe(scheduleName);
+      expect(fakerSchedule['_discplineId']).toBe(uuid);
+    });
+  });
 
-      faker.withName(() => scheduleName);
-
-      //@ts-expect-error name is callable
-      expect(faker['_name']()).toBe(scheduleName);
-
-      expect(faker.name).toBe(scheduleName);
+  describe('dayPattern prop', () => {
+    test('should init with a schedule that happens every tuesday and thursday', () => {
+      const fakerSchedule = ScheduleFakeBuilder.aSchedule().build();
+      expect(fakerSchedule.dayPattern).toBe(DayPatternEnum.TUESDAY_THURSDAY);
     });
 
-    it('should pass index to name factory', () => {
-      faker.withName((index) => `Schedule ${index}`);
-      const schedule = faker.build();
+    test('should change dayPattern to tuesday', () => {
+      const fakerSchedule = ScheduleFakeBuilder.aSchedule().withDayPattern(
+        DayPatternEnum.TUESDAY,
+      );
 
-      expect(schedule.name).toBe('Schedule 0');
-
-      const fakerMany = ScheduleFakeBuilder.theSchedules(2);
-      fakerMany.withName((index) => `Schedule ${index}`);
-
-      const schedules = fakerMany.build();
-
-      expect(schedules[0].name).toBe('Schedule 0');
-      expect(schedules[1].name).toBe('Schedule 1');
+      expect(fakerSchedule['_dayPattern']).toBe(DayPatternEnum.TUESDAY);
     });
+  });
+
+  describe('timeSlot prop', () => {
+    test('should init with a schedule that starts at 19:00 and ends on 20:40', () => {
+      const fakerSchedule = ScheduleFakeBuilder.aSchedule().build();
+      expect(fakerSchedule.timeSlot).toBe(TimeSlotEnum.EVENING_2);
+    });
+
+    test('should change dayPattern to tuesday', () => {
+      const fakerSchedule = ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build();
+
+      expect(fakerSchedule.timeSlot).toBe(TimeSlotEnum.AFTERNOON_1);
+    });
+  });
 
   describe('createdAt prop', () => {
-    const faker = ScheduleFakeBuilder.aSchedule();
+    const fakerSchedule = ScheduleFakeBuilder.aSchedule();
 
     test('should throw error when any with methods has been called', () => {
       const fakerSchedule = ScheduleFakeBuilder.aSchedule();
 
       expect(() => fakerSchedule.createdAt).toThrow(
         new Error(
-          'Property createdAt does not have a factory, use \'with\' methods',
+          "Property createdAt does not have a factory, use 'with' methods",
         ),
       );
     });
 
     test('should be undefined', () => {
-      expect(faker['_createdAt']).toBeUndefined();
+      expect(fakerSchedule['_createdAt']).toBeUndefined();
     });
 
     test('withCreatedAt()', () => {
       const date = new Date();
-      const $this = faker.withCreatedAt(date);
+      const $this = fakerSchedule.withCreatedAt(date);
 
       expect($this).toBeInstanceOf(ScheduleFakeBuilder);
-      expect(faker['_createdAt']).toBe(date);
+      expect(fakerSchedule['_createdAt']).toBe(date);
 
-      faker.withCreatedAt(() => date);
+      fakerSchedule.withCreatedAt(() => date);
 
       //@ts-expect-error _createdAt is a callable
-      expect(faker['_createdAt']()).toBe(date);
-      expect(faker.createdAt).toBe(date);
+      expect(fakerSchedule['_createdAt']()).toBe(date);
+      expect(fakerSchedule.createdAt).toBe(date);
     });
 
     test('should pass index to createdAt factory', () => {
       const date = new Date();
-      faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
+      fakerSchedule.withCreatedAt(
+        (index) => new Date(date.getTime() + index + 2),
+      );
 
-      const schedule = faker.build();
+      const schedule = fakerSchedule.build();
       expect(schedule.createdAt.getTime()).toBe(date.getTime() + 2);
 
       const fakerMany = ScheduleFakeBuilder.theSchedules(2);
@@ -102,7 +124,7 @@ describe('ScheduleFakeBuilder Unit Tests', () => {
 
       expect(() => fakerSchedule.updatedAt).toThrow(
         new Error(
-          'Property updatedAt does not have a factory, use \'with\' methods',
+          "Property updatedAt does not have a factory, use 'with' methods",
         ),
       );
     });
@@ -141,14 +163,12 @@ describe('ScheduleFakeBuilder Unit Tests', () => {
     });
   });
 
-  describe('build() method', () => {
+  describe('build()', () => {
     it('should create a single schedule when count = 1', () => {
       const faker = ScheduleFakeBuilder.aSchedule();
       const schedule = faker.build();
 
       expect(schedule).toBeInstanceOf(ScheduleEntity);
-      expect(schedule.code).toBeDefined();
-      expect(schedule.name).toBeDefined();
     });
 
     it('should create multiple schedules when count > 1', () => {
@@ -158,8 +178,6 @@ describe('ScheduleFakeBuilder Unit Tests', () => {
 
       expect(schedules).toHaveLength(count);
       expect(schedules[0]).toBeInstanceOf(ScheduleEntity);
-      expect(schedules[1]).toBeInstanceOf(ScheduleEntity);
-      expect(schedules[0].code).not.toBe(schedules[1].code);
     });
   });
 });

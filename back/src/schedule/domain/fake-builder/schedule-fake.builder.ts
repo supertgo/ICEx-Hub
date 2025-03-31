@@ -2,9 +2,20 @@
 import { PropOrFactory } from '@/shared/domain/common';
 import { ScheduleEntity } from '../entities/schedule.entity';
 import { Faker, faker } from '@faker-js/faker';
+import { DayPatternEnum, TimeSlotEnum } from '../schedule.constants';
 
 export class ScheduleFakeBuilder<TBuild = any> {
-  private _name: PropOrFactory<string> = (_index) => this.faker.word.words();
+  private _discplineId: PropOrFactory<string> = (_index) =>
+    this.faker.string.uuid();
+
+  private _classroomId: PropOrFactory<string> = (_index) =>
+    this.faker.string.uuid();
+
+  private _dayPattern: PropOrFactory<DayPatternEnum> = (_index) =>
+    DayPatternEnum.TUESDAY_THURSDAY;
+
+  private _timeSlot: PropOrFactory<TimeSlotEnum> = (_index) =>
+    TimeSlotEnum.EVENING_2;
 
   private _createdAt: PropOrFactory<Date> | undefined = undefined;
 
@@ -27,8 +38,27 @@ export class ScheduleFakeBuilder<TBuild = any> {
     return new ScheduleFakeBuilder<ScheduleEntity>();
   }
 
-  withName(valueOrFactory: PropOrFactory<string>) {
-    this._name = valueOrFactory;
+  withClasroomId(valueOrFactory: PropOrFactory<string>) {
+    this._classroomId = valueOrFactory;
+
+    return this;
+  }
+
+  withDisciplineId(valueOrFactory: PropOrFactory<string>) {
+    this._discplineId = valueOrFactory;
+
+    return this;
+  }
+
+  withDayPattern(valueOrFactory: PropOrFactory<DayPatternEnum>) {
+    this._dayPattern = valueOrFactory;
+
+    return this;
+  }
+
+  withTimeSlot(valueOrFactory: PropOrFactory<TimeSlotEnum>) {
+    this._timeSlot = valueOrFactory;
+
     return this;
   }
 
@@ -47,7 +77,10 @@ export class ScheduleFakeBuilder<TBuild = any> {
       .fill(undefined)
       .map((_, index) => {
         return new ScheduleEntity({
-          name: this.callFactory(this._name, index),
+          classroomId: this.callFactory(this._classroomId, index),
+          disciplineId: this.callFactory(this._discplineId, index),
+          dayPattern: this.callFactory(this._dayPattern, index),
+          timeSlot: this.callFactory(this._timeSlot, index),
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
           }),
@@ -60,8 +93,20 @@ export class ScheduleFakeBuilder<TBuild = any> {
     return this.countObjs === 1 ? (schedules[0] as any) : schedules;
   }
 
-  get name() {
-    return this.getValue('name');
+  get discplineId() {
+    return this.getValue('discplineId');
+  }
+
+  get classroomId() {
+    return this.getValue('classroomId');
+  }
+
+  get dayPattern() {
+    return this.getValue('DayPattern');
+  }
+
+  get timeSlot() {
+    return this.getValue('timeSlot');
   }
 
   get createdAt() {
