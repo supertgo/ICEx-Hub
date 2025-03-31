@@ -6,8 +6,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { faker } from '@faker-js/faker';
-import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repository';
-import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 
 describe('Schedule prisma repository integration tests', () => {
@@ -92,7 +90,7 @@ describe('Schedule prisma repository integration tests', () => {
   });
 
   it('should delete a schedule successfully', async () => {
-    const entity = new ScheduleEntity(ScheduleDataBuilder({ name: 'John' }));
+    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
     await sut.insert(entity);
 
     await sut.delete(entity.id);
