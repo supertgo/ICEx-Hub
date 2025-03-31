@@ -87,7 +87,6 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
   }
 
   static validate(props: ScheduleProps) {
-    console.log(props, 'props');
     const validator = ScheduleValidatorFactory.create();
     const isValid = validator.validate(props);
 
