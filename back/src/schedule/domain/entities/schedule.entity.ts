@@ -54,6 +54,10 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
     this.props.classroomId = classroomId;
   }
 
+  get classroom() {
+    return this.props.classroom;
+  }
+
   get dayPattern() {
     return this.props.dayPattern;
   }
@@ -93,5 +97,30 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
     if (!isValid) {
       throw new EntityValidationError(validator.errors);
     }
+  }
+
+  //@ts-expect-error classroom, discipline
+  toJSON() {
+    return {
+      id: this.id,
+      classroomId: this.classroomId,
+      // classroom: {
+      //   id: this.classroom.id,
+      //   name: this.classroom.name,
+      //   building: this.classroom.building,
+      //   createdAt: this.classroom.createdAt,
+      // },
+      disciplineId: this.disciplineId,
+      // discipline: {
+      //   name: this.discipline.name,
+      //   code: this.discipline.code,
+      //   courseId: this.discipline.courseId,
+      //   coursePeriodId: this.discipline.coursePeriodId,
+      // },
+      dayPattern: this.dayPattern,
+      timeSlot: this.timeSlot,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
   }
 }
