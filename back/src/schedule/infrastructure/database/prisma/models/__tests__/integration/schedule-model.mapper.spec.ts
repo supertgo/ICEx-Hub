@@ -29,7 +29,7 @@ describe('Schedule model mapper integration tests', () => {
   it('should throw error when schedule model is invalid', () => {
     const model: Schedule = Object.assign({}, props, { name: null });
 
-    expect(() => ScheduleModelMapper.toEntity(model)).toThrowError(
+    expect(() => ScheduleModelMapper.toEntity(model)).toThrow(
       new ValidationErrors('Could not load schedule having id undefined'),
     );
   });

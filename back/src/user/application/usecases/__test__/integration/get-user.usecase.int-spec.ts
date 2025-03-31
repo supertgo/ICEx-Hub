@@ -36,7 +36,7 @@ describe('Get user usecase integration tests', () => {
 
   it('should throw error when user not found', () => {
     const id = faker.string.uuid();
-    expect(() => sut.execute({ id })).rejects.toThrowError(
+    expect(() => sut.execute({ id })).rejects.toThrow(
       new UserWithIdNotFoundError(id),
     );
   });

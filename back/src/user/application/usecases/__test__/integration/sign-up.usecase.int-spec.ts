@@ -49,7 +49,7 @@ describe('Sign in usecase integration tests', () => {
         email,
         password: faker.internet.password(),
       }),
-    ).rejects.toThrowError(new UserWithEmailNotFoundError(email));
+    ).rejects.toThrow(new UserWithEmailNotFoundError(email));
   });
 
   it('should test with different password', async () => {
@@ -64,7 +64,7 @@ describe('Sign in usecase integration tests', () => {
         email: user.email,
         password: faker.internet.password(),
       }),
-    ).rejects.toThrowError(new InvalidCredentialsError());
+    ).rejects.toThrow(new InvalidCredentialsError());
   });
 
   it('should update a user password', async () => {

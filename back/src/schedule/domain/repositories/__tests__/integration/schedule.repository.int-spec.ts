@@ -8,9 +8,7 @@ import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { faker } from '@faker-js/faker';
 import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { ScheduleWithEmailNotFoundError } from '@/schedule/domain/errors/schedule-with-email-not-found-error';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
-import { EmailAlreadyInUseError } from '@/schedule/domain/errors/email-already-in-use-error';
 
 describe('Schedule prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -36,7 +34,7 @@ describe('Schedule prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', () => {
-    expect(() => sut.findById('1')).rejects.toThrowError(
+    expect(() => sut.findById('1')).rejects.toThrow(
       new ScheduleWithIdNotFoundError('1'),
     );
   });
@@ -45,7 +43,12 @@ describe('Schedule prisma repository integration tests', () => {
     const entity = new ScheduleEntity(ScheduleDataBuilder({}));
 
     const createdSchedule = await prismaService.schedule.create({
-      data: entity.toJSON(),
+      data: {
+        classroomId: entity.classroomId,
+        disciplineId: entity.disciplineId,
+        dayPattern: entity.dayPattern,
+        timeSlot: entity.timeSlot,
+      },
     });
 
     const schedule = await sut.findById(createdSchedule.id);
@@ -57,7 +60,6 @@ describe('Schedule prisma repository integration tests', () => {
   it('should insert a new schedule', async () => {
     const entity = new ScheduleEntity(ScheduleDataBuilder({}));
     await sut.insert(entity);
-
   });
 
   it('should return one schedule if theres only one with find all', async () => {
@@ -74,17 +76,17 @@ describe('Schedule prisma repository integration tests', () => {
     const nonExistentId = faker.string.uuid();
     const entity = new ScheduleEntity(ScheduleDataBuilder({}), nonExistentId);
 
-    await expect(sut.update(entity)).rejects.toThrowError(
+    await expect(sut.update(entity)).rejects.toThrow(
       new ScheduleWithIdNotFoundError(nonExistentId),
     );
   });
 
-  it('should update a schedule successfully', async () => { });
+  it('should update a schedule successfully', async () => {});
 
   it('should throw error when trying to delete non-existent schedule', async () => {
     const nonExistentId = faker.string.uuid();
 
-    await expect(sut.delete(nonExistentId)).rejects.toThrowError(
+    await expect(sut.delete(nonExistentId)).rejects.toThrow(
       new ScheduleWithIdNotFoundError(nonExistentId),
     );
   });
@@ -102,10 +104,9 @@ describe('Schedule prisma repository integration tests', () => {
     expect(scheduleCount).toBe(0);
   });
 
-
   describe('search tests', () => {
-    it.todo('should return with default values', async () => { });
+    it.todo('should return with default values');
 
-    it.todo('should paginate schedules', async () => { });
+    it.todo('should paginate schedules');
   });
 });

@@ -47,7 +47,7 @@ describe('Update password usecase integration tests', () => {
         oldPassword: faker.internet.password(),
         newPassword: faker.internet.password(),
       }),
-    ).rejects.toThrowError(new UserWithIdNotFoundError(id));
+    ).rejects.toThrow(new UserWithIdNotFoundError(id));
   });
 
   it('should update a user password', async () => {

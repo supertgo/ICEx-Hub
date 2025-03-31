@@ -34,7 +34,7 @@ describe('Get schedule usecase integration tests', () => {
 
   it('should throw error when schedule not found', () => {
     const id = faker.string.uuid();
-    expect(() => sut.execute({ id })).rejects.toThrowError(
+    expect(() => sut.execute({ id })).rejects.toThrow(
       new ScheduleWithIdNotFoundError(id),
     );
   });

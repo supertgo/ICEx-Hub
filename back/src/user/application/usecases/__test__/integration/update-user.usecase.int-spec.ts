@@ -38,7 +38,7 @@ describe('Update user usecase integration tests', () => {
     const id = faker.string.uuid();
     expect(() =>
       sut.execute({ id, name: faker.person.fullName() }),
-    ).rejects.toThrowError(new UserWithIdNotFoundError(id));
+    ).rejects.toThrow(new UserWithIdNotFoundError(id));
   });
 
   it('should update a user', async () => {
