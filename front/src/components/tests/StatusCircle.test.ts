@@ -2,7 +2,7 @@ import { expect, test, describe } from 'vitest';
 import StatusCircle from '../StatusCircle.vue';
 import { mount } from '@vue/test-utils';
 
-describe('statusCircle', () => {
+describe('StatusCircle component', () => {
   test('renders the correct status class active', () => {
     const wrapper = mount(StatusCircle, {
       props: {
