@@ -6,12 +6,9 @@ import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course
 
 export class CourseInMemoryRepository
   extends InMemorySearchableRepository<CourseEntity>
-  implements CourseRepository.Repository {
-  sortableFields = [
-    'createdAt',
-    'name',
-    'code',
-  ];
+  implements CourseRepository.Repository
+{
+  sortableFields = ['createdAt', 'name', 'code'];
 
   protected async applyFilters(
     items: CourseEntity[],

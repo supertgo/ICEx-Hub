@@ -1,7 +1,8 @@
+import { CourseInMemoryRepository } from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
 import {
-  CourseInMemoryRepository,
-} from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
-import { CourseEntity, CourseProps } from '@/course/domain/entities/course.entity';
+  CourseEntity,
+  CourseProps,
+} from '@/course/domain/entities/course.entity';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 function createCourseEntity(courseProps: Partial<CourseProps> = {}) {
@@ -26,8 +27,7 @@ describe('course in memory repository', () => {
       expect(result).toStrictEqual(items);
       expect(spyFilter).not.toHaveBeenCalled();
     });
-
   });
 
-  describe('apply sort method', () => { });
+  describe('apply sort method', () => {});
 });

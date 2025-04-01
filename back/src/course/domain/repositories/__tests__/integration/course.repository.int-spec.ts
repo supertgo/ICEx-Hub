@@ -53,7 +53,6 @@ describe('Course prisma repository integration tests', () => {
   it('should insert a new course', async () => {
     const entity = new CourseEntity(CourseDataBuilder({}));
     await sut.insert(entity);
-
   });
 
   it('should return one course if theres only one with find all', async () => {
@@ -75,7 +74,7 @@ describe('Course prisma repository integration tests', () => {
     );
   });
 
-  it('should update a course successfully', async () => { });
+  it('should update a course successfully', async () => {});
 
   it('should throw error when trying to delete non-existent course', async () => {
     const nonExistentId = faker.string.uuid();
