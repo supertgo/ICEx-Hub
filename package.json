@@ -1,0 +1,9 @@
+{
+    "name": "ICEx-Hub",
+    "version": "1.0.0",
+    "scripts": {
+      "test": "vitest"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+  }
