@@ -5,7 +5,7 @@ import { DayPatternEnum, TimeSlotEnum } from '../../schedule.constants';
 export function ScheduleDataBuilder(props: Partial<ScheduleProps>) {
   return {
     disciplineId: props.disciplineId || faker.string.uuid(),
-    classroomId: props.classroomId,
+    classroomId: props.classroomId || faker.string.uuid(),
     dayPattern: props.dayPattern || DayPatternEnum.TUESDAY_THURSDAY,
     timeSlot: props.timeSlot || TimeSlotEnum.EVENING_1,
     createdAt: props.createdAt || new Date(),

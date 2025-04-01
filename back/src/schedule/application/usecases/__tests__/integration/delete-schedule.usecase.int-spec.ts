@@ -4,6 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-schedule.usecase';
+import { faker } from '@faker-js/faker';
+import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 
 describe('Delete Schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -31,8 +33,16 @@ describe('Delete Schedule usecase integration tests', () => {
     await module.close();
   });
 
-  it('should throw error when schedule not found', () => { });
+  it('should throw error when schedule not found', () => {
+    const id = faker.string.uuid();
 
-  it('should delete a schedule', async () => {
+    expect(
+      async () =>
+        await sut.execute({
+          id,
+        }),
+    ).toThrow(new ScheduleWithIdNotFoundError(id));
   });
+
+  it('should delete a schedule', async () => {});
 });

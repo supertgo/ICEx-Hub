@@ -32,7 +32,7 @@ describe('ScheduleValidatorFields Unit Tests', () => {
 
     expect(sut.errors['timeSlot']).toStrictEqual([
       'timeSlot should not be empty',
-      'timeSlot must be one of the following values:  7:30 - 9:10,  9:25 - 11:05,  11:10 - 12:00,  13:00 - 14:40,  14:55 - 16:35,  17:00 - 18:40,  19:00 - 20:40,  20:55 - 22:30',
+      'timeSlot must be one of the following values: MORNING_1, MORNING_2, MORNING_3, AFTERNOON_1, AFTERNOON_2, EVENING_1, EVENING_2, EVENING_3',
     ]);
   });
 });

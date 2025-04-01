@@ -9,13 +9,9 @@ import {
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 
-describe('Schedule entity unit tests', () => {
-  beforeEach(() => {
-    ScheduleEntity.validate = jest.fn();
-  });
-
+describe('Schedule integration tests', () => {
   it('should throw error with classroomId code', () => {
-    const props: ScheduleProps = {
+    const props = {
       ...ScheduleDataBuilder({}),
       classroomId: 'test',
     };

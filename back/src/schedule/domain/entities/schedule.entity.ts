@@ -3,8 +3,9 @@ import { ScheduleValidatorFactory } from '@/schedule/domain/validators/schedule.
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { DayPatternEnum, TimeSlotEnum } from '../schedule.constants';
+import { ScheduleFakeBuilder } from '../fake-builder/schedule-fake.builder';
 
-type DisciplineProps = {
+export type DisciplineProps = {
   name: string;
   code: string;
   courseId: string;
@@ -97,6 +98,10 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
     if (!isValid) {
       throw new EntityValidationError(validator.errors);
     }
+  }
+
+  static fake() {
+    return ScheduleFakeBuilder;
   }
 
   //@ts-expect-error classroom, discipline
