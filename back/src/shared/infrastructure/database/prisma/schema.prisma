@@ -123,8 +123,12 @@ model Classroom {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
+<<<<<<< Updated upstream
   @@index([name])
   @@index([building])
+=======
+  @@unique([name, building])
+>>>>>>> Stashed changes
   @@map("classrooms")
 }
 
