@@ -8,8 +8,7 @@ import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.r
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 export class CoursePrismaRepository implements CourseRepository.Repository {
-  constructor(private prismaService: PrismaService) {
-  }
+  constructor(private prismaService: PrismaService) {}
 
   async insert(entity: CourseEntity): Promise<CourseEntity> {
     const created = await this.prismaService.course.create({
@@ -64,11 +63,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
     }
   }
 
-  sortableFields: string[] = [
-    'name',
-    'code',
-    'createdAt',
-  ];
+  sortableFields: string[] = ['name', 'code', 'createdAt'];
 
   async search(
     searchInput: CourseRepository.SearchParams,
@@ -82,23 +77,23 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
 
     const filter = hasFilter
       ? {
-        where: {
-          OR: [
-            {
-              name: {
-                contains: searchInput.filter,
-                mode: 'insensitive',
+          where: {
+            OR: [
+              {
+                name: {
+                  contains: searchInput.filter,
+                  mode: 'insensitive',
+                },
               },
-            },
-            {
-              code: {
-                contains: searchInput.filter,
-                mode: 'insensitive',
+              {
+                code: {
+                  contains: searchInput.filter,
+                  mode: 'insensitive',
+                },
               },
-            },
-          ],
-        },
-      }
+            ],
+          },
+        }
       : undefined;
 
     const { count, models } = await this.executeQueries(
@@ -125,7 +120,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
 
   private async executeQueries(
     filter: any,
-    searchInput: ClassroomRepository.SearchParams,
+    searchInput: CourseRepository.SearchParams,
     field: string,
     orderBy: SortOrderEnum,
   ) {
