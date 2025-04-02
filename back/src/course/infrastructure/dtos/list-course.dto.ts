@@ -13,7 +13,8 @@ export class ListCoursesDto implements ListCoursesUsecase.Input {
   perPage?: number;
 
   @ApiPropertyOptional({
-    description: 'The field that should be used for sorting, createdAt is the default',
+    description:
+      'The field that should be used for sorting, createdAt is the default',
     enum: ['name', 'createdAt', 'code'],
   })
   @IsOptional()
