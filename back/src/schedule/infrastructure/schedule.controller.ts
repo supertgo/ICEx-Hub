@@ -6,24 +6,21 @@ import {
   HttpCode,
   Inject,
   Param,
-  Patch,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UpdateScheduleUsecase } from '@/schedule/application/usecases/update-schedule.usecase';
 import { GetScheduleUsecase } from '@/schedule/application/usecases/get-schedule.usecase';
-import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedules.usecase';
+import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedule.usecase';
 import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-schedule.usecase';
-import { ListSchedulesDto } from '@/schedule/infrastructure/dtos/list-schedules.dto';
+import { ListSchedulesDto } from '@/schedule/infrastructure/dtos/list-schedule.dto';
 import { UpdateScheduleDto } from '@/schedule/infrastructure/dtos/update-schedule.dto';
 import { ScheduleOutput } from '@/schedule/application/dtos/schedule-output';
 import {
   ScheduleCollectionPresenter,
   SchedulePresenter,
 } from '@/schedule/infrastructure/presenters/schedule.presenter';
-import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import {
   ApiBearerAuth,
@@ -47,9 +44,6 @@ export class ScheduleController {
   @Inject(DeleteScheduleUsecase.UseCase)
   private deleteScheduleUseCase: DeleteScheduleUsecase.UseCase;
 
-  @Inject(AuthService)
-  private authService: AuthService;
-
   static scheduleToResponse(output: ScheduleOutput): SchedulePresenter {
     return new SchedulePresenter(output);
   }
@@ -60,7 +54,6 @@ export class ScheduleController {
     return new ScheduleCollectionPresenter(output);
   }
 
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     schema: {
@@ -83,10 +76,8 @@ export class ScheduleController {
       },
     },
   })
-
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @UseGuards(AuthGuard)
   @Get()
   async search(@Query() searchParams: ListSchedulesDto) {
     const result = await this.listSchedulesUseCase.execute(searchParams);
@@ -111,7 +102,10 @@ export class ScheduleController {
   @ApiResponse({ status: 404, description: 'Schedule not found' })
   @UseGuards(AuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateScheduleDto: UpdateScheduleDto,
+  ) {
     const output = await this.updateScheduleUseCase.execute({
       id,
       ...updateScheduleDto,
