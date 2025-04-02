@@ -33,6 +33,7 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
   ) {
     ScheduleEntity.validate(props);
     super(props, id);
+    this.props.classroom = props.classroom;
     this.props.createdAt = this.props.createdAt ?? new Date();
   }
 
@@ -109,20 +110,19 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
   toJSON() {
     return {
       id: this.id,
-      classroomId: this.classroomId,
-      // classroom: {
-      //   id: this.classroom.id,
-      //   name: this.classroom.name,
-      //   building: this.classroom.building,
-      //   createdAt: this.classroom.createdAt,
-      // },
-      disciplineId: this.disciplineId,
-      // discipline: {
-      //   name: this.discipline.name,
-      //   code: this.discipline.code,
-      //   courseId: this.discipline.courseId,
-      //   coursePeriodId: this.discipline.coursePeriodId,
-      // },
+      classroom: {
+        id: this.classroom.id,
+        name: this.classroom.name,
+        building: this.classroom.building,
+        createdAt: this.classroom.createdAt,
+      },
+      discipline: {
+        id: this.discipline.id,
+        name: this.discipline.name,
+        code: this.discipline.code,
+        courseId: this.discipline.courseId,
+        coursePeriodId: this.discipline.coursePeriodId,
+      },
       dayPattern: this.dayPattern,
       timeSlot: this.timeSlot,
       createdAt: this.createdAt,

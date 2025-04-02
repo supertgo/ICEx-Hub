@@ -6,10 +6,8 @@ import {
 
 export type ScheduleOutput = {
   id: string;
-  disciplineId: string;
-  discipline?: DisciplineProps;
-  classroomId: string;
-  classroom?: ClassroomOutput | null;
+  discipline: DisciplineProps;
+  classroom: ClassroomOutput | null;
   dayPattern: string;
   timeSlot: string;
   createdAt?: Date;

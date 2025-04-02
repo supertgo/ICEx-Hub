@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { ClassroomBulding, DayPattern, Prisma, TimeSlot } from '@prisma/client';
 import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
@@ -10,7 +10,7 @@ import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.r
 export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   constructor(private prismaService: PrismaService) {}
 
-  sortableFields: string[];
+  sortableFields: string[] = ['createdAt'];
 
   async search(
     searchInput: ScheduleRepository.SearchParams,
@@ -18,10 +18,65 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
     const sortable = this.sortableFields.includes(searchInput.sort) || false;
     const field = sortable ? searchInput.sort : 'createdAt';
     const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
-    //
-    // const hasFilter = searchInput.filter ? searchInput.filter : null;
-    //
-    const whereFilter: Prisma.ScheduleWhereInput = {};
+
+    const hasFilter = searchInput.filter ? searchInput.filter : null;
+
+    const buildingEnumValues = Object.values(ClassroomBulding) as string[];
+
+    const buildingMatch = buildingEnumValues.find(
+      (value) => value.toLowerCase() === searchInput.filter.toLowerCase(),
+    );
+
+    const whereFilter: Prisma.ScheduleWhereInput = hasFilter
+      ? {
+          OR: [
+            {
+              classroom: {
+                OR: [
+                  {
+                    name: {
+                      contains: searchInput.filter,
+                      mode: 'insensitive',
+                    },
+                  },
+                  ...(buildingMatch
+                    ? [
+                        {
+                          building:
+                            searchInput.filter.toUpperCase() as ClassroomBulding,
+                        },
+                      ]
+                    : []),
+                ],
+              },
+            },
+            {
+              discipline: {
+                OR: [
+                  {
+                    name: {
+                      contains: searchInput.filter,
+                      mode: 'insensitive',
+                    },
+                  },
+                  {
+                    code: {
+                      contains: searchInput.filter,
+                      mode: 'insensitive',
+                    },
+                  },
+                ],
+              },
+            },
+            // {
+            //   timeSlot: searchInput.filter.toUpperCase() as TimeSlot,
+            // },
+            // {
+            //   dayPattern: searchInput.filter.toUpperCase() as DayPattern,
+            // },
+          ],
+        }
+      : {};
 
     const { count, models } = await this.executeQueries(
       whereFilter,
@@ -56,6 +111,17 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         where: whereFilter,
       }),
       this.prismaService.schedule.findMany({
+        select: {
+          id: true,
+          classroomId: true,
+          classroom: true,
+          disciplineId: true,
+          discipline: true,
+          createdAt: true,
+          dayPattern: true,
+          timeSlot: true,
+          updatedAt: true,
+        },
         skip:
           (searchInput.page && searchInput.page > 0
             ? searchInput.page - 1
@@ -70,14 +136,21 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         orderBy: {
           [field]: orderBy,
         },
+        where: whereFilter,
       }),
     ]);
 
     return { count, models };
   }
   async insert(entity: ScheduleEntity): Promise<ScheduleEntity> {
+    const result = entity.toJSON();
     const schedule = await this.prismaService.schedule.create({
-      data: entity.toJSON(),
+      data: {
+        timeSlot: result.timeSlot,
+        disciplineId: entity.disciplineId,
+        classroomId: entity.classroomId,
+        dayPattern: entity.dayPattern,
+      },
     });
 
     return ScheduleModelMapper.toEntity(schedule);
@@ -98,7 +171,12 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
 
     await this.prismaService.schedule.update({
       where: { id: entity.id },
-      data: entity.toJSON(),
+      data: {
+        timeSlot: entity.timeSlot,
+        disciplineId: entity.disciplineId,
+        classroomId: entity.classroomId,
+        dayPattern: entity.dayPattern,
+      },
     });
   }
 
@@ -114,6 +192,17 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
     try {
       const schedule = await this.prismaService.schedule.findUnique({
         where: { id },
+        select: {
+          id: true,
+          classroomId: true,
+          classroom: true,
+          disciplineId: true,
+          discipline: true,
+          createdAt: true,
+          dayPattern: true,
+          timeSlot: true,
+          updatedAt: true,
+        },
       });
 
       return ScheduleModelMapper.toEntity(schedule);

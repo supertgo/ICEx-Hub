@@ -9,9 +9,6 @@ export class SchedulePresenter {
   @ApiProperty({ description: 'The id of schedule' })
   id: string;
 
-  @ApiProperty({ description: 'The disciplineId of schedule' })
-  disciplineId: string;
-
   @ApiPropertyOptional({ description: 'The discipline of schedule' })
   discipline: {
     id: string;
@@ -22,9 +19,6 @@ export class SchedulePresenter {
     createdAt?: Date;
     updatedAt?: Date;
   };
-
-  @ApiProperty({ description: 'The classroomId of schedule' })
-  classroomId: string;
 
   @ApiPropertyOptional({ description: 'The classroom of schedule' })
   classroom: ClassroomPresenter;
@@ -45,10 +39,9 @@ export class SchedulePresenter {
 
   constructor(output: ScheduleOutput) {
     this.id = output.id;
-    this.disciplineId = output.disciplineId;
     this.discipline = output.discipline;
-    this.classroomId = output.classroomId;
-    this.classroom = output.classroom;
+    this.classroom =
+      output.classroom && new ClassroomPresenter(output.classroom);
     this.dayPattern = output.dayPattern;
     this.timeSlot = output.timeSlot;
     this.createdAt = output.createdAt;
