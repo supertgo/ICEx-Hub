@@ -6,6 +6,7 @@ import { DayPatternEnum, TimeSlotEnum } from '../schedule.constants';
 import { ScheduleFakeBuilder } from '../fake-builder/schedule-fake.builder';
 
 export type DisciplineProps = {
+  id: string;
   name: string;
   code: string;
   courseId: string;
