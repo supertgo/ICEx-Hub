@@ -19,9 +19,7 @@ describe('Schedule presenter unit tests', () => {
   it('Constructor', () => {
     expect(sut).toBeDefined();
     expect(sut.id).toEqual(props.id);
-    expect(sut.disciplineId).toEqual(props.disciplineId);
-    //expect(sut.discipline).toEqual(props.discipline)
-    expect(sut.classroomId).toEqual(props.classroomId);
+    expect(sut.discipline).toEqual(props.discipline);
     expect(sut.classroom).toEqual(props.classroom);
     expect(sut.dayPattern).toEqual(props.dayPattern);
     expect(sut.timeSlot).toEqual(props.timeSlot);
@@ -34,8 +32,7 @@ describe('Schedule presenter unit tests', () => {
     expect(output).toBeDefined();
     expect(output.id).toEqual(props.id);
     expect(output.disciplineId).toEqual(props.disciplineId);
-    //expect(sut.discipline).toEqual(props.discipline)
-    expect(output.classroomId).toEqual(props.classroomId);
+    expect(sut.discipline).toEqual(props.discipline);
     expect(output.classroom).toEqual(props.classroom);
     expect(output.dayPattern).toEqual(props.dayPattern);
     expect(output.timeSlot).toEqual(props.timeSlot);
@@ -75,7 +72,6 @@ describe('Schedule presenter unit tests', () => {
       expect(output.data[0].id).toEqual(props.id);
       expect(output.data[0].disciplineId).toEqual(props.disciplineId);
       //expect(sut..data[0]discipline).toEqual(props.discipline)
-      expect(output.data[0].classroomId).toEqual(props.classroomId);
       expect(output.data[0].classroom).toEqual(props.classroom);
       expect(output.data[0].dayPattern).toEqual(props.dayPattern);
       expect(output.data[0].timeSlot).toEqual(props.timeSlot);

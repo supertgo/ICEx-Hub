@@ -48,7 +48,9 @@ describe('schedule in memory repository', () => {
 
       const spyFilter = jest.spyOn(items, 'filter');
 
-      const result = await sut['applyFilters'](items, TimeSlotEnum.MORNING_1);
+      const result = await sut['applyFilters'](items, {
+        timeSlot: TimeSlotEnum.MORNING_1,
+      });
 
       expect(result).toStrictEqual([items[0]]);
       expect(spyFilter).toHaveBeenCalledTimes(1);
