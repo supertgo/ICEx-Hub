@@ -9,6 +9,7 @@ export class ClassroomModelMapper {
       name: model.name,
       building: model.building as CLASSROOM_BUILDING,
       createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     };
 
     try {

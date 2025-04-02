@@ -13,6 +13,7 @@ describe('Classroom model mapper integration tests', () => {
     name: entity.name,
     building: entity.building,
     createdAt: entity.createdAt,
+    updatedAt: entity.updatedAt,
   };
 
   beforeAll(async () => {

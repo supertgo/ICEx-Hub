@@ -13,6 +13,8 @@ export class ClassroomFakeBuilder<TBuild = any> {
 
   private _createdAt: PropOrFactory<Date> | undefined = undefined;
 
+  private _updatedAt: PropOrFactory<Date> | undefined = undefined;
+
   private _building: PropOrFactory<CLASSROOM_BUILDING> = (_index) =>
     CLASSROOM_BUILDING.ICEX;
 
@@ -79,6 +81,12 @@ export class ClassroomFakeBuilder<TBuild = any> {
     return this;
   }
 
+  withUpdatedAt(valueOrFactory: PropOrFactory<Date>) {
+    this._updatedAt = valueOrFactory;
+
+    return this;
+  }
+
   withInvalidNameTooLong(value?: string) {
     this._name =
       value ?? this.faker.word.words({ count: CLASSROOM_MAX_LENGTHS.NAME + 1 });
@@ -95,6 +103,9 @@ export class ClassroomFakeBuilder<TBuild = any> {
           building: this.callFactory(this._building, index),
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
+          }),
+          ...(this._updatedAt && {
+            updatedAt: this.callFactory(this._updatedAt, index),
           }),
         });
 
@@ -116,8 +127,12 @@ export class ClassroomFakeBuilder<TBuild = any> {
     return this.getValue('createdAt');
   }
 
+  get updatedAt() {
+    return this.getValue('updatedAt');
+  }
+
   private getValue(prop: any) {
-    const optional = ['createdAt'];
+    const optional = ['createdAt', 'updatedAt'];
 
     const privateProp = `_${prop}` as keyof this;
 

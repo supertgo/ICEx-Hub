@@ -8,6 +8,7 @@ export type ClassroomProps = {
   name: string;
   building: CLASSROOM_BUILDING;
   createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export class ClassroomEntity extends Entity<ClassroomProps> {
@@ -38,6 +39,10 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
 
   get createdAt(): Date {
     return this.props.createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this.props.updatedAt;
   }
 
   updateBuilding(building: CLASSROOM_BUILDING) {
