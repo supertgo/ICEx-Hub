@@ -7,6 +7,7 @@ import { UpdateScheduleUsecase } from '@/schedule/application/usecases/update-sc
 import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-schedule.usecase';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
+import { AuthModule } from '@/auth/infrastructure/auth.module';
 
 @Module({
   imports: [AuthModule],
@@ -53,5 +54,4 @@ import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/pri
     },
   ],
 })
-
 export class ScheduleModule {}
