@@ -5,6 +5,7 @@ import {
 } from '@/schedule/domain/entities/schedule.entity';
 
 export type ScheduleOutput = {
+  id: string;
   disciplineId: string;
   discipline?: DisciplineProps;
   classroomId: string;
