@@ -7,12 +7,15 @@ import {
 } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { InMemoryRepository } from '@/shared/domain/repositories/in-memory.repository';
 
-export abstract class InMemorySearchableRepository<E extends Entity>
+export abstract class InMemorySearchableRepository<
+    E extends Entity,
+    Filter = string,
+  >
   extends InMemoryRepository<E>
   implements SearchableRepositoryInterface<E, any, any>
 {
   sortableFields = [];
-  async search(params: SearchParams): Promise<SearchResult<E>> {
+  async search(params: SearchParams<Filter>): Promise<SearchResult<E, Filter>> {
     const itemFiltered = await this.applyFilters(this.items, params.filter);
 
     const itemSorted = await this.applySort(
@@ -40,7 +43,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
 
   protected abstract applyFilters(
     items: E[],
-    filter: string | null,
+    filter: Filter | null,
   ): Promise<E[]>;
 
   protected async applySort(

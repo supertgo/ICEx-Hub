@@ -334,10 +334,24 @@ paths:
               - asc
               - desc
             type: string
-        - name: filter
+        - name: name
           required: false
           in: query
           description: The filter to apply to the search
+          schema:
+            nullable: true
+            type: string
+        - name: timeSlot
+          required: false
+          in: query
+          description: The time slot to apply to the search
+          schema:
+            nullable: true
+            type: string
+        - name: dayPattern
+          required: false
+          in: query
+          description: The dayPattern slot to apply to the search
           schema:
             nullable: true
             type: string

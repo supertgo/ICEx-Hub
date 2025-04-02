@@ -6,13 +6,21 @@ import {
 } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 export namespace ScheduleRepository {
-  export type Filter = string;
+  export type Filter = {
+    name?: string;
+    timeSlot?: string;
+    dayPattern?: string;
+  };
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 
   export class SearchResult extends DefaultSearchResult<
     ScheduleEntity,
-    Filter
+    {
+      name?: string;
+      timeSlot?: string;
+      dayPattern?: string;
+    }
   > {}
 
   export type Repository = SearchableRepositoryInterface<

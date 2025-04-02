@@ -3,26 +3,57 @@ import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repo
 import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
-import {
-  DayPatternEnum,
-  TimeSlotEnum,
-} from '@/schedule/domain/schedule.constants';
 
 export class ScheduleInMemoryRepository
-  extends InMemorySearchableRepository<ScheduleEntity>
+  extends InMemorySearchableRepository<
+    ScheduleEntity,
+    ScheduleRepository.Filter
+  >
   implements ScheduleRepository.Repository
 {
   sortableFields = ['createdAt'];
 
+  async search(
+    params: ScheduleRepository.SearchParams,
+  ): Promise<ScheduleRepository.SearchResult> {
+    const itemFiltered = await this.applyFilters(this.items, params.filter);
+
+    const itemSorted = await this.applySort(
+      itemFiltered,
+      params.sort,
+      params.sortDir,
+    );
+
+    const itemsPaginated = await this.applyPagination(
+      itemSorted,
+      params.page,
+      params.perPage,
+    );
+
+    return new ScheduleRepository.SearchResult({
+      items: itemsPaginated,
+      total: itemFiltered.length,
+      currentPage: params.page,
+      perPage: params.perPage,
+      sort: params.sort,
+      sortDir: params.sortDir,
+      filter: params.filter,
+    });
+  }
+
   protected async applyFilters(
     items: ScheduleEntity[],
-    filter: string | TimeSlotEnum | DayPatternEnum | null,
+    filter: ScheduleRepository.Filter | null,
   ): Promise<ScheduleEntity[]> {
     if (!filter) return items;
 
-    return items.filter((item) =>
-      item.props.timeSlot.toLowerCase().includes(filter.toLowerCase()),
-    );
+    return items.filter((item) => {
+      // Implement your actual filter logic here using filter properties
+      return (
+        item.props.timeSlot === filter.timeSlot &&
+        item.props.dayPattern === filter.dayPattern
+      );
+    });
   }
 
   protected async applySort(

@@ -5,7 +5,6 @@ import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.se
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { ScheduleModelMapper } from '@/schedule/infrastructure/database/prisma/models/schedule-model.mapper';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
 
 export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   constructor(private prismaService: PrismaService) {}
@@ -23,9 +22,12 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
 
     const buildingEnumValues = Object.values(ClassroomBulding) as string[];
 
-    const buildingMatch = buildingEnumValues.find(
-      (value) => value.toLowerCase() === searchInput.filter.toLowerCase(),
-    );
+    const buildingMatch =
+      searchInput.filter?.name &&
+      buildingEnumValues.find(
+        (value) =>
+          value.toLowerCase() === searchInput.filter.name.toLowerCase(),
+      );
 
     const whereFilter: Prisma.ScheduleWhereInput = hasFilter
       ? {
@@ -35,7 +37,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
                 OR: [
                   {
                     name: {
-                      contains: searchInput.filter,
+                      contains: searchInput.filter.name,
                       mode: 'insensitive',
                     },
                   },
@@ -43,7 +45,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
                     ? [
                         {
                           building:
-                            searchInput.filter.toUpperCase() as ClassroomBulding,
+                            searchInput.filter.name.toUpperCase() as ClassroomBulding,
                         },
                       ]
                     : []),
@@ -55,25 +57,25 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
                 OR: [
                   {
                     name: {
-                      contains: searchInput.filter,
+                      contains: searchInput.filter.name,
                       mode: 'insensitive',
                     },
                   },
                   {
                     code: {
-                      contains: searchInput.filter,
+                      contains: searchInput.filter.name,
                       mode: 'insensitive',
                     },
                   },
                 ],
               },
             },
-            // {
-            //   timeSlot: searchInput.filter.toUpperCase() as TimeSlot,
-            // },
-            // {
-            //   dayPattern: searchInput.filter.toUpperCase() as DayPattern,
-            // },
+            {
+              timeSlot: searchInput.filter.timeSlot as TimeSlot,
+            },
+            {
+              dayPattern: searchInput.filter.dayPattern as DayPattern,
+            },
           ],
         }
       : {};
@@ -102,7 +104,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
 
   private async executeQueries(
     whereFilter: Prisma.ScheduleWhereInput,
-    searchInput: ClassroomRepository.SearchParams,
+    searchInput: ScheduleRepository.SearchParams,
     field: string,
     orderBy: SortOrderEnum,
   ) {

@@ -5,10 +5,19 @@ import {
   PaginationOutput,
   PaginationOutputMapper,
 } from '@/shared/application/dtos/pagination-output';
-import { ScheduleOutputMapper } from '@/schedule/application/dtos/schedule-output';
+import {
+  ScheduleOutput,
+  ScheduleOutputMapper,
+} from '@/schedule/application/dtos/schedule-output';
 
 export namespace ListSchedulesUsecase {
-  export type Input = SearchInput;
+  type Filter = {
+    name?: string;
+    timeSlot?: string;
+    dayPattern?: string;
+  };
+
+  export type Input = SearchInput<Filter>;
 
   export type Output = PaginationOutput;
 
@@ -28,7 +37,10 @@ export namespace ListSchedulesUsecase {
         ScheduleOutputMapper.toOutput(schedule),
       );
 
-      return PaginationOutputMapper.toOutput(item, searchResult);
+      return PaginationOutputMapper.toOutput<ScheduleOutput, Filter>(
+        item,
+        searchResult,
+      );
     }
   }
 }
