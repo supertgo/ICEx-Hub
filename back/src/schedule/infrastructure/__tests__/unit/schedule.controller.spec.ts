@@ -1,14 +1,14 @@
 import { ScheduleController } from '@/schedule/infrastructure/schedule.controller';
 import { ScheduleOutput } from '@/schedule/application/dtos/schedule-output';
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
-import { ListSchedulesDto } from '@/schedule/infrastructure/dtos/list-schedules.dto';
+import { ListSchedulesDto } from '@/schedule/infrastructure/dtos/list-schedule.dto';
 import { UpdateScheduleDto } from '@/schedule/infrastructure/dtos/update-schedule.dto';
 import { faker } from '@faker-js/faker';
 import {
   ScheduleCollectionPresenter,
   SchedulePresenter,
 } from '@/schedule/infrastructure/presenters/schedule.presenter';
-import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedules.usecase';
+import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedule.usecase';
 
 describe('ScheduleController unit tests', () => {
   let sut: ScheduleController;
@@ -26,7 +26,6 @@ describe('ScheduleController unit tests', () => {
   it('should be defined', () => {
     expect(sut).toBeDefined();
   });
-
 
   it('should list schedules', async () => {
     const schedules = [props];
@@ -64,14 +63,14 @@ describe('ScheduleController unit tests', () => {
   });
 
   it('should update schedule data', async () => {
-    const updatedProps = { ...props, name: faker.person.fullName() };
+    const updatedProps = { ...props, classroomId: faker.string.uuid() };
     const mockUpdateScheduleUseCase = {
       execute: jest.fn().mockResolvedValue(Promise.resolve(updatedProps)),
     };
 
     sut['updateScheduleUseCase'] = mockUpdateScheduleUseCase as any;
 
-    const input: UpdateScheduleDto = { name: updatedProps.name };
+    const input: UpdateScheduleDto = { classroomId: updatedProps.classroomId };
 
     const presenter = await sut.update(id, input);
     expect(presenter).toBeInstanceOf(SchedulePresenter);

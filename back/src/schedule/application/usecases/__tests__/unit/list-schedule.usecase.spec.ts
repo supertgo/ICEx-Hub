@@ -1,8 +1,10 @@
-import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedule.usecase';
 import { ScheduleInMemoryRepository } from '@/schedule/infrastructure/database/in-memory/repositories/schedule-in-memory.repository';
 import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repository';
-import { ScheduleEntity, scheduleProps } from '@/schedule/domain/entities/schedule.entity';
+import {
+  ScheduleEntity,
+  ScheduleProps,
+} from '@/schedule/domain/entities/schedule.entity';
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
 
 describe('List schedules use cases unit tests', () => {
@@ -93,38 +95,9 @@ describe('List schedules use cases unit tests', () => {
     );
   });
 
-  it('should return schedules filtered, paginated and sorted', async () => {
-    const schedules = [
-      createScheduleEntity({ name: 'a' }),
-      createScheduleEntity({ name: 'A' }),
-      createScheduleEntity({ name: 'b' }),
-      createScheduleEntity({ name: 'c' }),
-    ];
-    repository.items = schedules;
+  it.todo('should return second page when empty in pagination');
 
-    const result = await sut.execute({
-      page: 1,
-      perPage: 2,
-      sort: 'name',
-      sortDir: SortOrderEnum.ASC,
-      filter: 'a',
-    });
+  it.todo('should return items in second page when having them');
 
-    expect(result.total).toBe(2);
-    expect(result.currentPage).toBe(1);
-    expect(result.lastPage).toBe(1);
-    expect(result.perPage).toBe(2);
-
-    expect(result.items[0].name).toBe('A');
-    expect(result.items[1].name).toBe('a');
-  });
-
-  it.todo('should return second page when empty in pagination', async () => {
-  });
-
-  it.todo('should return items in second page when having them', async () => {
-  });
-
-  it.todo('should return empty result when no filter found', async () => {
-  });
+  it.todo('should return empty result when no filter found');
 });

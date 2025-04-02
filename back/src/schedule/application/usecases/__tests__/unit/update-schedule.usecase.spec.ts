@@ -14,5 +14,7 @@ describe('Update schedule use case test', () => {
     sut = new UpdateScheduleUsecase.UseCase(repository);
   });
 
-  it.todo('should throw scheduleWithIdNotFoundError if schedule does not exist', async () => {});
+  it.todo(
+    'should throw scheduleWithIdNotFoundError if schedule does not exist',
+  );
 });

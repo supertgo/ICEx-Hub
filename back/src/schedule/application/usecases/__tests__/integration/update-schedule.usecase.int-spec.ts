@@ -33,7 +33,7 @@ describe('Update schedule usecase integration tests', () => {
     await module.close();
   });
 
-  it.todo('should throw error when schedule not found', () => {});
+  it.todo('should throw error when schedule not found');
 
-  it.todo('should update a schedule', async () => { });
+  it.todo('should update a schedule');
 });

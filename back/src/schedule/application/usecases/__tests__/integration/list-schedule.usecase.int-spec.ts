@@ -3,10 +3,10 @@ import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/pri
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
-import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
+// import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
+// import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedule.usecase';
-import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+// import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 describe('List schedules usecase integration tests', () => {
   const prismaService = new PrismaClient();
