@@ -1,4 +1,9 @@
-import { ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ListCoursePeriodUsecase } from '@/course/application/usecases/list-course-period.usecase';
 import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ListCoursesDto } from '@/course/infrastructure/dtos/list-course.dto';
@@ -19,30 +24,12 @@ export class CoursePeriodController {
     return new CoursePeriodCollectionPresenter(output);
   }
 
-  @ApiResponse({
-    status: 200,
-    schema: {
-      type: 'object',
-      properties: {
-        meta: {
-          type: 'object',
-          properties: {
-            totalItems: { type: 'number' },
-            itemCount: { type: 'number' },
-            itemsPerPage: { type: 'number' },
-            totalPages: { type: 'number' },
-            currentPage: { type: 'number' },
-          },
-        },
-        data: {
-          type: 'array',
-          items: { $ref: getSchemaPath(CoursePeriodPresenter) },
-        },
-      },
-    },
+  @ApiOkResponse({
+    description: 'Paginated list of course periods',
+    type: CoursePeriodCollectionPresenter,
   })
+  @ApiExtraModels(CoursePeriodPresenter, CoursePeriodCollectionPresenter)
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
   async search(@Query() searchParams: ListCoursesDto) {
     const result = await this.listCoursePeriodUseCase.execute(searchParams);
