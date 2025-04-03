@@ -8,6 +8,7 @@ export type ClassroomProps = {
   name: string;
   building: CLASSROOM_BUILDING;
   createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export class ClassroomEntity extends Entity<ClassroomProps> {
@@ -40,6 +41,10 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
     return this.props.createdAt;
   }
 
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+
   updateBuilding(building: CLASSROOM_BUILDING) {
     ClassroomEntity.validate({
       ...this.props,
@@ -47,6 +52,7 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
       building: building,
     });
     this.building = building;
+    this.props.updatedAt = new Date();
   }
 
   updateName(name: string) {
@@ -56,6 +62,7 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
       building: this.building,
     });
     this.name = name;
+    this.props.updatedAt = new Date();
   }
 
   static validate(props: ClassroomProps) {

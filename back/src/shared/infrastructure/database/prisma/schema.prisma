@@ -123,6 +123,7 @@ model Classroom {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
+  @@unique([name, building])
   @@index([name])
   @@index([building])
   @@map("classrooms")
