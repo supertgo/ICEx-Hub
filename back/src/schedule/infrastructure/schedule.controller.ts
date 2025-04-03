@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -30,7 +29,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 import { DayPatternEnum, TimeSlotEnum } from '../domain/schedule.constants';
-import { isEnumValue } from '@/shared/domain/common';
+import { validateEnumArray } from '@/shared/domain/common';
 
 @ApiTags('schedule')
 @Controller('schedule')
@@ -83,30 +82,24 @@ export class ScheduleController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
   async search(@Query() searchParams: ListSchedulesDto) {
-    if (
-      searchParams.timeSlot &&
-      !isEnumValue(TimeSlotEnum, searchParams.timeSlot)
-    ) {
-      throw new BadRequestException(
-        `Invalid timeSlot value. Valid values are: ${Object.values(TimeSlotEnum).join(', ')}`,
-      );
-    }
+    const timeSlots = validateEnumArray(
+      searchParams.timeSlots,
+      TimeSlotEnum,
+      'timeSlot',
+    );
 
-    if (
-      searchParams.dayPattern &&
-      !isEnumValue(DayPatternEnum, searchParams.dayPattern)
-    ) {
-      throw new BadRequestException(
-        `Invalid dayPattern value. Valid values are: ${Object.values(DayPatternEnum).join(', ')}`,
-      );
-    }
+    const dayPatterns = validateEnumArray(
+      searchParams.dayPatterns,
+      DayPatternEnum,
+      'dayPattern',
+    );
 
     const result = await this.listSchedulesUseCase.execute({
       ...searchParams,
       filter: {
         name: searchParams?.name,
-        dayPattern: searchParams.dayPattern,
-        timeSlot: searchParams.timeSlot,
+        dayPatterns: dayPatterns,
+        timeSlots: timeSlots,
       },
     });
 

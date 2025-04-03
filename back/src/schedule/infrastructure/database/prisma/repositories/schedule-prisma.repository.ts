@@ -5,6 +5,7 @@ import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.se
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { ScheduleModelMapper } from '@/schedule/infrastructure/database/prisma/models/schedule-model.mapper';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { Logger } from '@nestjs/common';
 
 export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   constructor(private prismaService: PrismaService) {}
@@ -18,7 +19,9 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
     const field = sortable ? searchInput.sort : 'createdAt';
     const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
 
-    const hasFilter = searchInput.filter ? searchInput.filter : null;
+    const hasFilter = searchInput.filter ? searchInput.filter : false;
+
+    Logger.log(hasFilter, 'hasFilter');
 
     const buildingEnumValues = Object.values(ClassroomBulding) as string[];
 
@@ -29,56 +32,73 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
           value.toLowerCase() === searchInput.filter.name.toLowerCase(),
       );
 
-    const whereFilter: Prisma.ScheduleWhereInput = hasFilter
-      ? {
-          OR: [
-            {
-              classroom: {
-                OR: [
-                  {
-                    name: {
-                      contains: searchInput.filter.name,
-                      mode: 'insensitive',
-                    },
-                  },
-                  ...(buildingMatch
-                    ? [
-                        {
-                          building:
-                            searchInput.filter.name.toUpperCase() as ClassroomBulding,
-                        },
-                      ]
-                    : []),
-                ],
+    const whereFilter: Prisma.ScheduleWhereInput = {};
+
+    if (hasFilter) {
+      const andConditions: Prisma.ScheduleWhereInput[] = [];
+
+      if (searchInput.filter.name) {
+        const nameOrConditions: Prisma.ScheduleWhereInput[] = [
+          {
+            classroom: {
+              name: {
+                contains: searchInput.filter.name,
+                mode: 'insensitive',
               },
             },
-            {
-              discipline: {
-                OR: [
-                  {
-                    name: {
-                      contains: searchInput.filter.name,
-                      mode: 'insensitive',
-                    },
-                  },
-                  {
-                    code: {
-                      contains: searchInput.filter.name,
-                      mode: 'insensitive',
-                    },
-                  },
-                ],
+          },
+          {
+            discipline: {
+              name: {
+                contains: searchInput.filter.name,
+                mode: 'insensitive',
               },
             },
-            {
-              timeSlot: searchInput.filter.timeSlot as TimeSlot,
+          },
+          {
+            discipline: {
+              code: {
+                contains: searchInput.filter.name,
+                mode: 'insensitive',
+              },
             },
-            {
-              dayPattern: searchInput.filter.dayPattern as DayPattern,
+          },
+        ];
+
+        if (buildingMatch) {
+          nameOrConditions.push({
+            classroom: {
+              building:
+                searchInput.filter.name.toUpperCase() as ClassroomBulding,
             },
-          ],
+          });
         }
-      : {};
+
+        andConditions.push({ OR: nameOrConditions });
+      }
+
+      if (searchInput.filter.timeSlots?.length) {
+        andConditions.push({
+          timeSlot: {
+            in: searchInput.filter.timeSlots as TimeSlot[],
+          },
+        });
+      }
+
+      if (searchInput.filter.dayPatterns?.length) {
+        andConditions.push({
+          dayPattern: {
+            in: searchInput.filter.dayPatterns as DayPattern[],
+          },
+        });
+      }
+
+      if (andConditions.length > 0) {
+        whereFilter.AND = andConditions;
+      }
+    }
+
+    Logger.log(whereFilter, 'whereFilter');
 
     const { count, models } = await this.executeQueries(
       whereFilter,

@@ -80,6 +80,6 @@
   },
   "prisma": {
     "schema": "src/shared/infrastructure/database/prisma/schema.prisma",
-    "seed": "src/shared/infrastructure/database/prisma/seeders/seed.ts"
+    "seed": "ts-node src/shared/infrastructure/database/prisma/seeders/seed.ts"
   }
 }

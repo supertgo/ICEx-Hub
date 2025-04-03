@@ -8,19 +8,15 @@ import {
 export namespace ScheduleRepository {
   export type Filter = {
     name?: string;
-    timeSlot?: string;
-    dayPattern?: string;
+    timeSlots?: string[];
+    dayPatterns?: string[];
   };
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 
   export class SearchResult extends DefaultSearchResult<
     ScheduleEntity,
-    {
-      name?: string;
-      timeSlot?: string;
-      dayPattern?: string;
-    }
+    Filter
   > {}
 
   export type Repository = SearchableRepositoryInterface<

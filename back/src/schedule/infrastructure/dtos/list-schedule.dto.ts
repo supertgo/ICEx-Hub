@@ -37,11 +37,11 @@ export class ListSchedulesDto implements ListSchedulesUsecase.Input {
     description: 'The time slot to apply to the search',
   })
   @IsOptional()
-  timeSlot?: string | null;
+  timeSlots?: string[] | null;
 
   @ApiPropertyOptional({
     description: 'The dayPattern slot to apply to the search',
   })
   @IsOptional()
-  dayPattern?: string | null;
+  dayPatterns?: string[] | null;
 }

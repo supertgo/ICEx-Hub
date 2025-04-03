@@ -13,8 +13,8 @@ import {
 export namespace ListSchedulesUsecase {
   type Filter = {
     name?: string;
-    timeSlot?: string;
-    dayPattern?: string;
+    timeSlots?: string[];
+    dayPatterns?: string[];
   };
 
   export type Input = SearchInput<Filter>;

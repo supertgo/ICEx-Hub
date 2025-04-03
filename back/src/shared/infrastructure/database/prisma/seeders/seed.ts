@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const seed = async () => {
-  await classroomSeed(prisma);
+  await classroomSeed();
 };
 
 seed()

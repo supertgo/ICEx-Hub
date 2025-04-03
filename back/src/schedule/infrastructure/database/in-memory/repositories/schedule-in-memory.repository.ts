@@ -48,10 +48,9 @@ export class ScheduleInMemoryRepository
     if (!filter) return items;
 
     return items.filter((item) => {
-      // Implement your actual filter logic here using filter properties
       return (
-        item.props.timeSlot === filter.timeSlot &&
-        item.props.dayPattern === filter.dayPattern
+        item.props.discipline.name === filter.name &&
+        item.props.classroom.name === filter.name
       );
     });
   }
