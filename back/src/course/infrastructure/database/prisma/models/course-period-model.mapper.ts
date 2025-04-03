@@ -6,6 +6,7 @@ export class CoursePeriodModelMapper {
   static toEntity(model: CoursePeriod): CoursePeriodEntity {
     const data = {
       name: model.name,
+      courseId: model.courseId,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     };
