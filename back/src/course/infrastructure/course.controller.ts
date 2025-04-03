@@ -21,9 +21,9 @@ import {
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import {
   ApiBearerAuth,
+  ApiOkResponse,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
 import { CreateCourseUsecase } from '@/course/application/usecases/create-course.usecase';
@@ -58,27 +58,9 @@ export class CourseController {
     return new CourseCollectionPresenter(output);
   }
 
-  @ApiResponse({
-    status: 200,
-    schema: {
-      type: 'object',
-      properties: {
-        meta: {
-          type: 'object',
-          properties: {
-            totalItems: { type: 'number' },
-            itemCount: { type: 'number' },
-            itemsPerPage: { type: 'number' },
-            totalPages: { type: 'number' },
-            currentPage: { type: 'number' },
-          },
-        },
-        data: {
-          type: 'array',
-          items: { $ref: getSchemaPath(CoursePresenter) },
-        },
-      },
-    },
+  @ApiOkResponse({
+    description: 'The course has been successfully created.',
+    type: CourseCollectionPresenter,
   })
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
