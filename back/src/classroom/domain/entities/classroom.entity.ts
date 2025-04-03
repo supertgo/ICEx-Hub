@@ -52,6 +52,7 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
       building: building,
     });
     this.building = building;
+    this.props.updatedAt = new Date();
   }
 
   updateName(name: string) {
@@ -61,6 +62,7 @@ export class ClassroomEntity extends Entity<ClassroomProps> {
       building: this.building,
     });
     this.name = name;
+    this.props.updatedAt = new Date();
   }
 
   static validate(props: ClassroomProps) {
