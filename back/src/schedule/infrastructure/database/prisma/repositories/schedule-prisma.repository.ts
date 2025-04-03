@@ -5,7 +5,6 @@ import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.se
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { ScheduleModelMapper } from '@/schedule/infrastructure/database/prisma/models/schedule-model.mapper';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { Logger } from '@nestjs/common';
 
 export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   constructor(private prismaService: PrismaService) {}
@@ -20,8 +19,6 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
     const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
 
     const hasFilter = searchInput.filter ? searchInput.filter : false;
-
-    Logger.log(hasFilter, 'hasFilter');
 
     const buildingEnumValues = Object.values(ClassroomBulding) as string[];
 
@@ -97,8 +94,6 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         whereFilter.AND = andConditions;
       }
     }
-
-    Logger.log(whereFilter, 'whereFilter');
 
     const { count, models } = await this.executeQueries(
       whereFilter,
