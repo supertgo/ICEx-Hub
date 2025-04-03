@@ -7,13 +7,10 @@ import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entit
 
 export class CoursePeriodFakeBuilder<TBuild = any> {
   private _name: PropOrFactory<string> = (_index) => this.faker.word.words();
-
+  private _courseId: PropOrFactory<string> | undefined = undefined;
   private _createdAt: PropOrFactory<Date> | undefined = undefined;
-
   private _updatedAt: PropOrFactory<Date> | undefined = undefined;
-
   private countObjs: number;
-
   private faker: Faker;
 
   private constructor(countObjs: number = 1) {
@@ -22,15 +19,20 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
   }
 
   static theCoursePeriods(countObjs: number) {
-    return new CoursePeriodFakeBuilder<CourseEntity[]>(countObjs);
+    return new CoursePeriodFakeBuilder<CoursePeriodEntity[]>(countObjs);
   }
 
   static aCoursePeriod() {
-    return new CoursePeriodFakeBuilder<CourseEntity>();
+    return new CoursePeriodFakeBuilder<CoursePeriodEntity>();
   }
 
   withName(valueOrFactory: PropOrFactory<string>) {
     this._name = valueOrFactory;
+    return this;
+  }
+
+  withCourseId(valueOrFactory: PropOrFactory<string>) {
+    this._courseId = valueOrFactory;
     return this;
   }
 
@@ -55,11 +57,14 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
   }
 
   build(): TBuild {
-    const courses = new Array(this.countObjs)
+    const coursePeriods = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
         return new CoursePeriodEntity({
           name: this.callFactory(this._name, index),
+          courseId: this._courseId
+            ? this.callFactory(this._courseId, index)
+            : undefined,
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
           }),
@@ -69,11 +74,15 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
         });
       });
 
-    return this.countObjs === 1 ? (courses[0] as any) : courses;
+    return this.countObjs === 1 ? (coursePeriods[0] as any) : coursePeriods;
   }
 
   get name() {
     return this.getValue('name');
+  }
+
+  get courseId() {
+    return this.getValue('courseId');
   }
 
   get createdAt() {
@@ -85,7 +94,7 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
   }
 
   private getValue(prop: any) {
-    const optional = ['createdAt', 'updatedAt'];
+    const optional = ['createdAt', 'updatedAt', 'courseId'];
 
     const privateProp = `_${prop}` as keyof this;
 

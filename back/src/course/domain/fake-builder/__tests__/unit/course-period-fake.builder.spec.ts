@@ -60,6 +60,53 @@ describe('CoursePeriodFakeBuilder Unit Tests', () => {
     });
   });
 
+  describe('courseId prop', () => {
+    const faker = CoursePeriodFakeBuilder.aCoursePeriod();
+
+    test('should throw error when any with methods has not been called', () => {
+      const fakerCoursePeriod = CoursePeriodFakeBuilder.aCoursePeriod();
+
+      expect(() => fakerCoursePeriod.courseId).toThrow(
+        new Error(
+          "Property courseId does not have a factory, use 'with' methods",
+        ),
+      );
+    });
+
+    test('should be undefined', () => {
+      expect(faker['_courseId']).toBeUndefined();
+    });
+
+    test('withCourseId()', () => {
+      const courseId = 'course-id-123';
+      const $this = faker.withCourseId(courseId);
+
+      expect($this).toBeInstanceOf(CoursePeriodFakeBuilder);
+      expect(faker['_courseId']).toBe(courseId);
+
+      faker.withCourseId(() => courseId);
+
+      //@ts-expect-error _courseId is a callable
+      expect(faker['_courseId']()).toBe(courseId);
+      expect(faker.courseId).toBe(courseId);
+    });
+
+    test('should pass index to courseId factory', () => {
+      faker.withCourseId((index) => `course-id-${index}`);
+      const coursePeriod = faker.build();
+
+      expect(coursePeriod.courseId).toBe('course-id-0');
+
+      const fakerMany = CoursePeriodFakeBuilder.theCoursePeriods(2);
+      fakerMany.withCourseId((index) => `course-id-${index}`);
+
+      const coursePeriods = fakerMany.build();
+
+      expect(coursePeriods[0].courseId).toBe('course-id-0');
+      expect(coursePeriods[1].courseId).toBe('course-id-1');
+    });
+  });
+
   describe('createdAt prop', () => {
     const faker = CoursePeriodFakeBuilder.aCoursePeriod();
 
@@ -172,6 +219,24 @@ describe('CoursePeriodFakeBuilder Unit Tests', () => {
       expect(coursePeriods[0]).toBeInstanceOf(CoursePeriodEntity);
       expect(coursePeriods[1]).toBeInstanceOf(CoursePeriodEntity);
       expect(coursePeriods[0].name).not.toBe(coursePeriods[1].name);
+    });
+
+    it('should include courseId when provided', () => {
+      const courseId = 'test-course-id';
+      const faker = CoursePeriodFakeBuilder.aCoursePeriod()
+        .withCourseId(courseId);
+      const coursePeriod = faker.build();
+
+      expect(coursePeriod.courseId).toBe(courseId);
+    });
+
+    it('should generate different courseIds when using factory', () => {
+      const faker = CoursePeriodFakeBuilder.theCoursePeriods(2)
+        .withCourseId((index) => `course-${index}`);
+      const coursePeriods = faker.build();
+
+      expect(coursePeriods[0].courseId).toBe('course-0');
+      expect(coursePeriods[1].courseId).toBe('course-1');
     });
   });
 
