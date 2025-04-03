@@ -5,12 +5,14 @@ import { DatabaseModule } from './shared/infrastructure/database/database.module
 import { AuthModule } from './auth/infrastructure/auth.module';
 import { ClassroomModule } from './classroom/infrastructure/classroom.module';
 import { CourseModule } from '@/course/infrastructure/course.module';
+import { CoursePeriodModule } from './course/infrastructure/course-period.module';
 
 @Module({
   imports: [
     EnvConfigModule,
     ClassroomModule,
     CourseModule,
+    CoursePeriodModule,
     UserModule,
     DatabaseModule,
     AuthModule,
