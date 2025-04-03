@@ -4,7 +4,6 @@ import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.se
 import { CourseModelMapper } from '@/course/infrastructure/database/prisma/models/course-model.mapper';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
 import { Course } from '@prisma/client';
-import { ClassroomRepository } from '@/classroom/domain/repositories/classroom.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 export class CoursePrismaRepository implements CourseRepository.Repository {
