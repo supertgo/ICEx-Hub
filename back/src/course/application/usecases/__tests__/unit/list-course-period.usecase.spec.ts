@@ -6,7 +6,7 @@ import { CoursePeriodRepository } from '@/course/domain/repositories/course-peri
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 import { CoursePeriodDataBuilder } from '@/user/domain/testing/helper/course-period-data-builder';
 
-describe('List courses use cases unit tests', () => {
+describe('List course period use cases unit tests', () => {
   function createCoursePeriodEntity(courseProps: Partial<CourseProps> = {}) {
     return new CoursePeriodEntity(CoursePeriodDataBuilder(courseProps));
   }
