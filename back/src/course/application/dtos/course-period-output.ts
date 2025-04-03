@@ -3,6 +3,7 @@ import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entit
 export type CoursePeriodOutput = {
   id: string;
   name: string;
+  courseId?: string;
   createdAt: Date;
   updatedAt: Date | null;
 };
