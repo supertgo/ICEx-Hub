@@ -20,7 +20,7 @@ import { CoursePeriodRepository } from '@/course/domain/repositories/course-peri
       inject: ['PrismaService'],
     },
     {
-      provide: 'ListCoursePeriodUsecase',
+      provide: ListCoursePeriodUsecase.UseCase,
       useFactory: (
         coursePeriodRepository: CoursePeriodRepository.Repository,
       ) => {

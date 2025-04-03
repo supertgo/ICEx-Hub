@@ -1,18 +1,22 @@
 import { ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { ListCoursePeriodUsecase } from '@/course/application/usecases/list-course-period.usecase';
-import { Get, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ListCoursesDto } from '@/course/infrastructure/dtos/list-course.dto';
-import { CoursePeriodPresenter } from '@/course/infrastructure/presenters/course-period.presenter';
+import {
+  CoursePeriodCollectionPresenter,
+  CoursePeriodPresenter,
+} from '@/course/infrastructure/presenters/course-period.presenter';
 
 @ApiTags('course-period')
+@Controller('course-period')
 export class CoursePeriodController {
   @Inject(ListCoursePeriodUsecase.UseCase)
   private listCoursePeriodUseCase: ListCoursePeriodUsecase.UseCase;
 
   static listCoursePeriodToResponse(
     output: ListCoursePeriodUsecase.Output,
-  ): ListCoursePeriodUsecase.Output {
-    return output;
+  ): CoursePeriodCollectionPresenter {
+    return new CoursePeriodCollectionPresenter(output);
   }
 
   @ApiResponse({

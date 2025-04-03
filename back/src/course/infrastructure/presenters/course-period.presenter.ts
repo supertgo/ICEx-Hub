@@ -26,7 +26,7 @@ export class CoursePeriodPresenter {
   }
 }
 
-export class CourseCollectionPresenter extends CollectionPresenter {
+export class CoursePeriodCollectionPresenter extends CollectionPresenter {
   data: CoursePeriodPresenter[];
 
   constructor(output: ListCoursePeriodUsecase.Output) {
