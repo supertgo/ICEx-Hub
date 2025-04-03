@@ -1,6 +1,7 @@
 import { Entity } from '@/shared/domain/entities/entity';
 import { CoursePeriodValidatorFactory } from '@/shared/domain/validators/course-period.validator';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
+import { CoursePeriodFakeBuilder } from '@/course/domain/fake-builder/course-period-fake.builder';
 
 export type CoursePeriodProps = {
   name: string;
@@ -60,7 +61,7 @@ export class CoursePeriodEntity extends Entity<CoursePeriodProps> {
     }
   }
 
-  // static fake(): typeof CoursePeriodFakeBuilder {
-  //   return CoursePeriodFakeBuilder;
-  // }
+  static fake(): typeof CoursePeriodFakeBuilder {
+    return CoursePeriodFakeBuilder;
+  }
 }
