@@ -4,7 +4,14 @@ import { CourseProps } from '@/course/domain/entities/course.entity';
 export function CourseDataBuilder(props: Partial<CourseProps>) {
   return {
     name: props.name || faker.string.alphanumeric(),
-    code: props.name || faker.string.alphanumeric(),
+    code:
+      props.name ||
+      faker.string.alphanumeric({
+        length: {
+          min: 1,
+          max: 20,
+        },
+      }),
     createdAt: props.createdAt || new Date(),
     updatedAt: props.createdAt || new Date(),
   };

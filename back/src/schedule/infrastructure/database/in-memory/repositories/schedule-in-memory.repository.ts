@@ -48,10 +48,7 @@ export class ScheduleInMemoryRepository
     if (!filter) return items;
 
     return items.filter((item) => {
-      return (
-        item.props.discipline.name === filter.name &&
-        item.props.classroom.name === filter.name
-      );
+      return filter.timeSlots.includes(item.props.timeSlot);
     });
   }
 

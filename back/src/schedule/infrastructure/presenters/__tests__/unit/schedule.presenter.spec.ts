@@ -20,7 +20,8 @@ describe('Schedule presenter unit tests', () => {
     expect(sut).toBeDefined();
     expect(sut.id).toEqual(props.id);
     expect(sut.discipline).toEqual(props.discipline);
-    expect(sut.classroom).toEqual(props.classroom);
+    expect(sut.classroom.name).toEqual(props.classroom.name);
+    expect(sut.classroom.building).toEqual(props.classroom.building);
     expect(sut.dayPattern).toEqual(props.dayPattern);
     expect(sut.timeSlot).toEqual(props.timeSlot);
     expect(sut.createdAt).toEqual(props.createdAt);
@@ -31,9 +32,8 @@ describe('Schedule presenter unit tests', () => {
     const output = instanceToPlain(sut);
     expect(output).toBeDefined();
     expect(output.id).toEqual(props.id);
-    expect(output.disciplineId).toEqual(props.disciplineId);
-    expect(sut.discipline).toEqual(props.discipline);
-    expect(output.classroom).toEqual(props.classroom);
+    expect(output.discipline.id).toEqual(props.discipline.id);
+    expect(output.classroom.id).toEqual(props.classroom.id);
     expect(output.dayPattern).toEqual(props.dayPattern);
     expect(output.timeSlot).toEqual(props.timeSlot);
     expect(output.createdAt).toEqual(props.createdAt.toISOString());
@@ -70,9 +70,8 @@ describe('Schedule presenter unit tests', () => {
       const output = instanceToPlain(sut);
       expect(output.data[0]).toBeDefined();
       expect(output.data[0].id).toEqual(props.id);
-      expect(output.data[0].disciplineId).toEqual(props.disciplineId);
-      //expect(sut..data[0]discipline).toEqual(props.discipline)
-      expect(output.data[0].classroom).toEqual(props.classroom);
+      expect(sut.data[0].discipline.id).toEqual(props.discipline.id);
+      expect(output.data[0].classroom.id).toEqual(props.classroom.id);
       expect(output.data[0].dayPattern).toEqual(props.dayPattern);
       expect(output.data[0].timeSlot).toEqual(props.timeSlot);
       expect(output.data[0].createdAt).toEqual(props.createdAt.toISOString());

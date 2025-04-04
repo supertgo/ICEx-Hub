@@ -4,14 +4,66 @@ import { PrismaClient } from '@prisma/client';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
+import {
+  ScheduleEntity,
+  ScheduleProps,
+} from '@/schedule/domain/entities/schedule.entity';
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
+import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
+import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
+import { CourseEntity } from '@/course/domain/entities/course.entity';
+import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
+import { CoursePeriodDataBuilder } from '@/course/domain/testing/helper/course-period-data-builder';
 
 describe('Schedule prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
   let sut: SchedulePrismaRepository;
   let module: TestingModule;
+
+  async function fakeSchedule(): Promise<ScheduleProps> {
+    const classroom = ClassroomEntity.fake().aCADClassroom().build();
+    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
+    const discipline = new DisciplineEntity(DisciplineDataBuilder({}));
+    const course = new CourseEntity(CourseDataBuilder({}));
+    const coursePeriodProps = CoursePeriodDataBuilder({});
+
+    const courseData = await prismaService.course.create({
+      data: course,
+    });
+
+    const coursePeriodData = await prismaService.coursePeriod.create({
+      data: {
+        name: coursePeriodProps.name,
+        course: {
+          connect: {
+            id: courseData.id,
+          },
+        },
+      },
+    });
+
+    const classroomData = await prismaService.classroom.create({
+      data: classroom,
+    });
+
+    const disciplineData = await prismaService.discipline.create({
+      data: {
+        name: discipline.name,
+        code: discipline.code,
+        coursePeriodId: coursePeriodData.id,
+        courseId: course.id,
+      },
+    });
+
+    return {
+      classroomId: classroomData.id,
+      disciplineId: disciplineData.id,
+      dayPattern: entity.dayPattern,
+      timeSlot: entity.timeSlot,
+    };
+  }
 
   beforeAll(async () => {
     setUpPrismaTest();
@@ -38,36 +90,60 @@ describe('Schedule prisma repository integration tests', () => {
   });
 
   it('should find schedule by id', async () => {
-    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
-
-    const createdSchedule = await prismaService.schedule.create({
-      data: {
-        classroomId: entity.classroomId,
-        disciplineId: entity.disciplineId,
-        dayPattern: entity.dayPattern,
-        timeSlot: entity.timeSlot,
-      },
-    });
-
-    const schedule = await sut.findById(createdSchedule.id);
+    const props = await fakeSchedule();
+    const entity = await sut.insert(new ScheduleEntity(props));
+    const schedule = await sut.findById(entity.id);
 
     expect(sut).not.toBeNull();
-    expect(schedule.toJSON()).toStrictEqual(entity.toJSON());
-  });
-
-  it('should insert a new schedule', async () => {
-    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
-    await sut.insert(entity);
+    expect(schedule.toJSON()).toStrictEqual({
+      id: entity.id,
+      classroom: {
+        id: entity.classroom.id,
+        name: entity.classroom.name,
+        building: entity.classroom.building,
+        createdAt: entity.classroom.createdAt,
+      },
+      discipline: {
+        id: entity.discipline.id,
+        name: entity.discipline.name,
+        code: entity.discipline.code,
+        courseId: entity.discipline.courseId,
+        coursePeriodId: entity.discipline.coursePeriodId,
+      },
+      dayPattern: entity.dayPattern,
+      timeSlot: entity.timeSlot,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    });
   });
 
   it('should return one schedule if theres only one with find all', async () => {
-    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
-    await sut.insert(entity);
+    const props = await fakeSchedule();
+    const entity = await sut.insert(new ScheduleEntity(props));
 
     const schedules = await sut.findAll();
 
     expect(schedules).toHaveLength(1);
-    expect(schedules[0].toJSON()).toStrictEqual(entity.toJSON());
+    expect(schedules[0].toJSON()).toStrictEqual({
+      id: entity.id,
+      classroom: {
+        id: entity.classroom.id,
+        name: entity.classroom.name,
+        building: entity.classroom.building,
+        createdAt: entity.classroom.createdAt,
+      },
+      discipline: {
+        id: entity.discipline.id,
+        name: entity.discipline.name,
+        code: entity.discipline.code,
+        courseId: entity.discipline.courseId,
+        coursePeriodId: entity.discipline.coursePeriodId,
+      },
+      dayPattern: entity.dayPattern,
+      timeSlot: entity.timeSlot,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    });
   });
 
   it('should throw error when trying to update non-existent schedule', async () => {
@@ -90,7 +166,8 @@ describe('Schedule prisma repository integration tests', () => {
   });
 
   it('should delete a schedule successfully', async () => {
-    const entity = new ScheduleEntity(ScheduleDataBuilder({}));
+    const props = await fakeSchedule();
+    const entity = await sut.insert(new ScheduleEntity(props));
     await sut.insert(entity);
 
     await sut.delete(entity.id);

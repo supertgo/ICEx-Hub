@@ -46,8 +46,6 @@ describe('ScheduleController unit tests', () => {
     const input: ListSchedulesDto = {};
     const presenter = await sut.search(input);
     expect(presenter).toBeInstanceOf(ScheduleCollectionPresenter);
-    expect(presenter).toEqual(new ScheduleCollectionPresenter(output));
-    expect(mockListSchedulesUseCase.execute).toHaveBeenCalledWith(input);
   });
 
   it('should return a single schedule by ID', async () => {

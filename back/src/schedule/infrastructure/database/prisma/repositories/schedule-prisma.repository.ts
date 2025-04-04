@@ -168,6 +168,10 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         classroomId: entity.classroomId,
         dayPattern: entity.dayPattern,
       },
+      include: {
+        classroom: true,
+        discipline: true,
+      },
     });
 
     return ScheduleModelMapper.toEntity(schedule);
@@ -178,7 +182,12 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
   }
 
   async findAll(): Promise<ScheduleEntity[]> {
-    const models = await this.prismaService.schedule.findMany();
+    const models = await this.prismaService.schedule.findMany({
+      include: {
+        classroom: true,
+        discipline: true,
+      },
+    });
 
     return models.map(ScheduleModelMapper.toEntity);
   }
