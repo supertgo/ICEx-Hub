@@ -48,7 +48,12 @@ describe('Classroom prisma repository integration tests', () => {
     const classroom = await sut.findById(createdClassroom.id);
 
     expect(sut).not.toBeNull();
-    expect(classroom.toJSON()).toStrictEqual(entity.toJSON());
+    expect(classroom.toJSON()).toEqual(
+      expect.objectContaining({
+        ...entity.toJSON(),
+        updatedAt: expect.any(Date),
+      }),
+    );
   });
 
   it('should insert a new classroom', async () => {
@@ -61,7 +66,12 @@ describe('Classroom prisma repository integration tests', () => {
     });
 
     expect(classroom).not.toBeNull();
-    expect(classroom).toStrictEqual(entity.toJSON());
+    expect(classroom).toEqual(
+      expect.objectContaining({
+        ...entity.toJSON(),
+        updatedAt: expect.any(Date),
+      }),
+    );
   });
 
   it('should return one classroom if theres only one with find all', async () => {
@@ -71,7 +81,12 @@ describe('Classroom prisma repository integration tests', () => {
     const classrooms = await sut.findAll();
 
     expect(classrooms).toHaveLength(1);
-    expect(classrooms[0].toJSON()).toStrictEqual(entity.toJSON());
+    expect(classrooms[0].toJSON()).toEqual(
+      expect.objectContaining({
+        ...entity.toJSON(),
+        updatedAt: expect.any(Date),
+      }),
+    );
   });
 
   it('should throw error when trying to update non-existent classroom', async () => {

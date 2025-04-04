@@ -1,17 +1,17 @@
-import { CourseInMemoryRepository } from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
-import { CourseDataBuilderAsEntity } from '@/user/domain/testing/helper/course-data-builder';
+import { CoursePeriodInMemoryRepository } from '@/course/infrastructure/database/in-memory/repositories/course-period-in-memory.repository';
+import { CoursePeriodDataBuilderAsEntity } from '@/user/domain/testing/helper/course-period-data-builder';
 
 describe('course in memory repository', () => {
-  let sut: CourseInMemoryRepository;
+  let sut: CoursePeriodInMemoryRepository;
 
   beforeEach(() => {
-    sut = new CourseInMemoryRepository();
+    sut = new CoursePeriodInMemoryRepository();
   });
 
   describe('apply filters method', () => {
     it('should call filter method', async () => {
       const items = Array.from({ length: 3 }, () =>
-        CourseDataBuilderAsEntity(),
+        CoursePeriodDataBuilderAsEntity(),
       );
 
       const spyFilter = jest.spyOn(items, 'filter');

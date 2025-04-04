@@ -1,5 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { CourseProps } from '@/course/domain/entities/course.entity';
+import {
+  CourseEntity,
+  CourseProps,
+} from '@/course/domain/entities/course.entity';
 
 export function CourseDataBuilder(props: Partial<CourseProps>) {
   return {
@@ -15,4 +18,10 @@ export function CourseDataBuilder(props: Partial<CourseProps>) {
     createdAt: props.createdAt || new Date(),
     updatedAt: props.createdAt || new Date(),
   };
+}
+
+export function CourseDataBuilderAsEntity(
+  props: Partial<CourseProps> = {},
+): CourseEntity {
+  return new CourseEntity(CourseDataBuilder(props));
 }

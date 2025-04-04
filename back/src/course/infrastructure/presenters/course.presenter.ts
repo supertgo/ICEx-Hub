@@ -1,7 +1,7 @@
 import { CourseOutput } from '@/course/application/dtos/course-output';
 import { CollectionPresenter } from '@/shared/infrastructure/presenters/collection.presenter';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
 export class CoursePresenter {
@@ -31,7 +31,13 @@ export class CoursePresenter {
   }
 }
 
+@ApiExtraModels(CoursePresenter)
 export class CourseCollectionPresenter extends CollectionPresenter {
+  @ApiProperty({
+    type: CoursePresenter,
+    isArray: true,
+    description: 'List of courses',
+  })
   data: CoursePresenter[];
 
   constructor(output: ListCoursesUsecase.Output) {

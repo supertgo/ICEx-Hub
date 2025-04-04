@@ -3,6 +3,7 @@ import {
   PaginationPresenterProps,
 } from '@/shared/infrastructure/presenters/pagination.presenter';
 import { Exclude, Expose } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export abstract class CollectionPresenter {
   @Exclude()
@@ -13,9 +14,13 @@ export abstract class CollectionPresenter {
   }
 
   @Expose({ name: 'meta' })
+  @ApiProperty({
+    type: PaginationPresenter,
+    description: 'Pagination metadata',
+  })
   get meta() {
     return this.paginationPresenter;
   }
 
-  abstract get data(): any;
+  abstract get data(): unknown[];
 }

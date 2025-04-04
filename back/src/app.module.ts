@@ -6,6 +6,7 @@ import { AuthModule } from './auth/infrastructure/auth.module';
 import { ClassroomModule } from './classroom/infrastructure/classroom.module';
 import { CourseModule } from '@/course/infrastructure/course.module';
 import { ScheduleModule } from './schedule/infrastructure/schedule.module';
+import { CoursePeriodModule } from './course/infrastructure/course-period.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ScheduleModule } from './schedule/infrastructure/schedule.module';
     ClassroomModule,
     CourseModule,
     ScheduleModule,
+    CoursePeriodModule,
     UserModule,
     DatabaseModule,
     AuthModule,
