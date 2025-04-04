@@ -11,9 +11,9 @@ export class {{pascalCase name}}Presenter {
 @ApiExtraModels({{pascalCase name}}PresenterPresenter)
 export class {{pascalCase name}}CollectionPresenter extends CollectionPresenter {
   @ApiProperty({
-    type: {{pascalCase name}Presenter,
+    type: {{pascalCase name}}Presenter,
     isArray: true,
-    description: 'List of {{pascalCase name}',
+    description: 'List of {{pascalCase name}}',
   })
   data: {{pascalCase name}}Presenter[];
 
