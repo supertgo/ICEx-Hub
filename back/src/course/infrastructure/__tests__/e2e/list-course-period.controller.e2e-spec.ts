@@ -2,15 +2,14 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
-import { CourseModule } from '@/course/infrastructure/course.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { applyGlobalConfig } from '@/global-config';
 import request from 'supertest';
-import { CourseEntity } from '@/course/domain/entities/course.entity';
-import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { CoursePeriodModule } from '@/course/infrastructure/course-period.module';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
-describe('Show Course E2E Tests', () => {
+describe('Index Course Period E2E Tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   const prismaService = new PrismaClient();
@@ -18,7 +17,7 @@ describe('Show Course E2E Tests', () => {
   beforeAll(async () => {
     setUpPrismaTest();
     module = await Test.createTestingModule({
-      imports: [CourseModule, DatabaseModule.forTest(prismaService)],
+      imports: [CoursePeriodModule, DatabaseModule.forTest(prismaService)],
     }).compile();
 
     app = module.createNestApplication();
@@ -28,46 +27,30 @@ describe('Show Course E2E Tests', () => {
   });
 
   beforeEach(async () => {
+    await prismaService.coursePeriod.deleteMany();
     await prismaService.course.deleteMany();
   });
 
+  afterAll(async () => {
+    await prismaService.coursePeriod.deleteMany();
+    await prismaService.course.deleteMany();
+  });
 
   it('should return sorted by name asc, filtered and paginated', async () => {
-    const entity1 = new CourseEntity(
-      CourseDataBuilder({
-        name: 'AB',
-        code: 'asasddfkhgasdkljf',
-      }),
-    );
-
-    await prismaService.course.create({
-      data: entity1,
+    await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService, {
+      name: 'AB',
     });
 
-    const entity2 = new CourseEntity(
-      CourseDataBuilder({
-        name: 'AA',
-        code: 'asdfkhgasdkljf',
-      }),
-    );
-
-    await prismaService.course.create({
-      data: entity2,
+    await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService, {
+      name: 'AA',
     });
 
-    const entity3 = new CourseEntity(
-      CourseDataBuilder({
-        name: 'AC',
-        code: 'asdfkhgaasdsdkljf',
-      }),
-    );
-
-    await prismaService.course.create({
-      data: entity3,
+    await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService, {
+      name: 'Ac',
     });
 
     const response = await request(app.getHttpServer())
-      .get('/course')
+      .get('/course-period')
       .query({
         filter: 'A',
         sort: 'name',
@@ -91,7 +74,7 @@ describe('Show Course E2E Tests', () => {
 
   it('should return a error with invalid fields', async () => {
     const res = await request(app.getHttpServer())
-      .get('/course')
+      .get('/course-period')
       .query({ invalid: 'invalid' })
       .expect(422);
 
