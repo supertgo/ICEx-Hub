@@ -8,7 +8,13 @@ export class {{pascalCase name}}Presenter {
   constructor(output: {{pascalCase name}}Output) { }
 }
 
+@ApiExtraModels({{pascalCase name}}PresenterPresenter)
 export class {{pascalCase name}}CollectionPresenter extends CollectionPresenter {
+  @ApiProperty({
+    type: {{pascalCase name}Presenter,
+    isArray: true,
+    description: 'List of {{pascalCase name}',
+  })
   data: {{pascalCase name}}Presenter[];
 
   constructor(output: List{{pascalCase name}}sUsecase.Output) {
