@@ -18,4 +18,14 @@ export class SignUpDto implements SignupUsecase.Input {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty({ description: 'The course ID of the user' })
+  @IsString()
+  @IsNotEmpty()
+  courseId: string;
+
+  @ApiProperty({ description: 'The course period ID of the user' })
+  @IsString()
+  @IsNotEmpty()
+  coursePeriodId: string;
 }
