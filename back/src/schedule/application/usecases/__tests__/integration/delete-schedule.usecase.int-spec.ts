@@ -6,6 +6,7 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-schedule.usecase';
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
+import { fakeScheduleProps } from '@/schedule/domain/testing/helper/schedule-data-builder';
 
 describe('Delete Schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -41,5 +42,56 @@ describe('Delete Schedule usecase integration tests', () => {
     );
   });
 
-  it('should delete a schedule', async () => {});
+  it('should delete a schedule', async () => {
+    const { course, coursePeriodProps, discipline, classroom, ...entity } =
+      fakeScheduleProps();
+
+    await prismaService.course.create({
+      data: course,
+    });
+
+    const coursePeriodData = await prismaService.coursePeriod.create({
+      data: {
+        name: coursePeriodProps.name,
+        course: {
+          connect: {
+            id: course.id,
+          },
+        },
+      },
+    });
+
+    await prismaService.classroom.create({
+      data: classroom,
+    });
+
+    await prismaService.discipline.create({
+      data: {
+        id: discipline.id,
+        name: discipline.name,
+        code: discipline.code,
+        coursePeriodId: coursePeriodData.id,
+        courseId: course.id,
+      },
+    });
+
+    const schedule = await prismaService.schedule.create({
+      data: {
+        classroomId: classroom.id,
+        disciplineId: discipline.id,
+        timeSlot: entity.timeSlot,
+        dayPattern: entity.dayPattern,
+      },
+    });
+
+    await sut.execute({ id: schedule.id });
+
+    const scheduleCount = await prismaService.schedule.count({
+      where: {
+        id: schedule.id,
+      },
+    });
+
+    expect(scheduleCount).toBe(0);
+  });
 });
