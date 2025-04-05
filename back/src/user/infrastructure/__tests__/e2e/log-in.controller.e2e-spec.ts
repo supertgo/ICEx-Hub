@@ -3,7 +3,10 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserModule } from '@/user/infrastructure/user.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
@@ -15,6 +18,8 @@ import { SignInDto } from '@/user/infrastructure/dtos/sign-in.dto';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { LogInUserPresenter } from '@/user/infrastructure/presenters/log-in-user.presenter';
+import { UserEntity } from '@/user/domain/entities/user.entity';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Log in user e2e tests', () => {
   let app: INestApplication;
@@ -23,8 +28,9 @@ describe('Log in user e2e tests', () => {
   let signInDto: SignInDto;
   let hasProvider: HashProvider;
   const prismaService = new PrismaClient();
-  const user = UserDataBuilder({});
+  let user: UserEntity;
   let hashedPassword: string;
+  const password = '123456';
 
   beforeAll(async () => {
     hasProvider = new BcryptjsHashProvider();
@@ -46,15 +52,16 @@ describe('Log in user e2e tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.user.deleteMany();
-    hashedPassword = await hasProvider.generateHash(user.password);
-    await prismaService.user.create({
-      data: { ...user, password: hashedPassword },
+    await resetDatabase(prismaService);
+
+    hashedPassword = await hasProvider.generateHash(password);
+    user = await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+      password: hashedPassword,
     });
 
     signInDto = {
       email: user.email,
-      password: user.password,
+      password: password,
     };
   });
 
