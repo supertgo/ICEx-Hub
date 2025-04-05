@@ -1,5 +1,8 @@
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
-import { UserEntity } from '@/user/domain/entities/user.entity';
+import {
+  UserDataBuilder,
+  UserDataBuilderWithOptionalIds,
+} from '@/user/domain/testing/helper/user-data-builder';
+import { UserEntity, UserProps } from '@/user/domain/entities/user.entity';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 
 describe('User entity integration tests', () => {
@@ -22,6 +25,24 @@ describe('User entity integration tests', () => {
       expect(() => new UserEntity(props)).toThrow(EntityValidationError);
     });
 
+    it('should throw error with invalid courseId', () => {
+      const props = {
+        ...UserDataBuilder({}),
+        courseId: {} as any,
+      };
+
+      expect(() => new UserEntity(props)).toThrow(EntityValidationError);
+    });
+
+    it('should throw error with invalid coursePeriodId', () => {
+      const props = {
+        ...UserDataBuilder({}),
+        coursePeriodId: {} as any,
+      };
+
+      expect(() => new UserEntity(props)).toThrow(EntityValidationError);
+    });
+
     it('should throw error with invalid password', () => {
       const props = {
         ...UserDataBuilder({}),
@@ -35,13 +56,27 @@ describe('User entity integration tests', () => {
       const props = UserDataBuilder({});
       const sut = new UserEntity(props);
 
-      expect(sut).toBeDefined();
-      expect(sut).toBeInstanceOf(UserEntity);
-      expect(sut.name).toBe(props.name);
-      expect(sut.email).toBe(props.email);
-      expect(sut.password).toBe(props.password);
-      expect(sut.createdAt).toBe(props.createdAt);
+      commonUserEntityValidation(sut, props);
     });
+  });
+
+  function commonUserEntityValidation(sut: UserEntity, props: UserProps) {
+    expect(sut).toBeDefined();
+    expect(sut).toBeInstanceOf(UserEntity);
+    expect(sut.name).toBe(props.name);
+    expect(sut.email).toBe(props.email);
+    expect(sut.password).toBe(props.password);
+    expect(sut.createdAt).toBe(props.createdAt);
+  }
+
+  it('should create user with valid data and optionalParameters', () => {
+    const props = UserDataBuilderWithOptionalIds({});
+    const sut = new UserEntity(props);
+
+    commonUserEntityValidation(sut, props);
+
+    expect(sut.courseId).toBe(props.courseId);
+    expect(sut.coursePeriodId).toBe(props.coursePeriodId);
   });
 
   describe('update tests', () => {
