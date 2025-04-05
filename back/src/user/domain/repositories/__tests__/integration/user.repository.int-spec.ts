@@ -1,5 +1,11 @@
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  UserDataBuilder,
+  UserDataBuilderWithOptionalIds,
+} from '@/user/domain/testing/helper/user-data-builder';
 import { PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -11,6 +17,8 @@ import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repositor
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
 import { EmailAlreadyInUseError } from '@/user/domain/errors/email-already-in-use-error';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('User prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -27,10 +35,13 @@ describe('User prisma repository integration tests', () => {
 
   beforeEach(async () => {
     sut = new UserPrismaRepository(prismaService as any);
-    await prismaService.user.deleteMany();
+
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
+    await resetDatabase(prismaService);
+
     await prismaService.$disconnect();
     await module.close();
   });
@@ -42,20 +53,26 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should find user by id', async () => {
-    const entity = new UserEntity(UserDataBuilder({}));
+    const entity =
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService);
 
-    const createdUser = await prismaService.user.create({
-      data: entity.toJSON(),
-    });
-
-    const user = await sut.findById(createdUser.id);
+    const user = await sut.findById(entity.id);
 
     expect(sut).not.toBeNull();
     expect(user.toJSON()).toStrictEqual(entity.toJSON());
   });
 
   it('should insert a new user', async () => {
-    const entity = new UserEntity(UserDataBuilder({}));
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const entity = new UserEntity(
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+      }),
+    );
+
     await sut.insert(entity);
 
     const user = await prismaService.user.findFirst({
@@ -67,7 +84,15 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should return one user if theres only one with find all', async () => {
-    const entity = new UserEntity(UserDataBuilder({}));
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const entity = new UserEntity(
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+      }),
+    );
     await sut.insert(entity);
 
     const users = await sut.findAll();
@@ -78,8 +103,16 @@ describe('User prisma repository integration tests', () => {
 
   it('should return users paginated', async () => {
     const entities = [];
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
     for (let i = 0; i < 3; i++) {
-      const entity = new UserEntity(UserDataBuilder({}));
+      const entity = new UserEntity(
+        UserDataBuilderWithOptionalIds({
+          courseId: coursePeriod.courseId,
+          coursePeriodId: coursePeriod.id,
+        }),
+      );
       await sut.insert(entity);
       entities.push(entity);
     }
@@ -107,7 +140,16 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should update a user successfully', async () => {
-    const entity = new UserEntity(UserDataBuilder({ name: 'John' }));
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const entity = new UserEntity(
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+      }),
+    );
+
     await sut.insert(entity);
 
     entity.update('John Updated');
@@ -129,7 +171,16 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should delete a user successfully', async () => {
-    const entity = new UserEntity(UserDataBuilder({ name: 'John' }));
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const entity = new UserEntity(
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+      }),
+    );
+
     await sut.insert(entity);
 
     await sut.delete(entity.id);
@@ -142,8 +193,15 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should find a user by email', async () => {
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
     const entity = new UserEntity(
-      UserDataBuilder({ email: 'john@example.com' }),
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+        email: 'john@example.com',
+      }),
     );
     await sut.insert(entity);
 
@@ -163,9 +221,17 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should throw error if email is already in use', async () => {
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
     const entity = new UserEntity(
-      UserDataBuilder({ email: 'john@example.com' }),
+      UserDataBuilderWithOptionalIds({
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+        email: 'john@example.com',
+      }),
     );
+
     await sut.insert(entity);
 
     await expect(sut.assureEmailIsAvailableToUse(entity.email)).rejects.toThrow(
@@ -184,8 +250,15 @@ describe('User prisma repository integration tests', () => {
       const createdAtTime = new Date().getTime();
       const entities = [];
       for (let i = 0; i < 11; i++) {
+        const coursePeriod =
+          await CoursePeriodPrismaTestingHelper.createCoursePeriod(
+            prismaService,
+          );
+
         const entity = new UserEntity(
-          UserDataBuilder({
+          UserDataBuilderWithOptionalIds({
+            courseId: coursePeriod.courseId,
+            coursePeriodId: coursePeriod.id,
             createdAt: new Date(createdAtTime - i),
             name: `${i}`,
           }),
@@ -219,14 +292,15 @@ describe('User prisma repository integration tests', () => {
     });
 
     it('should filter users by name', async () => {
-      const users = [
-        new UserEntity(UserDataBuilder({ name: 'John' })),
-        new UserEntity(UserDataBuilder({ name: 'Jane' })),
-        new UserEntity(UserDataBuilder({ name: 'Alice' })),
-      ];
-      for (const user of users) {
-        await sut.insert(user);
-      }
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'John',
+      });
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'Jane',
+      });
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'Alice',
+      });
 
       const searchResult = await sut.search(
         new UserRepository.SearchParams({ filter: 'Ja' }),
@@ -238,14 +312,15 @@ describe('User prisma repository integration tests', () => {
     });
 
     it('should sort users by name in ascending order', async () => {
-      const users = [
-        new UserEntity(UserDataBuilder({ name: 'Zoe' })),
-        new UserEntity(UserDataBuilder({ name: 'Alice' })),
-        new UserEntity(UserDataBuilder({ name: 'John' })),
-      ];
-      for (const user of users) {
-        await sut.insert(user);
-      }
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'Zoe',
+      });
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'Alice',
+      });
+      await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+        name: 'John',
+      });
 
       const searchResult = await sut.search(
         new UserRepository.SearchParams({
@@ -266,6 +341,7 @@ describe('User prisma repository integration tests', () => {
       for (let i = 0; i < 15; i++) {
         users.push(new UserEntity(UserDataBuilder({ name: `User ${i}` })));
       }
+
       for (const user of users) {
         await sut.insert(user);
       }
