@@ -8,6 +8,14 @@ export class CoursePeriodInMemoryRepository
   extends InMemorySearchableRepository<CoursePeriodEntity>
   implements CoursePeriodRepository.Repository
 {
+  assureCoursePeriodExists(coursePeriodId: string): Promise<void> {
+    return this.items.indexOf(
+      this.items.find((item) => item.id === coursePeriodId),
+    ) > -1
+      ? Promise.resolve()
+      : Promise.reject(new CoursePeriodWithIdNotFoundError(coursePeriodId));
+  }
+
   sortableFields = ['name', 'createdAt'];
 
   protected async applyFilters(
