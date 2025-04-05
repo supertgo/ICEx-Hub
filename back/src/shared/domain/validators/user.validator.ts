@@ -29,6 +29,14 @@ class UserRules {
   @IsDate()
   createdAt: Date;
 
+  @IsOptional()
+  @IsString()
+  courseId: string;
+
+  @IsOptional()
+  @IsString()
+  coursePeriodId: string;
+
   constructor(data: UserProps) {
     Object.assign(this, data);
   }
