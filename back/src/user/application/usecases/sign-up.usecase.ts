@@ -7,12 +7,16 @@ import {
 } from '@/user/application/dtos/user-output';
 import { UseCaseInterface } from '@/shared/application/use-cases/use-case';
 import { AbstractUseCase } from '@/shared/application/use-cases/abstract-use-case';
+import { CourseRepository } from '@/course/domain/repositories/course.repository';
+import { CoursePeriodRepository } from '@/course/domain/repositories/course-period.repository';
 
 export namespace SignupUsecase {
   export type Input = {
     name: string;
     email: string;
     password: string;
+    courseId: string;
+    coursePeriodId: string;
   };
 
   export type Output = UserOutput;
@@ -24,6 +28,8 @@ export namespace SignupUsecase {
     constructor(
       private repository: UserRepository.Repository,
       private hashProvider: HashProvider,
+      private courseRepository: CourseRepository.Repository,
+      private coursePeriodRepository: CoursePeriodRepository.Repository,
     ) {
       super();
     }
@@ -32,6 +38,12 @@ export namespace SignupUsecase {
       this.assureRequiredInputProvided(input);
 
       await this.repository.assureEmailIsAvailableToUse(input.email);
+
+      await this.courseRepository.assureCourseExists(input.courseId);
+
+      await this.coursePeriodRepository.assureCoursePeriodExists(
+        input.coursePeriodId,
+      );
 
       const entity = new UserEntity(
         Object.assign(input, {
@@ -45,7 +57,13 @@ export namespace SignupUsecase {
     }
 
     protected assureRequiredInputProvided(input: Input) {
-      const requiredFields = ['name', 'email', 'password'];
+      const requiredFields = [
+        'name',
+        'email',
+        'password',
+        'courseId',
+        'coursePeriodId',
+      ];
 
       super.assureRequiredInputProvided(input, requiredFields);
     }
