@@ -70,8 +70,8 @@ import { CoursePeriodRepository } from '@/course/domain/repositories/course-peri
       inject: [
         'UserRepository',
         'HashProvider',
-        'CoursePeriodRepository',
         'CourseRepository',
+        'CoursePeriodRepository',
       ],
     },
     {
