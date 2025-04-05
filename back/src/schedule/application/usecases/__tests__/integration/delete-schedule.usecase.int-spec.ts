@@ -36,12 +36,9 @@ describe('Delete Schedule usecase integration tests', () => {
   it('should throw error when schedule not found', () => {
     const id = faker.string.uuid();
 
-    expect(
-      async () =>
-        await sut.execute({
-          id,
-        }),
-    ).toThrow(new ScheduleWithIdNotFoundError(id));
+    expect(() => sut.execute({ id })).rejects.toThrow(
+      new ScheduleWithIdNotFoundError(id),
+    );
   });
 
   it('should delete a schedule', async () => {});
