@@ -5,6 +5,7 @@ import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('User model mapper integration tests', () => {
   let prismaService: PrismaService;
@@ -35,8 +36,14 @@ describe('User model mapper integration tests', () => {
   });
 
   it('should map user model to entity', async () => {
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
     const model: User = await prismaService.user.create({
-      data: props,
+      data: {
+        ...props,
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
+      },
     });
 
     const sut = UserModelMapper.toEntity(model);
@@ -48,5 +55,7 @@ describe('User model mapper integration tests', () => {
     expect(sut.email).toBe(model.email);
     expect(sut.password).toBe(model.password);
     expect(sut.createdAt).toBe(model.createdAt);
+    expect(sut.courseId).toBe(model.courseId);
+    expect(sut.coursePeriodId).toBe(model.coursePeriodId);
   });
 });
