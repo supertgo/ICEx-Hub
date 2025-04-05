@@ -1,4 +1,7 @@
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { PrismaClient } from '@prisma/client';
 import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/classroom-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -24,7 +27,7 @@ describe('Classroom prisma repository integration tests', () => {
 
   beforeEach(async () => {
     sut = new ClassroomPrismaRepository(prismaService as any);
-    await prismaService.classroom.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

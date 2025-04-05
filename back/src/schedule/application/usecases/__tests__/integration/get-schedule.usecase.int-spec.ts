@@ -1,12 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { GetScheduleUsecase } from '@/schedule/application/usecases/get-schedule.usecase';
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
-import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
 
 describe('Get schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -26,7 +28,7 @@ describe('Get schedule usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new GetScheduleUsecase.UseCase(repository);
-    await prismaService.schedule.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

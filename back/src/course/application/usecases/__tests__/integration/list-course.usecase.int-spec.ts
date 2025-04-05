@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { ListCoursesUsecase } from '@/course/application/usecases/list-course.usecase';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
@@ -25,7 +28,7 @@ describe('List courses usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new ListCoursesUsecase.UseCase(repository);
-    await prismaService.course.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

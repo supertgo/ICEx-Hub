@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-schedule.usecase';
 import { faker } from '@faker-js/faker';
@@ -26,7 +29,7 @@ describe('Delete Schedule usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new DeleteScheduleUsecase.UseCase(repository);
-    await prismaService.schedule.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

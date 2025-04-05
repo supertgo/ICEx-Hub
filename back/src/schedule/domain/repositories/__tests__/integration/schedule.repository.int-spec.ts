@@ -1,4 +1,7 @@
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
 import { PrismaClient } from '@prisma/client';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
@@ -75,7 +78,7 @@ describe('Schedule prisma repository integration tests', () => {
 
   beforeEach(async () => {
     sut = new SchedulePrismaRepository(prismaService as any);
-    await prismaService.schedule.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

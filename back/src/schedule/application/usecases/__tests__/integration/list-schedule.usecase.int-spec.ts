@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import { SchedulePrismaRepository } from '@/schedule/infrastructure/database/prisma/repositories/schedule-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-// import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
-// import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 import { ListSchedulesUsecase } from '@/schedule/application/usecases/list-schedule.usecase';
-// import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 describe('List schedules usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -26,7 +26,7 @@ describe('List schedules usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new ListSchedulesUsecase.UseCase(repository);
-    await prismaService.schedule.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
