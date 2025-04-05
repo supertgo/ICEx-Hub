@@ -2,15 +2,16 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserModule } from '@/user/infrastructure/user.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import request from 'supertest';
 import { applyGlobalConfig } from '@/global-config';
-import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
-import { ListUsersDto } from '@/user/infrastructure/dtos/list-users.dto';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
@@ -20,7 +21,6 @@ describe('List user e2e tests', () => {
   let app: INestApplication;
   let module: TestingModule;
   let repository: UserRepository.Repository;
-  let ListUsersDto: ListUsersDto;
   const prismaService = new PrismaClient();
   let hasProvider: HashProvider;
   let hashPassword: string;
@@ -46,7 +46,7 @@ describe('List user e2e tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.user.deleteMany();
+    await resetDatabase(prismaService);
 
     const entity = await UserPrismaTestingHelper.createUserAsEntity(
       prismaService,

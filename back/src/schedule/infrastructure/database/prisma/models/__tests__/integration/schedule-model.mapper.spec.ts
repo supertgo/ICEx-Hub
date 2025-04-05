@@ -3,7 +3,10 @@ import { Schedule } from '@prisma/client';
 import { ScheduleModelMapper } from '@/schedule/infrastructure/database/prisma/models/schedule-model.mapper';
 import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 
 describe('Schedule model mapper integration tests', () => {
   let prismaService: PrismaService;
@@ -17,8 +20,8 @@ describe('Schedule model mapper integration tests', () => {
     await prismaService.$connect();
   });
 
-  beforeEach(() => {
-    prismaService.schedule.deleteMany();
+  beforeEach(async () => {
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

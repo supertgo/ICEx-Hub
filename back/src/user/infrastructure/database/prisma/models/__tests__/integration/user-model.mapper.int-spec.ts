@@ -4,7 +4,10 @@ import { UserModelMapper } from '@/user/infrastructure/database/prisma/models/us
 import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('User model mapper integration tests', () => {
@@ -19,8 +22,8 @@ describe('User model mapper integration tests', () => {
     await prismaService.$connect();
   });
 
-  beforeEach(() => {
-    prismaService.user.deleteMany();
+  beforeEach(async () => {
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

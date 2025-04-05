@@ -3,7 +3,7 @@ import { FastifyReply } from 'fastify';
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
-import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/Errors/course-period-with-id-not-found-error';
+import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
 
 @Catch(
   UserWithEmailNotFoundError,

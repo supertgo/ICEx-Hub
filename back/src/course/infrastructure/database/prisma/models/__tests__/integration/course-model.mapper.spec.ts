@@ -3,7 +3,10 @@ import { Course } from '@prisma/client';
 import { CourseModelMapper } from '@/course/infrastructure/database/prisma/models/course-model.mapper';
 import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 describe('Course model mapper integration tests', () => {
@@ -12,14 +15,14 @@ describe('Course model mapper integration tests', () => {
 
   beforeAll(async () => {
     setUpPrismaTest();
-    
+
     prismaService = new PrismaService();
     props = CourseDataBuilder({});
     await prismaService.$connect();
   });
 
-  beforeEach(() => {
-    prismaService.course.deleteMany();
+  beforeEach(async () => {
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
@@ -42,6 +45,5 @@ describe('Course model mapper integration tests', () => {
     const sut = CourseModelMapper.toEntity(model as Course);
 
     expect(sut).toBeInstanceOf(CourseEntity);
-
   });
 });

@@ -1,6 +1,6 @@
 import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/Errors/course-period-with-id-not-found-error';
+import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 import { CoursePeriodRepository } from '@/course/domain/repositories/course-period.repository';
 

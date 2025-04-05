@@ -30,12 +30,10 @@ describe('Index Course Period E2E Tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.coursePeriod.deleteMany();
     await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
-    await prismaService.coursePeriod.deleteMany();
     await resetDatabase(prismaService);
   });
 
