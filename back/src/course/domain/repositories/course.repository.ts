@@ -19,5 +19,6 @@ export namespace CourseRepository {
       SearchParams,
       SearchResult
     > {
+    assureCourseExists(courseId: string): Promise<void>;
   }
 }

@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserModule } from '@/user/infrastructure/user.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
@@ -13,6 +13,7 @@ import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Delete user e2e tests', () => {
   let app: INestApplication;
@@ -44,13 +45,11 @@ describe('Delete user e2e tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.user.deleteMany();
+    await resetDatabase(prismaService);
 
-    entity = new UserEntity(UserDataBuilder({
+    entity = await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
       password: hashPassword,
-    }));
-
-    await prismaService.user.create({ data: entity.toJSON() });
+    });
 
     const loginResponse = await request(app.getHttpServer())
       .post('/user/login')

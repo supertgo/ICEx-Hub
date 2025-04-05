@@ -6,8 +6,8 @@ import {
 
 export function CourseDataBuilder(props: Partial<CourseProps>) {
   return {
-    name: props.name || faker.string.alphanumeric(),
-    code: props.name || faker.string.alphanumeric(),
+    name: props.name || faker.string.alphanumeric({ length: 10 }),
+    code: props.code || faker.string.alphanumeric({ length: 10 }),
     createdAt: props.createdAt || new Date(),
     updatedAt: props.createdAt || new Date(),
   };

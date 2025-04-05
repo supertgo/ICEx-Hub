@@ -1,4 +1,4 @@
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -23,7 +23,7 @@ describe('Course prisma repository integration tests', () => {
 
   beforeEach(async () => {
     sut = new CoursePrismaRepository(prismaService as any);
-    await prismaService.course.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

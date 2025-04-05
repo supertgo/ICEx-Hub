@@ -44,6 +44,8 @@ describe('UserController unit tests', () => {
       name: props.name,
       email: props.email,
       password: props.password,
+      courseId: faker.string.uuid(),
+      coursePeriodId: faker.string.uuid(),
     };
 
     const presenter = await sut.create(input);

@@ -29,7 +29,7 @@ import {
   ApiBearerAuth,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('{{dashCase name}}')
@@ -60,30 +60,10 @@ export class {{pascalCase name}}Controller {
     return new {{pascalCase name}}CollectionPresenter(output);
   }
 
-  @ApiBearerAuth()
-  @ApiResponse({
-    status: 200,
-    schema: {
-      type: 'object',
-      properties: {
-        meta: {
-          type: 'object',
-          properties: {
-            totalItems: { type: 'number' },
-            itemCount: { type: 'number' },
-            itemsPerPage: { type: 'number' },
-            totalPages: { type: 'number' },
-            currentPage: { type: 'number' },
-          },
-        },
-        data: {
-          type: 'array',
-          items: { $ref: getSchemaPath({{pascalCase name}}Presenter) },
-        },
-      },
-    },
+  @ApiOkResponse({
+    description: 'The {{pascalCase name}} has been successfully created.',
+    type: {{pascalCase name}}CollectionPresenter,
   })
-
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)

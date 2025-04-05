@@ -4,7 +4,10 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserModule } from '@/user/infrastructure/user.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
@@ -12,6 +15,7 @@ import request from 'supertest';
 import { UserController } from '@/user/infrastructure/user.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '@/global-config';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('Create user e2e tests', () => {
   let app: INestApplication;
@@ -38,13 +42,22 @@ describe('Create user e2e tests', () => {
   });
 
   beforeEach(async () => {
+    await resetDatabase(prismaService);
+
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
     signUpDto = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
+      courseId: coursePeriod.courseId,
+      coursePeriodId: coursePeriod.id,
     };
+  });
 
-    await prismaService.user.deleteMany();
+  afterAll(async () => {
+    await resetDatabase(prismaService);
   });
 
   it('should create a user', async () => {
@@ -71,6 +84,10 @@ describe('Create user e2e tests', () => {
 
     const user = await repository.findById(response.body.data.id);
 
+    expect(user).toBeDefined();
+    expect(user.courseId).toBe(signUpDto.courseId);
+    expect(user.coursePeriodId).toBe(signUpDto.coursePeriodId);
+
     const presenter = UserController.userToResponse(user.toJSON());
     const serialized = instanceToPlain(presenter);
 
@@ -95,6 +112,10 @@ describe('Create user e2e tests', () => {
         'email must be a string',
         'password should not be empty',
         'password must be a string',
+        'courseId should not be empty',
+        'courseId must be a string',
+        'coursePeriodId should not be empty',
+        'coursePeriodId must be a string',
       ],
       statusCode: 422,
     });
@@ -151,6 +172,40 @@ describe('Create user e2e tests', () => {
     });
   });
 
+  it('should return error when courseId is not a string', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/user')
+      .send({
+        ...signUpDto,
+        courseId: {} as any,
+      })
+      .expect(422);
+
+    expect(response.body).toHaveProperty('error');
+    expect(response.body).toMatchObject({
+      error: 'Unprocessable Entity',
+      message: ['courseId must be a string'],
+      statusCode: 422,
+    });
+  });
+
+  it('should return error when coursePeriod is not a string', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/user')
+      .send({
+        ...signUpDto,
+        coursePeriodId: {} as any,
+      })
+      .expect(422);
+
+    expect(response.body).toHaveProperty('error');
+    expect(response.body).toMatchObject({
+      error: 'Unprocessable Entity',
+      message: ['coursePeriodId must be a string'],
+      statusCode: 422,
+    });
+  });
+
   it('should return error with invalid propriety', async () => {
     const response = await request(app.getHttpServer())
       .post('/user')
@@ -181,6 +236,40 @@ describe('Create user e2e tests', () => {
     expect(response.body).toMatchObject({
       error: 'Conflict',
       message: `User with email ${signUpDto.email} already exists`,
+    });
+  });
+
+  it('should return an error when the course does not exist', async () => {
+    const courseId = faker.string.uuid();
+    const response = await request(app.getHttpServer())
+      .post('/user')
+      .send({
+        ...signUpDto,
+        courseId,
+      })
+      .expect(404);
+
+    expect(response.body).toHaveProperty('error');
+    expect(response.body).toMatchObject({
+      error: 'Not Found',
+      message: `Course having id ${courseId} not found`,
+    });
+  });
+
+  it('should return an error when the coursePeriod does not exist', async () => {
+    const coursePeriodId = faker.string.uuid();
+    const response = await request(app.getHttpServer())
+      .post('/user')
+      .send({
+        ...signUpDto,
+        coursePeriodId,
+      })
+      .expect(404);
+
+    expect(response.body).toHaveProperty('error');
+    expect(response.body).toMatchObject({
+      error: 'Not Found',
+      message: `Course period having id ${coursePeriodId} not found`,
     });
   });
 });

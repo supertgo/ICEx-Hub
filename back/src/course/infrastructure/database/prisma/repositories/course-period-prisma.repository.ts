@@ -30,7 +30,7 @@ export class CoursePeriodPrismaRepository
   }
 
   async update(entity: CoursePeriodEntity): Promise<void> {
-    await this._assureCoursePeriodExists(entity.id);
+    await this.assureCoursePeriodExists(entity.id);
 
     await this.prismaService.coursePeriod.update({
       where: { id: entity.id },
@@ -39,7 +39,7 @@ export class CoursePeriodPrismaRepository
   }
 
   async delete(id: string): Promise<void> {
-    await this._assureCoursePeriodExists(id);
+    await this.assureCoursePeriodExists(id);
 
     await this.prismaService.course.delete({
       where: { id },
@@ -58,7 +58,7 @@ export class CoursePeriodPrismaRepository
     }
   }
 
-  private async _assureCoursePeriodExists(id: string) {
+  public async assureCoursePeriodExists(id: string): Promise<void> {
     if (
       (await this.prismaService.coursePeriod.count({ where: { id } })) === 0
     ) {

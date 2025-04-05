@@ -14,6 +14,7 @@ import { ListUsersDto } from '@/user/infrastructure/dtos/list-users.dto';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('List user e2e tests', () => {
   let app: INestApplication;
@@ -47,14 +48,13 @@ describe('List user e2e tests', () => {
   beforeEach(async () => {
     await prismaService.user.deleteMany();
 
-    const entity = new UserEntity(
+    const entity = await UserPrismaTestingHelper.createUserAsEntity(
+      prismaService,
       UserDataBuilder({
         name: 'ZZ',
         password: hashPassword,
       }),
     );
-
-    await prismaService.user.create({ data: entity.toJSON() });
 
     const loginResponse = await request(app.getHttpServer())
       .post('/user/login')
@@ -78,14 +78,13 @@ describe('List user e2e tests', () => {
     const createdAtTime = new Date().getTime();
     const entities = [];
     for (let i = 0; i < 11; i++) {
-      const entity = new UserEntity(
+      const entity = await UserPrismaTestingHelper.createUserAsEntity(
+        prismaService,
         UserDataBuilder({
           createdAt: new Date(createdAtTime - i),
           name: `${i}`,
         }),
       );
-
-      await prismaService.user.create({ data: entity.toJSON() });
       entities.push(entity);
     }
 
@@ -116,16 +115,10 @@ describe('List user e2e tests', () => {
   });
 
   it('should filter, sort and paginate', async () => {
-    const users = [
-      new UserEntity(UserDataBuilder({ name: 'AA' })),
-      new UserEntity(UserDataBuilder({ name: 'AB' })),
-      new UserEntity(UserDataBuilder({ name: 'AC' })),
-      new UserEntity(UserDataBuilder({ name: 'DD' })),
-    ];
-
-    for (const user of users) {
-      await prismaService.user.create({ data: user.toJSON() });
-    }
+    await UserPrismaTestingHelper.createUser(prismaService, { name: 'AA' });
+    await UserPrismaTestingHelper.createUser(prismaService, { name: 'AB' });
+    await UserPrismaTestingHelper.createUser(prismaService, { name: 'AC' });
+    await UserPrismaTestingHelper.createUser(prismaService, { name: 'DD' });
 
     const queryParams = {
       filter: 'A',

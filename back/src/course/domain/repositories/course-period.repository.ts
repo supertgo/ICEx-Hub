@@ -21,5 +21,7 @@ export namespace CoursePeriodRepository {
       Filter,
       SearchParams,
       SearchResult
-    > {}
+    > {
+    assureCoursePeriodExists(coursePeriodId: string): Promise<void>;
+  }
 }

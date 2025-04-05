@@ -6,12 +6,16 @@ import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course
 
 export class CourseInMemoryRepository
   extends InMemorySearchableRepository<CourseEntity>
-  implements CourseRepository.Repository {
-  sortableFields = [
-    'createdAt',
-    'name',
-    'code',
-  ];
+  implements CourseRepository.Repository
+{
+  assureCourseExists(courseId: string): Promise<void> {
+    return this.items.indexOf(this.items.find((item) => item.id === courseId)) >
+      -1
+      ? Promise.resolve()
+      : Promise.reject(new CourseWithIdNotFoundError(courseId));
+  }
+
+  sortableFields = ['createdAt', 'name', 'code'];
 
   protected async applyFilters(
     items: CourseEntity[],
