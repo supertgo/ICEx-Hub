@@ -337,13 +337,10 @@ describe('User prisma repository integration tests', () => {
     });
 
     it('should paginate users', async () => {
-      const users = [];
       for (let i = 0; i < 15; i++) {
-        users.push(new UserEntity(UserDataBuilder({ name: `User ${i}` })));
-      }
-
-      for (const user of users) {
-        await sut.insert(user);
+        await UserPrismaTestingHelper.createUser(prismaService, {
+          name: `User ${i}`,
+        });
       }
 
       const searchResult = await sut.search(
@@ -356,18 +353,12 @@ describe('User prisma repository integration tests', () => {
     });
 
     it('should sort users by createdAt in descending order', async () => {
-      const users = [];
       const createdAtTime = new Date().getTime();
       for (let i = 0; i < 3; i++) {
-        const user = new UserEntity(
-          UserDataBuilder({
-            name: `User ${i}`,
-            createdAt: new Date(createdAtTime - i),
-          }),
-        );
-
-        await sut.insert(user);
-        users.push(user);
+        await UserPrismaTestingHelper.createUser(prismaService, {
+          name: `User ${i}`,
+          createdAt: new Date(createdAtTime - i),
+        });
       }
 
       const searchResult = await sut.search(

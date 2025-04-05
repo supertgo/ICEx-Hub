@@ -8,6 +8,7 @@ import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provi
 import { faker } from '@faker-js/faker';
 import { SignInUsecase } from '@/user/application/usecases/sign-in.usecase';
 import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Sign up usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -39,11 +40,13 @@ describe('Sign up usecase integration tests', () => {
 
   it('should sign in a user', async () => {
     const password = faker.internet.password();
-    const user = UserDataBuilder({
-      password: await hasProvider.generateHash(password),
-    });
+    const user = await UserPrismaTestingHelper.createUserAsEntity(
+      prismaService,
+      {
+        password: await hasProvider.generateHash(password),
+      },
+    );
 
-    await prismaService.user.create({ data: user });
     const props = {
       email: user.email,
       password: password,
