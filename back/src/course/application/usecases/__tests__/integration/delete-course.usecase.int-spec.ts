@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteCourseUsecase } from '@/course/application/usecases/delete-course.usecase';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { faker } from '@faker-js/faker';
 import {
   CoursePrismaTestingHelper,

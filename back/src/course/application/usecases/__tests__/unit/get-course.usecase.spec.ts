@@ -3,7 +3,7 @@ import {
 } from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
 import { GetCourseUsecase } from '@/course/application/usecases/get-course.usecase';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 describe('Get course use case test', () => {

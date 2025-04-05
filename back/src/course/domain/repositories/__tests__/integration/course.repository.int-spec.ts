@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { faker } from '@faker-js/faker';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 describe('Course prisma repository integration tests', () => {

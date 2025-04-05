@@ -2,7 +2,7 @@ import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { CourseRepository } from '@/course/domain/repositories/course.repository';
 import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 
 export class CourseInMemoryRepository
   extends InMemorySearchableRepository<CourseEntity>
