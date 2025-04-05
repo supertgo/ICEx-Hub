@@ -94,7 +94,9 @@ export class ClassroomFakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild {
+  build(): TBuild extends ClassroomEntity[]
+    ? ClassroomEntity[]
+    : ClassroomEntity {
     const classrooms = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
@@ -112,7 +114,7 @@ export class ClassroomFakeBuilder<TBuild = any> {
         return classroom;
       });
 
-    return this.countObjs === 1 ? (classrooms[0] as any) : classrooms;
+    return (this.countObjs === 1 ? classrooms[0] : classrooms) as any;
   }
 
   get name() {

@@ -72,7 +72,7 @@ export class ScheduleFakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild {
+  build(): TBuild extends ScheduleEntity[] ? ScheduleEntity[] : ScheduleEntity {
     const schedules = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
@@ -90,7 +90,7 @@ export class ScheduleFakeBuilder<TBuild = any> {
         });
       });
 
-    return this.countObjs === 1 ? (schedules[0] as any) : schedules;
+    return (this.countObjs === 1 ? schedules[0] : schedules) as any;
   }
 
   get discplineId() {

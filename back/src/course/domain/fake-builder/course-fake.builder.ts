@@ -71,7 +71,7 @@ export class CourseFakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild {
+  build(): TBuild extends CourseEntity[] ? CourseEntity[] : CourseEntity {
     const courses = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
@@ -87,7 +87,7 @@ export class CourseFakeBuilder<TBuild = any> {
         });
       });
 
-    return this.countObjs === 1 ? (courses[0] as any) : courses;
+    return (this.countObjs === 1 ? courses[0] : courses) as any;
   }
 
   get code() {

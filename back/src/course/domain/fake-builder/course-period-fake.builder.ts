@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PropOrFactory } from '@/shared/domain/common';
-import { CourseEntity } from '../entities/course.entity';
 import { Faker } from '@faker-js/faker';
 import { faker } from '@faker-js/faker/locale/hr';
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
@@ -56,7 +55,9 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild {
+  build(): TBuild extends CoursePeriodEntity[]
+    ? CoursePeriodEntity[]
+    : CoursePeriodEntity {
     const coursePeriods = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
@@ -74,7 +75,7 @@ export class CoursePeriodFakeBuilder<TBuild = any> {
         });
       });
 
-    return this.countObjs === 1 ? (coursePeriods[0] as any) : coursePeriods;
+    return (this.countObjs === 1 ? coursePeriods[0] : coursePeriods) as any;
   }
 
   get name() {
