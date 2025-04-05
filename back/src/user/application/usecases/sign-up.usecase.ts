@@ -26,10 +26,10 @@ export namespace SignupUsecase {
     implements UseCaseInterface<Input, Output>
   {
     constructor(
-      private repository: UserRepository.Repository,
-      private hashProvider: HashProvider,
-      private courseRepository: CourseRepository.Repository,
-      private coursePeriodRepository: CoursePeriodRepository.Repository,
+      private readonly repository: UserRepository.Repository,
+      private readonly hashProvider: HashProvider,
+      private readonly courseRepository: CourseRepository.Repository,
+      private readonly coursePeriodRepository: CoursePeriodRepository.Repository,
     ) {
       super();
     }
