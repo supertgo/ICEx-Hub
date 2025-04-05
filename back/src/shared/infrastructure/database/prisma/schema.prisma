@@ -40,13 +40,17 @@ enum TimeSlot {
 }
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(100)
-  role      UserRole @default(STUDENT)
-  student   Student?
-  createdAt DateTime @default(now())
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String       @db.VarChar(255)
+  email          String       @unique @db.VarChar(255)
+  password       String       @db.VarChar(100)
+  role           UserRole     @default(STUDENT)
+  student        Student?
+  courseId       String       @db.Uuid
+  course         Course       @relation(fields: [courseId], references: [id])
+  coursePeriodId String       @db.Uuid
+  coursePeriod   CoursePeriod @relation(fields: [coursePeriodId], references: [id])
+  createdAt      DateTime     @default(now())
 
   @@index([email])
   @@map("users")
@@ -73,6 +77,7 @@ model CoursePeriod {
   course      Course       @relation(fields: [courseId], references: [id])
   disciplines Discipline[]
   Student     Student[]
+  User        User[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
@@ -138,6 +143,7 @@ model Course {
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   Student     Student[]
+  User        User[]
 
   @@index([code])
   @@map("courses")
