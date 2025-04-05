@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteCourseUsecase } from '@/course/application/usecases/delete-course.usecase';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
@@ -28,7 +28,7 @@ describe('Delete Course usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new DeleteCourseUsecase.UseCase(repository);
-    await prismaService.course.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

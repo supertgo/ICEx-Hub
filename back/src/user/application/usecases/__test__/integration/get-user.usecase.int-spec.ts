@@ -7,6 +7,7 @@ import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder'
 import { faker } from '@faker-js/faker';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
 import { GetUserUsecase } from '@/user/application/usecases/get-user.usecase';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Get user usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -42,7 +43,7 @@ describe('Get user usecase integration tests', () => {
   });
 
   it('should retrieve a user', async () => {
-    const user = await prismaService.user.create({ data: UserDataBuilder({}) });
+    const user = await UserPrismaTestingHelper.createUser(prismaService);
 
     const output = await sut.execute({ id: user.id });
 

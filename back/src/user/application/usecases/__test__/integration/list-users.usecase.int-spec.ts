@@ -7,6 +7,7 @@ import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder'
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { ListUsersUsecase } from '@/user/application/usecases/list-users.usecase';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('List users usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -35,12 +36,8 @@ describe('List users usecase integration tests', () => {
   });
 
   it('should retrieve users orderedBy createdAt as default', async () => {
-    const entities = [];
     for (let i = 0; i < 11; i++) {
-      const entity = new UserEntity(UserDataBuilder({}));
-
-      await prismaService.user.create({ data: entity.toJSON() });
-      entities.push(entity);
+      await UserPrismaTestingHelper.createUser(prismaService);
     }
 
     const output = await sut.execute({});
@@ -58,13 +55,15 @@ describe('List users usecase integration tests', () => {
     const arrange = ['test', 'a', 'TEST', 'b', 'TeSt'];
     for (const element of arrange) {
       const index = arrange.indexOf(element);
-      const entity = new UserEntity({
-        ...UserDataBuilder({ name: element }),
-        createdAt: new Date(createdAt.getTime() + index),
-      });
+      const entity = await UserPrismaTestingHelper.createUserAsEntity(
+        prismaService,
+        {
+          name: element,
+          createdAt: new Date(createdAt.getTime() + index),
+        },
+      );
 
       entities.push(entity);
-      await prismaService.user.create({ data: entity.toJSON() });
     }
 
     let output = await sut.execute({

@@ -12,10 +12,13 @@ export namespace CourseRepository {
 
   export class SearchResult extends DefaultSearchResult<CourseEntity, Filter> {}
 
-  export type Repository = SearchableRepositoryInterface<
-    CourseEntity,
-    Filter,
-    SearchParams,
-    SearchResult
-  >;
+  export interface Repository
+    extends SearchableRepositoryInterface<
+      CourseEntity,
+      Filter,
+      SearchParams,
+      SearchResult
+    > {
+    assureCourseExists(courseId: string): Promise<void>;
+  }
 }

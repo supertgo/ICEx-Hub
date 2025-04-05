@@ -28,7 +28,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
   }
 
   async update(entity: CourseEntity): Promise<void> {
-    await this._assureCourseExists(entity.id);
+    await this.assureCourseExists(entity.id);
 
     await this.prismaService.course.update({
       where: { id: entity.id },
@@ -37,7 +37,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
   }
 
   async delete(id: string): Promise<void> {
-    await this._assureCourseExists(id);
+    await this.assureCourseExists(id);
 
     await this.prismaService.course.delete({
       where: { id },
@@ -56,7 +56,7 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
     }
   }
 
-  private async _assureCourseExists(id: string) {
+  public async assureCourseExists(id: string): Promise<void> {
     if ((await this.prismaService.course.count({ where: { id } })) === 0) {
       throw new CourseWithIdNotFoundError(id);
     }

@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { CourseModule } from '@/course/infrastructure/course.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { applyGlobalConfig } from '@/global-config';
@@ -28,7 +28,7 @@ describe('Index Course E2E Tests', () => {
   });
 
   beforeEach(async () => {
-    await prismaService.course.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   it('should return sorted by name asc, filtered and paginated', async () => {

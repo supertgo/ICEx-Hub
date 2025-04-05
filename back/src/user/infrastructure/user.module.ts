@@ -13,6 +13,10 @@ import { DeleteUserUsecase } from '@/user/application/usecases/delete-user.useca
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { AuthModule } from '@/auth/infrastructure/auth.module';
+import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
+import { CoursePeriodPrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-period-prisma.repository';
+import { CourseRepository } from '@/course/domain/repositories/course.repository';
+import { CoursePeriodRepository } from '@/course/domain/repositories/course-period.repository';
 
 @Module({
   imports: [AuthModule],
@@ -30,6 +34,21 @@ import { AuthModule } from '@/auth/infrastructure/auth.module';
       inject: ['PrismaService'],
     },
     {
+      provide: 'CourseRepository',
+      useFactory: (prismaService: PrismaService) => {
+        return new CoursePrismaRepository(prismaService);
+      },
+      inject: ['PrismaService'],
+    },
+    {
+      provide: 'CoursePeriodRepository',
+      useFactory: (prismaService: PrismaService) => {
+        return new CoursePeriodPrismaRepository(prismaService);
+      },
+      inject: ['PrismaService'],
+    },
+
+    {
       provide: 'HashProvider',
       useClass: BcryptjsHashProvider,
     },
@@ -38,10 +57,22 @@ import { AuthModule } from '@/auth/infrastructure/auth.module';
       useFactory: (
         userRepository: UserRepository.Repository,
         hashProvider: HashProvider,
+        courseRepository: CourseRepository.Repository,
+        coursePeriodRepository: CoursePeriodRepository.Repository,
       ) => {
-        return new SignupUsecase.UseCase(userRepository, hashProvider);
+        return new SignupUsecase.UseCase(
+          userRepository,
+          hashProvider,
+          courseRepository,
+          coursePeriodRepository,
+        );
       },
-      inject: ['UserRepository', 'HashProvider'],
+      inject: [
+        'UserRepository',
+        'HashProvider',
+        'CourseRepository',
+        'CoursePeriodRepository',
+      ],
     },
     {
       provide: SignInUsecase.UseCase,

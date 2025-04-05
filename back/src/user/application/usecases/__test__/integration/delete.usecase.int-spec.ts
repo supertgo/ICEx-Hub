@@ -7,6 +7,7 @@ import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder'
 import { DeleteUserUsecase } from '@/user/application/usecases/delete-user.usecase';
 import { faker } from '@faker-js/faker';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Delete usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -42,7 +43,7 @@ describe('Delete usecase integration tests', () => {
   });
 
   it('should delete a user', async () => {
-    const user = await prismaService.user.create({ data: UserDataBuilder({}) });
+    const user = await UserPrismaTestingHelper.createUserAsEntity(prismaService);
 
     await sut.execute({ id: user.id });
 

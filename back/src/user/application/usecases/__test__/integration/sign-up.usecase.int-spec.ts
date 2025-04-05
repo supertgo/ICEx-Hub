@@ -1,18 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import { CoursePeriod, PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
+import { UserDataBuilderWithOptionalIds } from '@/user/domain/testing/helper/user-data-builder';
 import { faker } from '@faker-js/faker';
-import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
-import { UpdateUserUsecase } from '@/user/application/usecases/update-user.usecase';
-import { UpdatePasswordUsecase } from '@/user/application/usecases/update-password.usecase';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
 import { SignInUsecase } from '@/user/application/usecases/sign-in.usecase';
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
 import { InvalidCredentialsError } from '@/user/application/errors/invalid-credentials-error';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('Sign in usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -20,6 +21,7 @@ describe('Sign in usecase integration tests', () => {
   let sut: SignInUsecase.UseCase;
   let module: TestingModule;
   let hasProvider: HashProvider;
+  let coursePeriod: CoursePeriod;
 
   beforeAll(async () => {
     setUpPrismaTest();
@@ -33,11 +35,16 @@ describe('Sign in usecase integration tests', () => {
   });
 
   beforeEach(async () => {
+    await resetDatabase(prismaService);
+
     sut = new SignInUsecase.UseCase(repository, hasProvider);
-    await prismaService.user.deleteMany();
+    coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
   });
 
   afterAll(async () => {
+    await resetDatabase(prismaService);
+
     await prismaService.$disconnect();
     await module.close();
   });
@@ -54,8 +61,10 @@ describe('Sign in usecase integration tests', () => {
 
   it('should test with different password', async () => {
     const user = await prismaService.user.create({
-      data: UserDataBuilder({
+      data: UserDataBuilderWithOptionalIds({
         password: await hasProvider.generateHash(faker.internet.password()),
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
       }),
     });
 
@@ -71,8 +80,10 @@ describe('Sign in usecase integration tests', () => {
     const password = faker.internet.password();
 
     const user = await prismaService.user.create({
-      data: UserDataBuilder({
+      data: UserDataBuilderWithOptionalIds({
         password: await hasProvider.generateHash(password),
+        courseId: coursePeriod.courseId,
+        coursePeriodId: coursePeriod.id,
       }),
     });
 

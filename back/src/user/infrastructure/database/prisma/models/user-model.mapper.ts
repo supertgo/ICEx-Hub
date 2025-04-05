@@ -9,6 +9,8 @@ export class UserModelMapper {
       email: model.email,
       password: model.password,
       createdAt: model.createdAt,
+      courseId: model.courseId,
+      coursePeriodId: model.coursePeriodId,
     };
     try {
       return new UserEntity(data, model.id);

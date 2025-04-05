@@ -18,6 +18,7 @@ import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder'
 import { UpdatePasswordDto } from '@/user/infrastructure/dtos/update-password.dto';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Update user e2e tests', () => {
   let app: INestApplication;
@@ -55,13 +56,9 @@ describe('Update user e2e tests', () => {
 
     await prismaService.user.deleteMany();
 
-    entity = new UserEntity(
-      UserDataBuilder({
-        password: await hashProvider.generateHash(oldPassword),
-      }),
-    );
-
-    await prismaService.user.create({ data: entity.toJSON() });
+    entity = await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
+      password: await hashProvider.generateHash(oldPassword),
+    });
 
     const loginResponse = await request(app.getHttpServer())
       .post('/user/login')

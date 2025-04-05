@@ -6,6 +6,8 @@ export type UserProps = {
   name: string;
   email: string;
   password: string;
+  courseId?: string;
+  coursePeriodId?: string;
   createdAt?: Date;
 };
 
@@ -51,6 +53,22 @@ export class UserEntity extends Entity<UserProps> {
 
   get createdAt(): Date {
     return this.props.createdAt;
+  }
+
+  get courseId(): string | undefined {
+    return this.props.courseId;
+  }
+
+  private set courseId(value: string | undefined) {
+    this.props.courseId = value;
+  }
+
+  get coursePeriodId(): string | undefined {
+    return this.props.coursePeriodId;
+  }
+
+  private set coursePeriodId(value: string | undefined) {
+    this.props.coursePeriodId = value;
   }
 
   static validate(props: UserProps) {

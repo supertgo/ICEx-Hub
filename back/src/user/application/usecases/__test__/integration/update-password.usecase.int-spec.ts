@@ -10,6 +10,7 @@ import { UpdateUserUsecase } from '@/user/application/usecases/update-user.useca
 import { UpdatePasswordUsecase } from '@/user/application/usecases/update-password.usecase';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
+import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
 
 describe('Update password usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -53,10 +54,8 @@ describe('Update password usecase integration tests', () => {
   it('should update a user password', async () => {
     const originalPassword = faker.internet.password();
 
-    const user = await prismaService.user.create({
-      data: UserDataBuilder({
-        password: await hasProvider.generateHash(originalPassword),
-      }),
+    const user = await UserPrismaTestingHelper.createUser(prismaService, {
+      password: await hasProvider.generateHash(originalPassword),
     });
 
     const output = await sut.execute({
