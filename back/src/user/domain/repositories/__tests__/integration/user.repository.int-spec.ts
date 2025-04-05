@@ -47,7 +47,7 @@ describe('User prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', () => {
-    expect(() => sut.findById('1')).rejects.toThrowError(
+    expect(() => sut.findById('1')).rejects.toThrow(
       new UserWithIdNotFoundError('1'),
     );
   });
@@ -134,7 +134,7 @@ describe('User prisma repository integration tests', () => {
     const nonExistentId = faker.string.uuid();
     const entity = new UserEntity(UserDataBuilder({}), nonExistentId);
 
-    await expect(sut.update(entity)).rejects.toThrowError(
+    await expect(sut.update(entity)).rejects.toThrow(
       new UserWithIdNotFoundError(nonExistentId),
     );
   });
@@ -165,7 +165,7 @@ describe('User prisma repository integration tests', () => {
   it('should throw error when trying to delete non-existent user', async () => {
     const nonExistentId = faker.string.uuid();
 
-    await expect(sut.delete(nonExistentId)).rejects.toThrowError(
+    await expect(sut.delete(nonExistentId)).rejects.toThrow(
       new UserWithIdNotFoundError(nonExistentId),
     );
   });
@@ -215,7 +215,7 @@ describe('User prisma repository integration tests', () => {
   it('should throw error when trying to find a user by a non-existent email', async () => {
     await expect(
       sut.findByEmail('non-existent@example.com'),
-    ).rejects.toThrowError(
+    ).rejects.toThrow(
       new UserWithEmailNotFoundError('non-existent@example.com'),
     );
   });

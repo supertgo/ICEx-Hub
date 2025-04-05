@@ -38,7 +38,7 @@ describe('Delete Course usecase integration tests', () => {
 
   it('should throw error when course not found', () => {
     const id = faker.string.uuid();
-    expect(() => sut.execute({ id })).rejects.toThrowError(
+    expect(() => sut.execute({ id })).rejects.toThrow(
       new CourseWithIdNotFoundError(id),
     );
   });

@@ -1,4 +1,7 @@
-import { CourseValidator, CourseValidatorFactory } from '@/shared/domain/validators/course.validator';
+import {
+  CourseValidator,
+  CourseValidatorFactory,
+} from '@/shared/domain/validators/course.validator';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 let sut: CourseValidator;

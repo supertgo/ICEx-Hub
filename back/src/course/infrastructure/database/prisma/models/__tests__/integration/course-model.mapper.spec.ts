@@ -29,7 +29,7 @@ describe('Course model mapper integration tests', () => {
   it('should throw error when course model is invalid', () => {
     const model: Course = Object.assign({}, props, { name: null });
 
-    expect(() => CourseModelMapper.toEntity(model)).toThrowError(
+    expect(() => CourseModelMapper.toEntity(model)).toThrow(
       new ValidationErrors('Could not load course having id undefined'),
     );
   });

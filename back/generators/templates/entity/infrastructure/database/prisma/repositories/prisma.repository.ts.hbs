@@ -14,7 +14,7 @@ export class {{pascalCase name}}PrismaRepository implements {{pascalCase name}}R
       data: entity.toJSON(),
     });
 
-    return {{pascalCase name}}Mapper.toEntity({{lowerCase name}});
+    return {{pascalCase name}}ModelMapper.toEntity({{lowerCase name}});
   }
 
   findById(id: string): Promise<{{pascalCase name}}Entity> {

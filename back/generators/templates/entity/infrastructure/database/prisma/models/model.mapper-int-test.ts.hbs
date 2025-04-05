@@ -29,7 +29,7 @@ describe('{{pascalCase name}} model mapper integration tests', () => {
   it('should throw error when {{dashCase name}} model is invalid', () => {
     const model: {{pascalCase name}} = Object.assign({}, props, { name: null });
 
-    expect(() => {{pascalCase name}}ModelMapper.toEntity(model)).toThrowError(
+    expect(() => {{pascalCase name}}ModelMapper.toEntity(model)).toThrow(
       new ValidationErrors('Could not load {{dashCase name}} having id undefined'),
     );
   });

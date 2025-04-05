@@ -8,9 +8,7 @@ import { {{pascalCase name}}Entity } from '@/{{dashCase name}}/domain/entities/{
 import { faker } from '@faker-js/faker';
 import { {{pascalCase name}}Repository } from '@/{{dashCase name}}/domain/repositories/{{dashCase name}}.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
-import { {{pascalCase name}}WithEmailNotFoundError } from '@/{{dashCase name}}/domain/errors/{{dashCase name}}-with-email-not-found-error';
 import { {{pascalCase name}}WithIdNotFoundError } from '@/{{dashCase name}}/infrastructure/errors/{{dashCase name}}-with-id-not-found-error';
-import { EmailAlreadyInUseError } from '@/{{dashCase name}}/domain/errors/email-already-in-use-error';
 
 describe('{{pascalCase name}} prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -36,7 +34,7 @@ describe('{{pascalCase name}} prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', () => {
-    expect(() => sut.findById('1')).rejects.toThrowError(
+    expect(() => sut.findById('1')).rejects.toThrow(
       new {{pascalCase name}}WithIdNotFoundError('1'),
     );
   });
@@ -74,7 +72,7 @@ describe('{{pascalCase name}} prisma repository integration tests', () => {
     const nonExistentId = faker.string.uuid();
     const entity = new {{pascalCase name}}Entity({{pascalCase name}}DataBuilder({}), nonExistentId);
 
-    await expect(sut.update(entity)).rejects.toThrowError(
+    await expect(sut.update(entity)).rejects.toThrow(
       new {{pascalCase name}}WithIdNotFoundError(nonExistentId),
     );
   });
@@ -84,7 +82,7 @@ describe('{{pascalCase name}} prisma repository integration tests', () => {
   it('should throw error when trying to delete non-existent {{lowerCase name}}', async () => {
     const nonExistentId = faker.string.uuid();
 
-    await expect(sut.delete(nonExistentId)).rejects.toThrowError(
+    await expect(sut.delete(nonExistentId)).rejects.toThrow(
       new {{pascalCase name}}WithIdNotFoundError(nonExistentId),
     );
   });

@@ -1,14 +1,14 @@
 import { {{pascalCase name}}Controller } from '@/{{dashCase name}}/infrastructure/{{dashCase name}}.controller';
 import { {{pascalCase name}}Output } from '@/{{dashCase name}}/application/dtos/{{dashCase name}}-output';
 import { {{pascalCase name}}DataBuilder } from '@/{{dashCase name}}/domain/testing/helper/{{dashCase name}}-data-builder';
-import { List{{pascalCase name}}sDto } from '@/{{dashCase name}}/infrastructure/dtos/list-{{dashCase name}}s.dto';
+import { List{{pascalCase name}}sDto } from '@/{{dashCase name}}/infrastructure/dtos/list-{{dashCase name}}.dto';
 import { Update{{pascalCase name}}Dto } from '@/{{dashCase name}}/infrastructure/dtos/update-{{dashCase name}}.dto';
 import { faker } from '@faker-js/faker';
 import {
   {{pascalCase name}}CollectionPresenter,
   {{pascalCase name}}Presenter,
 } from '@/{{dashCase name}}/infrastructure/presenters/{{dashCase name}}.presenter';
-import { List{{pascalCase name}}sUsecase } from '@/{{dashCase name}}/application/usecases/list-{{dashCase name}}s.usecase';
+import { List{{pascalCase name}}sUsecase } from '@/{{dashCase name}}/application/usecases/list-{{dashCase name}}.usecase';
 
 describe('{{pascalCase name}}Controller unit tests', () => {
   let sut: {{pascalCase name}}Controller;

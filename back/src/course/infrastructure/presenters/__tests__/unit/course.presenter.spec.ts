@@ -1,4 +1,7 @@
-import { CourseCollectionPresenter, CoursePresenter } from '@/course/infrastructure/presenters/course.presenter';
+import {
+  CourseCollectionPresenter,
+  CoursePresenter,
+} from '@/course/infrastructure/presenters/course.presenter';
 import { faker } from '@faker-js/faker';
 import { instanceToPlain } from 'class-transformer';
 import { PaginationPresenter } from '@/shared/infrastructure/presenters/pagination.presenter';
