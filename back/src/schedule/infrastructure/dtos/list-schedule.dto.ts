@@ -34,13 +34,13 @@ export class ListSchedulesDto implements ListSchedulesUsecase.Input {
   name?: string | null;
 
   @ApiPropertyOptional({
-    description: 'The time slot to apply to the search',
+    description: 'The timeslot(s) to apply to the search',
   })
   @IsOptional()
   timeSlots?: string[] | null;
 
   @ApiPropertyOptional({
-    description: 'The dayPattern slot to apply to the search',
+    description: 'The dayPattern(s) to apply to the search',
   })
   @IsOptional()
   dayPatterns?: string[] | null;
