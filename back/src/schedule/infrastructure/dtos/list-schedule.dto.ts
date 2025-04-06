@@ -44,4 +44,16 @@ export class ListSchedulesDto implements ListSchedulesUsecase.Input {
   })
   @IsOptional()
   dayPatterns?: string[] | null;
+
+  @ApiPropertyOptional({
+    description: 'The courseId to apply to the search',
+  })
+  @IsOptional()
+  courseId?: string | null;
+
+  @ApiPropertyOptional({
+    description: 'The coursePeriodId to apply to the search',
+  })
+  @IsOptional()
+  coursePeriodId?: string | null;
 }

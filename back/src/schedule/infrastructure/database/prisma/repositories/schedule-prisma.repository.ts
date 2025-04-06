@@ -90,6 +90,22 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         });
       }
 
+      if (searchInput.filter.courseId) {
+        andConditions.push({
+          discipline: {
+            courseId: searchInput.filter.courseId,
+          },
+        });
+      }
+
+      if (searchInput.filter.coursePeriodId) {
+        andConditions.push({
+          discipline: {
+            coursePeriodId: searchInput.filter.coursePeriodId,
+          },
+        });
+      }
+
       if (andConditions.length > 0) {
         whereFilter.AND = andConditions;
       }

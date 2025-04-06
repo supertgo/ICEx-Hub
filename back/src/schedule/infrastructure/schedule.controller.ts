@@ -100,6 +100,8 @@ export class ScheduleController {
         name: searchParams?.name,
         dayPatterns: dayPatterns,
         timeSlots: timeSlots,
+        courseId: searchParams?.courseId,
+        coursePeriodId: searchParams?.coursePeriodId,
       },
     });
 

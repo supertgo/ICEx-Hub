@@ -10,6 +10,8 @@ export namespace ScheduleRepository {
     name?: string;
     timeSlots?: string[];
     dayPatterns?: string[];
+    courseId?: string;
+    coursePeriodId?: string;
   };
 
   export class SearchParams extends DefaultSearchParams<Filter> {}

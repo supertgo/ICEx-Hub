@@ -15,6 +15,8 @@ export namespace ListSchedulesUsecase {
     name?: string;
     timeSlots?: string[];
     dayPatterns?: string[];
+    courseId?: string;
+    coursePeriodId?: string;
   };
 
   export type Input = SearchInput<Filter>;

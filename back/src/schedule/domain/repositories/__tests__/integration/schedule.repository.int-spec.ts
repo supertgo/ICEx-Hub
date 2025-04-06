@@ -55,8 +55,16 @@ describe('Schedule prisma repository integration tests', () => {
       data: {
         name: discipline.name,
         code: discipline.code,
-        coursePeriodId: coursePeriodData.id,
-        courseId: course.id,
+        course: {
+          connect: {
+            id: course.id,
+          },
+        },
+        coursePeriod: {
+          connect: {
+            id: coursePeriodData.id,
+          },
+        },
       },
     });
 
@@ -171,7 +179,6 @@ describe('Schedule prisma repository integration tests', () => {
   it('should delete a schedule successfully', async () => {
     const props = await fakeSchedule();
     const entity = await sut.insert(new ScheduleEntity(props));
-    await sut.insert(entity);
 
     await sut.delete(entity.id);
 
