@@ -104,24 +104,20 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
       coursePeriodId: this.coursePeriodId,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      // Include relations if needed
       ...(this.course && {
         course: {
           id: this.course.id,
           name: this.course.name,
-          // other course properties
         },
       }),
       ...(this.coursePeriod && {
         coursePeriod: {
           id: this.coursePeriod.id,
-          // other coursePeriod properties
         },
       }),
       ...(this.schedules && {
         schedules: this.schedules.map((schedule) => ({
           id: schedule.id,
-          // other schedule properties
         })),
       }),
     };
