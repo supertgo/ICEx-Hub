@@ -5,23 +5,23 @@ export const courseSeed = async (prisma: PrismaClient) => {
   const courses = [
     {
       name: 'Ciência da Computação',
-      code: '02001',
+      code: 'CC',
     },
     {
       name: 'Sistemas de Informação',
-      code: '02009',
+      code: 'SI',
     },
     {
       name: 'Matemática Computacional',
-      code: '02006',
+      code: 'MATCOMP',
     },
     {
       name: 'Engenharia de Sistemas',
-      code: '10008',
+      code: 'ES',
     },
     {
       name: 'Estatística',
-      code: '02003',
+      code: 'EST',
     },
   ];
 
