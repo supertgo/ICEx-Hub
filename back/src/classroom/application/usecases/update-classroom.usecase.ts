@@ -28,7 +28,11 @@ export namespace UpdateClassroomUsecase {
 
       const entity = await this.repository.findById(input.id);
 
-      if (input.building || input.name) {
+      if (input.name) {
+        entity.updateName(input.name);
+      }
+
+      if (input.building) {
         if (
           !Object.values(CLASSROOM_BUILDING).includes(
             input.building as CLASSROOM_BUILDING,
@@ -40,11 +44,9 @@ export namespace UpdateClassroomUsecase {
         } else {
           entity.updateBuilding(input.building as CLASSROOM_BUILDING);
         }
-        if (input.name) {
-          entity.updateName(input.name);
-        }
-        await this.repository.update(entity);
       }
+
+      await this.repository.update(entity);
 
       return ClassroomOutputMapper.toOutput(entity);
     }
