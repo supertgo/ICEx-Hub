@@ -44,8 +44,6 @@ describe('List users usecase integration tests', () => {
 
     const output = await sut.execute({});
 
-    console.log(output);
-
     expect(output).not.toBeNull();
     expect(output.items).toHaveLength(10);
     expect(output.total).toBe(11);
