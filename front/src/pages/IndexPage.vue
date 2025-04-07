@@ -71,7 +71,6 @@ onMounted(async () => {
     rows.value = result.data.map((item: Schedule) => ({
       name: item.discipline?.name || 'N/A',
       code: item.discipline?.code || 'N/A',
-      //class: item.classIdentifier || 'N/A',
       start: item.timeSlot || 'N/A',
       end: item.timeSlot || 'N/A',
       days: item.dayPattern || 'N/A',

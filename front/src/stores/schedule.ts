@@ -3,10 +3,6 @@ import { listSchedules } from 'src/api/scheduleApi';
 import { type ScheduleData } from 'src/types/schedule';
 
 export const useScheduleStore = defineStore('schedule', {
-  state: () => ({
-    user: null,
-  }),
-  getters: {},
   actions: {
     async listSchedules(): Promise<ScheduleData> {
       const result = await listSchedules();
