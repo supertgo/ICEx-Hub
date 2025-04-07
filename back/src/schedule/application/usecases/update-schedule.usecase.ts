@@ -21,13 +21,11 @@ export namespace UpdateScheduleUsecase {
     async execute(input: Input): Promise<Output> {
       if (!input.id) {
         throw new BadRequestError(
-          'Classroom id is required on UpdateClassroomUsecase',
+          'Schedule id is required on UpdateScheduleUsecase',
         );
       }
 
       const entity = await this.repository.findById(input.id);
-
-      //TODO update classroom
 
       return ScheduleOutputMapper.toOutput(entity);
     }
