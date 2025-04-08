@@ -1,6 +1,4 @@
-import {
-  CourseInMemoryRepository,
-} from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
+import { CourseInMemoryRepository } from '@/course/infrastructure/database/in-memory/repositories/course-in-memory.repository';
 import { UpdateCourseUsecase } from '@/course/application/usecases/update-course.usecase';
 
 describe('Update course use case test', () => {
