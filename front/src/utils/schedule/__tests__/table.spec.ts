@@ -1,3 +1,6 @@
+//TODO Arthur & Laura -> Create a method that receive the dayPattern and return
+// in our pattern. Ex -> TUESDAY_THURSDAY: Ter - Qui
+
 //TODO Arthur & Laura > The table needs a method that map for every
 //timeSlot, the start and end hour. Ex: MORNING_1 -> (start: 7:30, end: 9:10).
 // You should use this method with the scheduleDataToOutput
