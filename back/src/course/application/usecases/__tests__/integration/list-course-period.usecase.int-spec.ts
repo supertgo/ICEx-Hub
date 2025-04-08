@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { CoursePeriodPrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-period-prisma.repository';
@@ -26,7 +29,7 @@ describe('List course period usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new ListCoursePeriodUsecase.UseCase(repository);
-    await prismaService.coursePeriod.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
