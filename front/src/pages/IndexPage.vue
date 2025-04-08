@@ -29,58 +29,19 @@
 </template>
 
 <script setup lang="ts">
-import type { QTableColumn } from 'quasar';
 import StatusCircle from 'src/components/StatusCircle.vue';
 import { useScheduleStore } from 'src/stores/schedule';
-import { type ScheduleRows, type Schedule } from 'src/types/schedule';
+import { type ScheduleRows } from 'src/types/schedule';
+import { scheduleDataToOutput, columns } from 'src/utils/schedule/table';
 import { onMounted, ref } from 'vue';
 
 const rows = ref<ScheduleRows[]>([]);
 const scheduleStore = useScheduleStore();
 
-const columns: QTableColumn[] = [
-  {
-    name: 'discipline',
-    required: true,
-    label: 'Disciplina',
-    align: 'center',
-    field: (row: { name: string }) => row.name,
-    format: (val: string) => `${val}`,
-    classes: 'discipline-column',
-  },
-  { name: 'code', align: 'center', label: 'Código', field: 'code' },
-  //{ name: 'class', align: 'center', label: 'Turma', field: 'class' },
-  { name: 'start', align: 'center', label: 'Início', field: 'start' },
-  { name: 'end', align: 'center', label: 'Fim', field: 'end' },
-  { name: 'days', align: 'center', label: 'Dias', field: 'days' },
-  { name: 'unit', align: 'center', label: 'Unidade', field: 'unit' },
-  { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom' },
-  {
-    name: 'direction',
-    align: 'center',
-    label: 'Como chegar',
-    field: 'direction',
-  },
-  { name: 'status', align: 'center', label: 'Status', field: 'status' },
-];
-
 onMounted(async () => {
   try {
-    const result = await scheduleStore.listSchedules();
-    rows.value = result.data.map(
-      (item: Schedule) =>
-        ({
-          name: item.discipline?.name || 'N/A',
-          code: item.discipline?.code || 'N/A',
-          start: item.timeSlot || 'N/A',
-          end: item.timeSlot || 'N/A',
-          days: item.dayPattern || 'N/A',
-          unit: item.classroom?.building || 'N/A',
-          classroom: item.classroom?.name || 'N/A',
-          direction: 'Ver Mapa',
-          status: false,
-        }) as ScheduleRows,
-    );
+    const schedules = await scheduleStore.listSchedules();
+    rows.value = scheduleDataToOutput(schedules);
   } catch (error) {
     console.error('Error loading schedules:', error);
   }
