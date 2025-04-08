@@ -7,6 +7,8 @@ import {
   resetDatabase,
   setUpPrismaTest,
 } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { SchedulePrismaTestingHelper } from '../../../testing/schedule-prismaa.testing-helper';
+import { ScheduleEntity } from '@/schedule/domain/entities/schedule.entity';
 
 describe('Schedule model mapper integration tests', () => {
   let prismaService: PrismaService;
@@ -36,13 +38,12 @@ describe('Schedule model mapper integration tests', () => {
     );
   });
 
-  // it('should map schedule model to entity', async () => {
-  //   const model: Schedule = await prismaService.schedule.create({
-  //     data: props,
-  //   });
-  //
-  //   const sut = ScheduleModelMapper.toEntity(model);
-  //
-  //   expect(sut).toBeInstanceOf(ScheduleEntity);
-  // });
+  it('should map schedule model to entity', async () => {
+    const [model] =
+      await SchedulePrismaTestingHelper.createCompleteSchedules(prismaService);
+
+    const sut = ScheduleModelMapper.toEntity(model);
+
+    expect(sut).toBeInstanceOf(ScheduleEntity);
+  });
 });
