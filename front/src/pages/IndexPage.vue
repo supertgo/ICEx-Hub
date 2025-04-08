@@ -32,11 +32,10 @@
 import type { QTableColumn } from 'quasar';
 import StatusCircle from 'src/components/StatusCircle.vue';
 import { useScheduleStore } from 'src/stores/schedule';
-import { type Schedule } from 'src/types/schedule';
+import { type ScheduleRows, type Schedule } from 'src/types/schedule';
 import { onMounted, ref } from 'vue';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const rows = ref<any[]>([]);
+const rows = ref<ScheduleRows[]>([]);
 const scheduleStore = useScheduleStore();
 
 const columns: QTableColumn[] = [
@@ -68,17 +67,20 @@ const columns: QTableColumn[] = [
 onMounted(async () => {
   try {
     const result = await scheduleStore.listSchedules();
-    rows.value = result.data.map((item: Schedule) => ({
-      name: item.discipline?.name || 'N/A',
-      code: item.discipline?.code || 'N/A',
-      start: item.timeSlot || 'N/A',
-      end: item.timeSlot || 'N/A',
-      days: item.dayPattern || 'N/A',
-      unit: item.classroom?.building || 'N/A',
-      classroom: item.classroom?.name || 'N/A',
-      direction: 'Ver Mapa',
-      status: false,
-    }));
+    rows.value = result.data.map(
+      (item: Schedule) =>
+        ({
+          name: item.discipline?.name || 'N/A',
+          code: item.discipline?.code || 'N/A',
+          start: item.timeSlot || 'N/A',
+          end: item.timeSlot || 'N/A',
+          days: item.dayPattern || 'N/A',
+          unit: item.classroom?.building || 'N/A',
+          classroom: item.classroom?.name || 'N/A',
+          direction: 'Ver Mapa',
+          status: false,
+        }) as ScheduleRows,
+    );
   } catch (error) {
     console.error('Error loading schedules:', error);
   }

@@ -35,3 +35,15 @@ export interface ScheduleData {
   data: Schedule[];
   meta: MetaData;
 }
+
+export interface ScheduleRows {
+  name: string;
+  code: string;
+  start: string;
+  end: string;
+  days: string;
+  unit: string;
+  classroom: string;
+  direction: string;
+  status: boolean;
+}
