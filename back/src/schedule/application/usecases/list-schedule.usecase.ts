@@ -21,7 +21,7 @@ export namespace ListSchedulesUsecase {
 
   export type Input = SearchInput<Filter>;
 
-  export type Output = PaginationOutput;
+  export type Output = PaginationOutput<ScheduleOutput>;
 
   export class UseCase implements UseCaseInterface<Input, Output> {
     constructor(private repository: ScheduleRepository.Repository) {}
