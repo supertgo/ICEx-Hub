@@ -6,6 +6,8 @@ import {
   ScheduleProps,
 } from '@/schedule/domain/entities/schedule.entity';
 import { ScheduleDataBuilder } from '@/schedule/domain/testing/helper/schedule-data-builder';
+import { ScheduleFakeBuilder } from '@/schedule/domain/fake-builder/schedule-fake.builder';
+import { TimeSlotEnum } from '@/schedule/domain/schedule.constants';
 
 describe('List schedules use cases unit tests', () => {
   function createScheduleEntity(scheduleProps: Partial<ScheduleProps> = {}) {
@@ -95,9 +97,107 @@ describe('List schedules use cases unit tests', () => {
     );
   });
 
-  it.todo('should return second page when empty in pagination');
+  it('should return second page when empty in pagination', async () => {
+    const schedules = [
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.EVENING_3)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_2)
+        .build(),
+    ];
 
-  it.todo('should return items in second page when having them');
+    repository.items = schedules;
 
-  it.todo('should return empty result when no filter found');
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      filter: {
+        timeSlots: [TimeSlotEnum.AFTERNOON_1],
+      },
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(2);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(1);
+    expect(result.perPage).toBe(2);
+  });
+
+  it('should return items in second page when having them', async () => {
+    const schedules = [
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.EVENING_3)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_2)
+        .build(),
+    ];
+
+    repository.items = schedules;
+
+    const result = await sut.execute({
+      page: 2,
+      perPage: 2,
+      filter: {
+        timeSlots: [TimeSlotEnum.AFTERNOON_1],
+      },
+    });
+
+    expect(result.items.length).toBe(1);
+    expect(result.total).toBe(3);
+    expect(result.currentPage).toBe(2);
+    expect(result.lastPage).toBe(2);
+    expect(result.perPage).toBe(2);
+  });
+
+  it('should return empty result when no filter found', async () => {
+    const schedules = [
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_1)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.EVENING_3)
+        .build(),
+      ScheduleFakeBuilder.aSchedule()
+        .withTimeSlot(TimeSlotEnum.AFTERNOON_2)
+        .build(),
+    ];
+    repository.items = schedules;
+
+    const result = await sut.execute({
+      page: 1,
+      perPage: 2,
+      filter: {
+        timeSlots: [TimeSlotEnum.MORNING_2],
+      },
+    });
+
+    expect(result.items.length).toBe(0);
+    expect(result.total).toBe(0);
+    expect(result.currentPage).toBe(1);
+    expect(result.lastPage).toBe(0);
+    expect(result.perPage).toBe(2);
+  });
 });
