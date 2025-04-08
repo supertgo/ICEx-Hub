@@ -9,6 +9,7 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import { GetScheduleUsecase } from '@/schedule/application/usecases/get-schedule.usecase';
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
+import { SchedulePrismaTestingHelper } from '@/schedule/infrastructure/database/prisma/testing/schedule-prismaa.testing-helper';
 
 describe('Get schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -43,15 +44,29 @@ describe('Get schedule usecase integration tests', () => {
     );
   });
 
-  // TODO
-  // it('should retrieve a schedule', async () => {
-  //   const schedule = await prismaService.schedule.create({
-  //     data: ScheduleDataBuilder({}),
-  //   });
-  //
-  //   const output = await sut.execute({ id: schedule.id });
-  //
-  //   expect(output).toBeDefined();
-  //   expect(output).toMatchObject(schedule);
-  // });
+  it('should retrieve a schedule', async () => {
+    const [schedule] =
+      await SchedulePrismaTestingHelper.createCompleteSchedules(prismaService);
+
+    const output = await sut.execute({ id: schedule.id });
+
+    expect(output).toBeDefined();
+    expect(output).toMatchObject({
+      classroom: {
+        building: schedule.classroom.building,
+        id: schedule.classroom.id,
+        name: schedule.classroom.name,
+      },
+      dayPattern: schedule.dayPattern,
+      discipline: {
+        code: schedule.discipline.code,
+        courseId: schedule.discipline.courseId,
+        coursePeriodId: schedule.discipline.coursePeriodId,
+        id: schedule.discipline.id,
+        name: schedule.discipline.name,
+      },
+      id: schedule.id,
+      timeSlot: schedule.timeSlot,
+    });
+  });
 });

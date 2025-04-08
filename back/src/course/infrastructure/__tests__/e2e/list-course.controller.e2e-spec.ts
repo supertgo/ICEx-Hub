@@ -1,7 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
-import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { CourseModule } from '@/course/infrastructure/course.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { applyGlobalConfig } from '@/global-config';

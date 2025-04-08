@@ -188,10 +188,4 @@ describe('Schedule prisma repository integration tests', () => {
 
     expect(scheduleCount).toBe(0);
   });
-
-  describe('search tests', () => {
-    it.todo('should return with default values');
-
-    it.todo('should paginate schedules');
-  });
 });
