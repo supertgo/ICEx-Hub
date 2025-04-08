@@ -3,6 +3,7 @@ import { ScheduleRepository } from '@/schedule/domain/repositories/schedule.repo
 import { InMemorySearchableRepository } from '@/shared/domain/repositories/in-memory-searchable.repository';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
+import { ClassroomBulding } from '@prisma/client';
 
 export class ScheduleInMemoryRepository
   extends InMemorySearchableRepository<
@@ -47,8 +48,62 @@ export class ScheduleInMemoryRepository
   ): Promise<ScheduleEntity[]> {
     if (!filter) return items;
 
-    return items.filter((item) => {
-      return filter.timeSlots.includes(item.props.timeSlot);
+    return items.filter((schedule) => {
+      let matches = true;
+
+      if (filter.name) {
+        const nameLower = filter.name.toLowerCase();
+        const buildingEnumValues = Object.values(ClassroomBulding) as string[];
+        const buildingMatch = buildingEnumValues.some(
+          (value) => value.toLowerCase() === nameLower,
+        );
+
+        const nameMatches =
+          schedule.classroom.name.toLowerCase().includes(nameLower) ||
+          schedule.discipline.name.toLowerCase().includes(nameLower) ||
+          schedule.discipline.code.toLowerCase().includes(nameLower) ||
+          (buildingMatch &&
+            schedule.classroom.building.toUpperCase() ===
+              filter.name.toUpperCase());
+
+        if (!nameMatches) {
+          matches = false;
+        }
+      }
+
+      if (filter.timeSlots?.length) {
+        const timeSlotMatches = filter.timeSlots.includes(schedule.timeSlot);
+        if (!timeSlotMatches) {
+          matches = false;
+        }
+      }
+
+      if (filter.dayPatterns?.length) {
+        const dayPatternMatches = filter.dayPatterns.includes(
+          schedule.dayPattern,
+        );
+        if (!dayPatternMatches) {
+          matches = false;
+        }
+      }
+
+      if (filter.courseId) {
+        const courseIdMatches =
+          schedule.discipline.courseId === filter.courseId;
+        if (!courseIdMatches) {
+          matches = false;
+        }
+      }
+
+      if (filter.coursePeriodId) {
+        const coursePeriodIdMatches =
+          schedule.discipline.coursePeriodId === filter.coursePeriodId;
+        if (!coursePeriodIdMatches) {
+          matches = false;
+        }
+      }
+
+      return matches;
     });
   }
 
