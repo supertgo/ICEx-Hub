@@ -21,7 +21,6 @@ paths:
           in: query
           description: The field that should be used for sorting
           schema:
-            nullable: true
             enum:
               - name
               - createdAt
@@ -31,7 +30,6 @@ paths:
           in: query
           description: The sort direction
           schema:
-            nullable: true
             enum:
               - asc
               - desc
@@ -41,7 +39,6 @@ paths:
           in: query
           description: The filter to apply to the search
           schema:
-            nullable: true
             enum:
               - name
             type: string
@@ -88,12 +85,6 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassroomPresenter'
         '401':
           description: Unauthorized
         '404':
@@ -117,12 +108,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateClassroomDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassroomPresenter'
         '401':
           description: Unauthorized
         '404':
@@ -173,7 +158,6 @@ paths:
           in: query
           description: The field that should be used for sorting, createdAt is the default
           schema:
-            nullable: true
             enum:
               - name
               - createdAt
@@ -184,7 +168,6 @@ paths:
           in: query
           description: The sort direction
           schema:
-            nullable: true
             enum:
               - asc
               - desc
@@ -194,35 +177,16 @@ paths:
           in: query
           description: The filter to apply to the search, either name or code
           schema:
-            nullable: true
             enum:
               - name
             type: string
       responses:
         '200':
-          description: ''
+          description: The course has been successfully created.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    type: object
-                    properties:
-                      totalItems:
-                        type: number
-                      itemCount:
-                        type: number
-                      itemsPerPage:
-                        type: number
-                      totalPages:
-                        type: number
-                      currentPage:
-                        type: number
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/CoursePresenter'
+                $ref: '#/components/schemas/CourseCollectionPresenter'
         '401':
           description: Unauthorized
         '422':
@@ -239,12 +203,6 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CoursePresenter'
         '401':
           description: Unauthorized
         '404':
@@ -266,12 +224,6 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateCourseDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CoursePresenter'
         '401':
           description: Unauthorized
         '404':
@@ -320,7 +272,6 @@ paths:
           in: query
           description: The field that should be used for sorting
           schema:
-            nullable: true
             enum:
               - createdAt
             type: string
@@ -329,31 +280,9 @@ paths:
           in: query
           description: The sort direction
           schema:
-            nullable: true
             enum:
               - asc
               - desc
-            type: string
-        - name: name
-          required: false
-          in: query
-          description: The filter to apply to the search
-          schema:
-            nullable: true
-            type: string
-        - name: timeSlot
-          required: false
-          in: query
-          description: The time slot to apply to the search
-          schema:
-            nullable: true
-            type: string
-        - name: dayPattern
-          required: false
-          in: query
-          description: The dayPattern slot to apply to the search
-          schema:
-            nullable: true
             type: string
       responses:
         '200':
@@ -396,12 +325,6 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SchedulePresenter'
         '401':
           description: Unauthorized
         '404':
@@ -425,12 +348,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateScheduleDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SchedulePresenter'
         '401':
           description: Unauthorized
         '404':
@@ -460,6 +377,60 @@ paths:
         - schedule
       security:
         - bearer: []
+  /course-period:
+    get:
+      operationId: CoursePeriodController_search
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: The page number
+          schema:
+            type: number
+        - name: perPage
+          required: false
+          in: query
+          description: The number of items per page
+          schema:
+            type: number
+        - name: sort
+          required: false
+          in: query
+          description: The field that should be used for sorting, createdAt is the default
+          schema:
+            enum:
+              - name
+              - createdAt
+              - code
+            type: string
+        - name: sortDir
+          required: false
+          in: query
+          description: The sort direction
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: filter
+          required: false
+          in: query
+          description: The filter to apply to the search, either name or code
+          schema:
+            enum:
+              - name
+            type: string
+      responses:
+        '200':
+          description: Paginated list of course periods
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePeriodCollectionPresenter'
+        '422':
+          description: Unprocessable Entity
+      tags:
+        - course-period
   /user:
     post:
       operationId: UserController_create
@@ -471,12 +442,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SignUpDto'
       responses:
-        '201':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserPresenter'
         '409':
           description: Email already in use
         '422':
@@ -503,7 +468,6 @@ paths:
           in: query
           description: The field that should be used for sorting
           schema:
-            nullable: true
             enum:
               - name
               - createdAt
@@ -513,7 +477,6 @@ paths:
           in: query
           description: The sort direction
           schema:
-            nullable: true
             enum:
               - asc
               - desc
@@ -523,7 +486,6 @@ paths:
           in: query
           description: The filter to apply to the search
           schema:
-            nullable: true
             enum:
               - name
               - email
@@ -572,12 +534,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SignInDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LogInUserPresenter'
         '422':
           description: Unprocessable Entity
       tags:
@@ -592,12 +548,6 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserPresenter'
         '401':
           description: Unauthorized
         '404':
@@ -621,12 +571,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateUserDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserPresenter'
         '401':
           description: Unauthorized
         '404':
@@ -672,12 +616,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdatePasswordDto'
       responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserPresenter'
         '401':
           description: Unauthorized
         '404':
@@ -705,27 +643,6 @@ components:
       in: Header
       type: http
   schemas:
-    ClassroomPresenter:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of classroom
-        name:
-          type: string
-          description: The name of the classroom
-        building:
-          type: string
-          description: The building (ICEX or CAD3) of classroom
-        createdAt:
-          format: date-time
-          type: string
-          description: The date when the classroom was created
-      required:
-        - id
-        - name
-        - building
-        - createdAt
     UpdateClassroomDto:
       type: object
       properties:
@@ -733,7 +650,7 @@ components:
           type: string
           description: The name of the classroom
         building:
-          type: object
+          type: string
           description: The building of the classroom
       required:
         - name
@@ -764,6 +681,45 @@ components:
         - code
         - createdAt
         - updatedAt
+    PaginationPresenter:
+      type: object
+      properties:
+        currentPage:
+          type: number
+          description: Current page number
+          example: 1
+        perPage:
+          type: number
+          description: Items per page
+          example: 10
+        lastPage:
+          type: number
+          description: Total pages available
+          example: 5
+        total:
+          type: number
+          description: Total items available
+          example: 50
+      required:
+        - currentPage
+        - perPage
+        - lastPage
+        - total
+    CourseCollectionPresenter:
+      type: object
+      properties:
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/PaginationPresenter'
+        data:
+          description: List of courses
+          type: array
+          items:
+            $ref: '#/components/schemas/CoursePresenter'
+      required:
+        - meta
+        - data
     CreateCourseDto:
       type: object
       properties:
@@ -776,39 +732,6 @@ components:
       required:
         - name
         - code
-    SchedulePresenter:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of schedule
-        discipline:
-          type: object
-          description: The discipline of schedule
-        classroom:
-          description: The classroom of schedule
-          allOf:
-            - $ref: '#/components/schemas/ClassroomPresenter'
-        dayPattern:
-          type: string
-          description: The days that the schedule will happen
-        timeSlot:
-          type: string
-          description: The time that the schedule will happen
-        createdAt:
-          format: date-time
-          type: string
-          description: The date when the schedule was created
-        updatedAt:
-          format: date-time
-          type: string
-          description: The date when the schedule was updated
-      required:
-        - id
-        - dayPattern
-        - timeSlot
-        - createdAt
-        - updatedAt
     UpdateScheduleDto:
       type: object
       properties:
@@ -818,6 +741,46 @@ components:
         disciplineId:
           type: string
           description: The new disciplineId of the schedule
+      required:
+        - classroomId
+        - disciplineId
+    CoursePeriodPresenter:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of course period
+        name:
+          type: string
+          description: The name of the course period
+        createdAt:
+          format: date-time
+          type: string
+          description: The date when the course period was created
+        updatedAt:
+          format: date-time
+          type: string
+          description: The date when the course period was updated
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+    CoursePeriodCollectionPresenter:
+      type: object
+      properties:
+        meta:
+          description: Pagination metadata
+          allOf:
+            - $ref: '#/components/schemas/PaginationPresenter'
+        data:
+          description: List of course periods
+          type: array
+          items:
+            $ref: '#/components/schemas/CoursePeriodPresenter'
+      required:
+        - meta
+        - data
     SignUpDto:
       type: object
       properties:
@@ -830,31 +793,18 @@ components:
         password:
           type: string
           description: The password of the user
+        courseId:
+          type: string
+          description: The course ID of the user
+        coursePeriodId:
+          type: string
+          description: The course period ID of the user
       required:
         - name
         - email
         - password
-    UserPresenter:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the user
-        name:
-          type: string
-          description: The name of the user
-        email:
-          type: string
-          description: The email of the user
-        createdAt:
-          format: date-time
-          type: string
-          description: The date when the user was created
-      required:
-        - id
-        - name
-        - email
-        - createdAt
+        - courseId
+        - coursePeriodId
     SignInDto:
       type: object
       properties:
@@ -867,31 +817,6 @@ components:
       required:
         - email
         - password
-    LogInUserPresenter:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the user
-        name:
-          type: string
-          description: The name of the user
-        email:
-          type: string
-          description: The email of the user
-        createdAt:
-          format: date-time
-          type: string
-          description: The date when the user was created
-        token:
-          type: string
-          description: The token of the user
-      required:
-        - id
-        - name
-        - email
-        - createdAt
-        - token
     UpdateUserDto:
       type: object
       properties:

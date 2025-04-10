@@ -6,7 +6,10 @@ export abstract class AbstractUseCase<Input, Output>
 {
   abstract execute(input: Input): Promise<Output> | Output;
 
-  protected assureRequiredInputProvided(input: Input, requiredFields: string[]) {
+  protected assureRequiredInputProvided(
+    input: Input,
+    requiredFields: string[],
+  ) {
     requiredFields.forEach((field) => {
       if (!input[field]) {
         throw new BadRequestError(`${field} is required`);

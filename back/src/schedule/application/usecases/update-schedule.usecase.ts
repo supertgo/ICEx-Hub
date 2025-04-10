@@ -4,7 +4,7 @@ import {
   ScheduleOutputMapper,
 } from '@/schedule/application/dtos/schedule-output';
 import { UseCaseInterface } from '@/shared/application/use-cases/use-case';
-import { BadRequestError } from '@/shared/application/errors/bad-request-error';
+import { AbstractUseCase } from '@/shared/application/use-cases/abstract-use-case';
 
 export namespace UpdateScheduleUsecase {
   export type Input = {
@@ -15,15 +15,16 @@ export namespace UpdateScheduleUsecase {
 
   export type Output = ScheduleOutput;
 
-  export class UseCase implements UseCaseInterface<Input, Output> {
-    constructor(private repository: ScheduleRepository.Repository) {}
+  export class UseCase
+    extends AbstractUseCase<Input, Output>
+    implements UseCaseInterface<Input, Output>
+  {
+    constructor(private repository: ScheduleRepository.Repository) {
+      super();
+    }
 
     async execute(input: Input): Promise<Output> {
-      if (!input.id) {
-        throw new BadRequestError(
-          'Schedule id is required on UpdateScheduleUsecase',
-        );
-      }
+      this.assureRequiredInputProvided(input, ['id']);
 
       const entity = await this.repository.findById(input.id);
 

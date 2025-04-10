@@ -6,6 +6,7 @@ import {
 import { UseCaseInterface } from '@/shared/application/use-cases/use-case';
 import { BadRequestError } from '@/shared/application/errors/bad-request-error';
 import { CLASSROOM_BUILDING } from '@/classroom/domain/classroom.constants';
+import { AbstractUseCase } from '@/shared/application/use-cases/abstract-use-case';
 
 export namespace UpdateClassroomUsecase {
   export type Input = {
@@ -16,15 +17,16 @@ export namespace UpdateClassroomUsecase {
 
   export type Output = ClassroomOutput;
 
-  export class UseCase implements UseCaseInterface<Input, Output> {
-    constructor(private repository: ClassroomRepository.Repository) {}
+  export class UseCase
+    extends AbstractUseCase<Input, Output>
+    implements UseCaseInterface<Input, Output>
+  {
+    constructor(private repository: ClassroomRepository.Repository) {
+      super();
+    }
 
     async execute(input: Input): Promise<Output> {
-      if (!input.id) {
-        throw new BadRequestError(
-          'Classroom id is required on UpdateClassroomUsecase',
-        );
-      }
+      this.assureRequiredInputProvided(input, ['id']);
 
       const entity = await this.repository.findById(input.id);
 
