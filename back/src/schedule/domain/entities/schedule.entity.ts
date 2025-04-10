@@ -55,6 +55,7 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
 
   set classroomId(classroomId: string) {
     this.props.classroomId = classroomId;
+    this.updatedAt = new Date();
   }
 
   get classroom() {
