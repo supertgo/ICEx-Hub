@@ -9,6 +9,8 @@ export interface User {
 export interface SignupData {
   name: string;
   email: string;
+  courseId: string,
+  coursePeriodId: string,
   password: string;
 }
 
