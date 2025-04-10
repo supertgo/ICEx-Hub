@@ -16,8 +16,7 @@ import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/sc
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
-import { CourseEntity } from '@/course/domain/entities/course.entity';
-import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
+import { CourseDataBuilderAsEntity } from '@/user/domain/testing/helper/course-data-builder';
 import { CoursePeriodDataBuilder } from '@/course/domain/testing/helper/course-period-data-builder';
 
 describe('Schedule prisma repository integration tests', () => {
@@ -29,7 +28,7 @@ describe('Schedule prisma repository integration tests', () => {
     const classroom = ClassroomEntity.fake().aCADClassroom().build();
     const entity = new ScheduleEntity(ScheduleDataBuilder({}));
     const discipline = new DisciplineEntity(DisciplineDataBuilder({}));
-    const course = new CourseEntity(CourseDataBuilder({}));
+    const course = CourseDataBuilderAsEntity();
     const coursePeriodProps = CoursePeriodDataBuilder({});
 
     const courseData = await prismaService.course.create({
@@ -166,7 +165,24 @@ describe('Schedule prisma repository integration tests', () => {
     );
   });
 
-  it('should update a schedule successfully', async () => {});
+  it('should update the schedule classroom successfully', async () => {
+    const props = await fakeSchedule();
+    const entity = await sut.insert(new ScheduleEntity(props));
+    const oldClassroomId = props.classroomId;
+
+    expect(entity.classroomId).toBe(oldClassroomId);
+
+    const newClassroomData = await prismaService.classroom.create({
+      data: ClassroomEntity.fake().aIcexClassroom().build(),
+    });
+
+    entity.classroomId = newClassroomData.id;
+
+    await sut.update(entity);
+
+    expect(entity.classroomId).not.toBe(oldClassroomId);
+    expect(entity.classroomId).toBe(newClassroomData.id);
+  });
 
   it('should throw error when trying to delete non-existent schedule', async () => {
     const nonExistentId = faker.string.uuid();
