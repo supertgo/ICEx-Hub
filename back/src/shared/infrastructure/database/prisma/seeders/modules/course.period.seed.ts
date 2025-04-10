@@ -2,9 +2,12 @@ import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 import { courses } from './course.seed';
 
+export let coursePeriods = [];
+
 export const coursePeriodSeed = async (prisma: PrismaClient) => {
   for (const course of courses) {
     const periods = getCoursePeriods(course.id, course.numberOfPeriods);
+    coursePeriods = coursePeriods.concat(periods);
     for (const period of periods) {
       await prisma.coursePeriod.create({
         data: {
