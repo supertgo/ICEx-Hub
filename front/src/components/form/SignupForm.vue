@@ -3,7 +3,12 @@ import NameInput from 'components/inputs/user/NameInput.vue';
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
 import RepeatPasswordInput from 'components/inputs/user/RepeatPasswordInput.vue';
-import { email, minLength, passwordMatch, required } from 'src/utils/userValidation';
+import {
+  email,
+  minLength,
+  passwordMatch,
+  required,
+} from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { SignupData } from 'src/types/auth';
@@ -12,10 +17,14 @@ import ErrorDialog from 'components/common/ErrorDialog.vue';
 import { useI18n } from 'vue-i18n';
 import { Routes } from 'src/enums/Routes';
 import { useRouter } from 'vue-router';
+import CourseAutocomplete from 'components/inputs/course/CourseAutocomplete.vue';
+import CoursePeriodAutocomplete from 'components/inputs/course-period/CoursePeriodAutocomplete.vue';
 
 const name = ref<string>('');
 const emailRef = ref<string>('');
 const password = ref<string>('');
+const courseId = ref<string>('');
+const coursePeriodId = ref<string>('');
 const repeatPassword = ref<string>('');
 const errorRef = ref<boolean>(false);
 const message = ref<string>('');
@@ -29,6 +38,8 @@ const onSubmit = async (event: Event) => {
     email: emailRef.value,
     name: name.value,
     password: password.value,
+    courseId: courseId.value,
+    coursePeriodId: coursePeriodId.value,
   } as SignupData;
 
   try {
@@ -40,8 +51,13 @@ const onSubmit = async (event: Event) => {
 
     if (axios.isAxiosError(error)) {
       if (error.status == 409) {
-        if (error.response?.data?.message === `User with email ${emailRef.value} already exists`) {
-          message.value = t('auth.signup.error.emailExist', { email: emailRef.value });
+        if (
+          error.response?.data?.message ===
+          `User with email ${emailRef.value} already exists`
+        ) {
+          message.value = t('auth.signup.error.emailExist', {
+            email: emailRef.value,
+          });
         }
       }
     }
@@ -50,16 +66,41 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <q-card class="q-pa-md" style="max-width: 400px; width: 100%">
+  <q-card class="q-pa-md" style="max-width: 800px; width: 100%">
     <h2 class="text-h6 text-center">{{ $t('auth.signup.title') }}</h2>
     <q-form @submit="onSubmit">
-      <NameInput v-model="name" :rules="[required]" />
+      <q-card-section class="row q-gutter-md">
+        <NameInput class="col" v-model="name" :rules="[required]" />
 
-      <EmailInput v-model="emailRef" :rules="[required, email]" />
+        <EmailInput class="col" v-model="emailRef" :rules="[required, email]" />
+      </q-card-section>
 
-      <PasswordInput v-model="password" :rules="[required, minLength(6)]" />
+      <q-card-section class="row q-gutter-md">
+        <PasswordInput
+          class="col"
+          v-model="password"
+          :rules="[required, minLength(6)]"
+        />
+        <RepeatPasswordInput
+          class="col"
+          v-model="repeatPassword"
+          :rules="[required, passwordMatch(password)]"
+        />
+      </q-card-section>
 
-      <RepeatPasswordInput v-model="repeatPassword" :rules="[required, passwordMatch(password)]" />
+      <q-card-section class="row q-gutter-md">
+        <course-autocomplete
+          class="col"
+          v-model="courseId"
+          :rules="[required]"
+        />
+        <course-period-autocomplete
+          class="col"
+          v-model="coursePeriodId"
+          :rules="[required]"
+        />
+      </q-card-section>
+
       <div>
         <q-btn
           type="submit"
