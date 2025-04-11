@@ -3,11 +3,17 @@ import { Classroom } from '@prisma/client';
 import { ClassroomModelMapper } from '@/classroom/infrastructure/database/prisma/models/classroom-model.mapper';
 import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 
 describe('Classroom model mapper integration tests', () => {
   let prismaService: PrismaService;
-  const entity = ClassroomEntity.fake().aIcexClassroom().build();
+  const entity = ClassroomEntity.fake()
+    .aCADClassroom()
+    .withName(new Date().toISOString())
+    .build();
   const props = {
     id: entity.id,
     name: entity.name,
@@ -23,8 +29,8 @@ describe('Classroom model mapper integration tests', () => {
     await prismaService.$connect();
   });
 
-  beforeEach(() => {
-    prismaService.classroom.deleteMany();
+  beforeEach(async () => {
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

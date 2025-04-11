@@ -1,7 +1,6 @@
 import { Course, CoursePeriod, PrismaClient } from '@prisma/client';
 import { CourseProps } from '@/course/domain/entities/course.entity';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
-import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 
 export class CoursePrismaTestingHelper {

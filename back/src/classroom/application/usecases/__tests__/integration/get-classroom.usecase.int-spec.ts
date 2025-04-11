@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/classroom-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { GetClassroomUsecase } from '@/classroom/application/usecases/get-classroom.usecase';
 import { ClassroomWithIdNotFoundError } from '@/classroom/infrastructure/errors/classroom-with-id-not-found';
@@ -26,7 +29,7 @@ describe('Get classroom usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new GetClassroomUsecase.UseCase(repository);
-    await prismaService.classroom.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

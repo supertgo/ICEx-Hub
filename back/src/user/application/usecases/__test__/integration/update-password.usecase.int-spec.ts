@@ -1,12 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { faker } from '@faker-js/faker';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
-import { UpdateUserUsecase } from '@/user/application/usecases/update-user.usecase';
 import { UpdatePasswordUsecase } from '@/user/application/usecases/update-password.usecase';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
@@ -32,7 +33,7 @@ describe('Update password usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new UpdatePasswordUsecase.UseCase(repository, hasProvider);
-    await prismaService.user.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
@@ -48,7 +49,7 @@ describe('Update password usecase integration tests', () => {
         oldPassword: faker.internet.password(),
         newPassword: faker.internet.password(),
       }),
-    ).rejects.toThrowError(new UserWithIdNotFoundError(id));
+    ).rejects.toThrow(new UserWithIdNotFoundError(id));
   });
 
   it('should update a user password', async () => {

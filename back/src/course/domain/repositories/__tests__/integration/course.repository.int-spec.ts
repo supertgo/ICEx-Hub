@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { faker } from '@faker-js/faker';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 describe('Course prisma repository integration tests', () => {
@@ -32,7 +32,7 @@ describe('Course prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', () => {
-    expect(() => sut.findById('1')).rejects.toThrowError(
+    expect(() => sut.findById('1')).rejects.toThrow(
       new CourseWithIdNotFoundError('1'),
     );
   });
@@ -53,7 +53,6 @@ describe('Course prisma repository integration tests', () => {
   it('should insert a new course', async () => {
     const entity = new CourseEntity(CourseDataBuilder({}));
     await sut.insert(entity);
-
   });
 
   it('should return one course if theres only one with find all', async () => {
@@ -70,17 +69,17 @@ describe('Course prisma repository integration tests', () => {
     const nonExistentId = faker.string.uuid();
     const entity = new CourseEntity(CourseDataBuilder({}), nonExistentId);
 
-    await expect(sut.update(entity)).rejects.toThrowError(
+    await expect(sut.update(entity)).rejects.toThrow(
       new CourseWithIdNotFoundError(nonExistentId),
     );
   });
 
-  it('should update a course successfully', async () => { });
+  it('should update a course successfully', async () => {});
 
   it('should throw error when trying to delete non-existent course', async () => {
     const nonExistentId = faker.string.uuid();
 
-    await expect(sut.delete(nonExistentId)).rejects.toThrowError(
+    await expect(sut.delete(nonExistentId)).rejects.toThrow(
       new CourseWithIdNotFoundError(nonExistentId),
     );
   });

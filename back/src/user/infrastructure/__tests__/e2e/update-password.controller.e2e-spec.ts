@@ -1,10 +1,12 @@
-import { SignUpDto } from '@/user/infrastructure/dtos/sign-up.dto';
-import { en, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
 import { PrismaClient } from '@prisma/client';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { UserModule } from '@/user/infrastructure/user.module';
 import { EnvConfigModule } from '@/shared/infrastructure/env-config/env-config.module';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
@@ -12,9 +14,7 @@ import request from 'supertest';
 import { UserController } from '@/user/infrastructure/user.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '@/global-config';
-import { UpdateUserDto } from '@/user/infrastructure/dtos/update-user.dto';
 import { UserEntity } from '@/user/domain/entities/user.entity';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { UpdatePasswordDto } from '@/user/infrastructure/dtos/update-password.dto';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
@@ -54,7 +54,7 @@ describe('Update user e2e tests', () => {
       newPassword: faker.internet.password(),
     };
 
-    await prismaService.user.deleteMany();
+    await resetDatabase(prismaService);
 
     entity = await UserPrismaTestingHelper.createUserAsEntity(prismaService, {
       password: await hashProvider.generateHash(oldPassword),

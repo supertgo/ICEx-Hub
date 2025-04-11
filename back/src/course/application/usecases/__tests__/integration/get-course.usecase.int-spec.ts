@@ -1,12 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { GetCourseUsecase } from '@/course/application/usecases/get-course.usecase';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
 import { faker } from '@faker-js/faker';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 
 describe('Get course usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -26,7 +29,7 @@ describe('Get course usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new GetCourseUsecase.UseCase(repository);
-    await prismaService.course.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
@@ -36,13 +39,15 @@ describe('Get course usecase integration tests', () => {
 
   it('should throw error when course not found', () => {
     const id = faker.string.uuid();
-    expect(() => sut.execute({ id })).rejects.toThrowError(
+    expect(() => sut.execute({ id })).rejects.toThrow(
       new CourseWithIdNotFoundError(id),
     );
   });
 
   it('should retrieve a course', async () => {
-    const course = await prismaService.course.create({ data: CourseDataBuilder({})});
+    const course = await prismaService.course.create({
+      data: CourseDataBuilder({}),
+    });
 
     const output = await sut.execute({ id: course.id });
 

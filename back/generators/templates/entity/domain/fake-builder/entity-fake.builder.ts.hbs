@@ -42,7 +42,7 @@ export class {{pascalCase name}}FakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild {
+  build(): TBuild extends {{pascalCase name}}Entity[] ? {{pascalCase name}}[] : {{pascalCase name}}{
     const {{dashCase name}}s = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
@@ -57,7 +57,7 @@ export class {{pascalCase name}}FakeBuilder<TBuild = any> {
         });
       });
 
-    return this.countObjs === 1 ? ({{dashCase name}}s[0] as any) : {{dashCase name}}s;
+    return (this.countObjs === 1 ? {{dashCase name}}s[0] : {{dashCase name}}s) as any;
   }
 
   get name() {

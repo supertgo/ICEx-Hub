@@ -2,7 +2,7 @@ import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { CourseRepository } from '@/course/domain/repositories/course.repository';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { CourseModelMapper } from '@/course/infrastructure/database/prisma/models/course-model.mapper';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { Course } from '@prisma/client';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 

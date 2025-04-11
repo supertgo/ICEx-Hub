@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { UserPrismaRepository } from '@/user/infrastructure/database/prisma/repositories/user-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { ListUsersUsecase } from '@/user/application/usecases/list-users.usecase';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
@@ -27,7 +29,7 @@ describe('List users usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new ListUsersUsecase.UseCase(repository);
-    await prismaService.user.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

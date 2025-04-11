@@ -5,8 +5,8 @@ import request from 'supertest';
 import { UserWithIdNotFoundError } from '@/user/infrastructure/errors/user-with-id-not-found-error';
 import { NotFoundErrorFilter } from '@/shared/infrastructure/exception-filters/not-found-error/not-found-error.filter';
 import { UserWithEmailNotFoundError } from '@/user/domain/errors/user-with-email-not-found-error';
-import { CourseWithIdNotFoundError } from '@/course/infrastructure/Errors/course-with-id-not-found-error';
-import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/Errors/course-period-with-id-not-found-error';
+import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
+import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
 
 const id = faker.string.uuid();
 const email = faker.internet.email();

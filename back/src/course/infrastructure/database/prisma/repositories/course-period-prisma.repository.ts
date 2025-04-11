@@ -4,7 +4,7 @@ import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repositor
 import { CoursePeriodRepository } from '@/course/domain/repositories/course-period.repository';
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 import { CoursePeriodModelMapper } from '@/course/infrastructure/database/prisma/models/course-period-model.mapper';
-import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/Errors/course-period-with-id-not-found-error';
+import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
 
 export class CoursePeriodPrismaRepository
   implements CoursePeriodRepository.Repository

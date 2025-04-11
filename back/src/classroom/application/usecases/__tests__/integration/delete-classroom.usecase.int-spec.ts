@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { ClassroomPrismaRepository } from '@/classroom/infrastructure/database/prisma/repositories/classroom-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteClassroomUsecase } from '@/classroom/application/usecases/delete-classroom.usecase';
 import { faker } from '@faker-js/faker';
@@ -26,7 +29,7 @@ describe('Delete Classroom usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new DeleteClassroomUsecase.UseCase(repository);
-    await prismaService.classroom.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {

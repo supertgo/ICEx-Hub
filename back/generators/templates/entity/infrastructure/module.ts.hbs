@@ -7,6 +7,7 @@ import { Update{{pascalCase name}}Usecase } from '@/{{dashCase name}}/applicatio
 import { Delete{{pascalCase name}}Usecase } from '@/{{dashCase name}}/application/usecases/delete-{{dashCase name}}.usecase';
 import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.service';
 import { {{pascalCase name}}PrismaRepository } from '@/{{dashCase name}}/infrastructure/database/prisma/repositories/{{dashCase name}}-prisma.repository';
+import { AuthModule } from '@/auth/infrastructure/auth.module';
 
 @Module({
   imports: [AuthModule],

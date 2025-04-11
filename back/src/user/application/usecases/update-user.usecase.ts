@@ -4,7 +4,7 @@ import {
   UserOutputMapper,
 } from '@/user/application/dtos/user-output';
 import { UseCaseInterface } from '@/shared/application/use-cases/use-case';
-import { BadRequestError } from '@/shared/application/errors/bad-request-error';
+import { AbstractUseCase } from '@/shared/application/use-cases/abstract-use-case';
 
 export namespace UpdateUserUsecase {
   export type Input = {
@@ -14,13 +14,16 @@ export namespace UpdateUserUsecase {
 
   export type Output = UserOutput;
 
-  export class UseCase implements UseCaseInterface<Input, Output> {
-    constructor(private repository: UserRepository.Repository) {}
+  export class UseCase
+    extends AbstractUseCase<Input, Output>
+    implements UseCaseInterface<Input, Output>
+  {
+    constructor(private repository: UserRepository.Repository) {
+      super();
+    }
 
     async execute(input: Input): Promise<Output> {
-      if (!input.name) {
-        throw new BadRequestError('Name is required');
-      }
+      this.assureRequiredInputProvided(input, ['name']);
 
       const entity = await this.repository.findById(input.id);
 

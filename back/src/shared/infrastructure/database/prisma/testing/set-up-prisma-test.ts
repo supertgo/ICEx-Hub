@@ -7,6 +7,6 @@ export function setUpPrismaTest() {
 
 export async function resetDatabase(prismaService: PrismaClient) {
   await prismaService.$executeRaw`TRUNCATE TABLE 
-    users, students, disciplines, schedules, course_periods, courses 
+    users, students, classrooms, disciplines, schedules, course_periods, courses
     CASCADE`;
 }

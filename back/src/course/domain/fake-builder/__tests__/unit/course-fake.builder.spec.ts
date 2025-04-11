@@ -126,7 +126,7 @@ describe('CourseFakeBuilder Unit Tests', () => {
 
       expect(() => fakerCourse.createdAt).toThrow(
         new Error(
-          'Property createdAt does not have a factory, use \'with\' methods',
+          "Property createdAt does not have a factory, use 'with' methods",
         ),
       );
     });
@@ -173,7 +173,7 @@ describe('CourseFakeBuilder Unit Tests', () => {
 
       expect(() => fakerCourse.updatedAt).toThrow(
         new Error(
-          'Property updatedAt does not have a factory, use \'with\' methods',
+          "Property updatedAt does not have a factory, use 'with' methods",
         ),
       );
     });
