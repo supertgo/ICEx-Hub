@@ -39,7 +39,9 @@ export const courseSeed = async (prisma: PrismaClient) => {
       where: {
         code: course.code,
       },
-      update: {},
+      update: {
+        id: course.id,
+      },
       create: {
         id: course.id,
         name: course.name,
