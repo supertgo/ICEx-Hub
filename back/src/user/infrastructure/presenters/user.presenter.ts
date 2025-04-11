@@ -12,6 +12,12 @@ export class UserPresenter {
   @ApiProperty({ description: 'The email of the user' })
   email: string;
 
+  @ApiProperty({ description: 'The courseId of the user' })
+  courseId: string;
+
+  @ApiProperty({ description: 'The coursePeriodId of the user' })
+  coursePeriodId: string;
+
   @ApiProperty({ description: 'The date when the user was created' })
   @Transform(({ value }: { value: Date }) => value.toISOString())
   createdAt: Date;
@@ -21,6 +27,8 @@ export class UserPresenter {
     this.name = output.name;
     this.email = output.email;
     this.createdAt = output.createdAt;
+    this.courseId = output.courseId;
+    this.coursePeriodId = output.coursePeriodId;
   }
 }
 
