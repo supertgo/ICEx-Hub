@@ -30,17 +30,22 @@
 
 <script setup lang="ts">
 import StatusCircle from 'src/components/StatusCircle.vue';
+import { useAuthStore } from 'src/stores/auth';
 import { useScheduleStore } from 'src/stores/schedule';
 import { type ScheduleRows } from 'src/types/schedule';
 import { scheduleDataToOutput, columns } from 'src/utils/schedule/table';
 import { onMounted, ref } from 'vue';
 
+const { user } = useAuthStore();
 const rows = ref<ScheduleRows[]>([]);
 const scheduleStore = useScheduleStore();
 
 onMounted(async () => {
   try {
-    const schedules = await scheduleStore.listSchedules();
+    const schedules = await scheduleStore.listSchedules({
+      courseId: user?.courseId,
+      coursePeriodId: user?.coursePeriodId,
+    });
     rows.value = scheduleDataToOutput(schedules);
   } catch (error) {
     console.error('Error loading schedules:', error);

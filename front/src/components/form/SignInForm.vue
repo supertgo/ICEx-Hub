@@ -10,6 +10,7 @@ import ErrorDialog from 'components/common/ErrorDialog.vue';
 import { useI18n } from 'vue-i18n';
 import { Routes } from 'src/enums/Routes';
 import { useRouter } from 'vue-router';
+import { Cookies } from 'quasar';
 
 const emailRef = ref<string>('');
 const password = ref<string>('');
@@ -28,7 +29,8 @@ const onSubmit = async (event: Event) => {
   } as SignInData;
 
   try {
-    await authStore.signIn(data);
+    const user = await authStore.signIn(data);
+    Cookies.set('authorization_token', user.token!);
 
     await router.push({ name: Routes.HOME });
   } catch (error) {

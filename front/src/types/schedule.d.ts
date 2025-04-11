@@ -47,3 +47,11 @@ export interface ScheduleRows {
   direction: string;
   status: boolean;
 }
+
+export interface ListScheduleParams {
+  // name?: string | null;
+  // timeSlots?: string[] | null;
+  // dayPatterns?: string[] | null;
+  courseId?: string | undefined;
+  coursePeriodId?: string | undefined;
+}
