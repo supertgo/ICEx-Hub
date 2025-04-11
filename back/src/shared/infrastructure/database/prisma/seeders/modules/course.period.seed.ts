@@ -6,14 +6,28 @@ export let coursePeriods = [];
 
 export const coursePeriodSeed = async (prisma: PrismaClient) => {
   for (const course of courses) {
-    const periods = getCoursePeriods(course.id, course.numberOfPeriods);
+    const courseRecord = await prisma.course.findUnique({
+      where: {
+        code: course.code,
+      },
+    });
+
+    const periods = getCoursePeriods(courseRecord.id, course.numberOfPeriods);
     coursePeriods = coursePeriods.concat(periods);
+
     for (const period of periods) {
-      await prisma.coursePeriod.create({
-        data: {
+      await prisma.coursePeriod.upsert({
+        where: {
+          unique_period_course: {
+            courseId: courseRecord.id,
+            name: period.name,
+          },
+        },
+        update: {},
+        create: {
           name: period.name,
           id: period.id,
-          courseId: course.id,
+          courseId: courseRecord.id,
         },
       });
     }
