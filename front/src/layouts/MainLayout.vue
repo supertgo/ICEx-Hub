@@ -1,6 +1,5 @@
 <style lang="scss">
 @import '../css/index.page.scss';
-@import '../css/quasar.variables.scss';
 </style>
 
 <script setup lang="ts">
@@ -30,11 +29,17 @@ watch(
 
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-blue-10">
-      <q-toolbar>
+    <q-header elevated class="bg-blue-10 header">
+      <q-toolbar class="header-toolbar">
         <AppBrand />
         <q-space />
-        <q-btn icon="account_circle" round flat dense @click="drawer = !drawer"></q-btn>
+        <q-btn
+          icon="account_circle"
+          round
+          flat
+          dense
+          @click="drawer = !drawer"
+        ></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -51,7 +56,11 @@ watch(
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="$router.push({ name: Routes.UPDATE_PASSWORD })">
+          <q-item
+            clickable
+            v-ripple
+            @click="$router.push({ name: Routes.UPDATE_PASSWORD })"
+          >
             <q-item-section avatar>
               <q-icon name="lock"></q-icon>
             </q-item-section>
@@ -60,7 +69,11 @@ watch(
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple @click="$router.push({ name: Routes.UPDATE_NAME })">
+          <q-item
+            clickable
+            v-ripple
+            @click="$router.push({ name: Routes.UPDATE_NAME })"
+          >
             <q-item-section avatar>
               <q-icon name="badge"></q-icon>
             </q-item-section>
