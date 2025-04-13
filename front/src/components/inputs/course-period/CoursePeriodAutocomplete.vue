@@ -1,16 +1,9 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import type { QSelect } from 'quasar';
-import type { AutocompleteCourseData } from 'src/types/course';
-import { useCoursePeriodStore } from 'stores/coursePeriod';
-import type { CoursePeriod } from 'src/types/coursePeriod';
+import { useCourseStore } from 'stores/course';
+import type { Course } from 'src/types/course';
+import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 
 const props = defineProps({
-  label: {
-    type: String,
-    required: false,
-    default: 'coursePeriod.name',
-  },
   modelValue: {
     type: [String, null],
     required: true,
@@ -21,60 +14,27 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue' as const]);
-const autocomplete: AutocompleteCourseData = {
-  autocomplete: '',
+const emit = defineEmits(['update:modelValue']);
+
+const courseStore = useCourseStore();
+
+const searchCourses = async (input: string) => {
+  const response: Course[] = await courseStore.autocomplete({
+    autocomplete: input,
+  });
+  return response.map((course) => ({
+    label: `${course.code} - ${course.name}`,
+    value: course.id,
+  }));
 };
-
-const options = ref<{ label: string; value: string }[]>([]);
-const coursePeriodStore = useCoursePeriodStore();
-
-type QuasarFilterMethod = (
-  inputValue: string,
-  doneFn: (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void,
-  abortFn: () => void,
-) => void;
-
-const searchCoursePeriods: QuasarFilterMethod = (inputValue, doneFn, abortFn) => {
-  const autocomplete: AutocompleteCourseData = {
-    autocomplete: inputValue,
-  };
-
-  coursePeriodStore
-    .autocomplete(autocomplete)
-    .then((response: CoursePeriod[]) => {
-      const formatted = response.map((option: CoursePeriod) => ({
-        label: option.name,
-        value: option.id,
-      }));
-
-      doneFn(() => {
-        options.value = formatted;
-      });
-    })
-    .catch(() => {
-      abortFn();
-    });
-};
-
-const selectedValue = computed({
-  get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value),
-});
 </script>
 
 <template>
-  <q-select
-    v-model="selectedValue"
-    :label="$t(label)"
-    :options="options"
-    input-debounce="5"
-    use-input
-    @filter="searchCoursePeriods"
-    emit-value
-    map-options
-    :autocomplete="autocomplete.autocomplete"
+  <AbstractAutocomplete
+    :model-value="props.modelValue"
+    :rules="props.rules"
+    label="course.name"
+    :search-fn="searchCourses"
+    @update:modelValue="emit('update:modelValue', $event)"
   />
 </template>
-
-<style scoped></style>
