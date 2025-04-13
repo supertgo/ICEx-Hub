@@ -27,7 +27,6 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async signup(data: SignupData): Promise<void> {
       this.user = await signup(data);
-      Cookies.set('authorization_token', this.user.token!);
     },
     async updatePassword(data: UpdatePasswordData): Promise<void> {
       if (!this.user) {
@@ -44,6 +43,9 @@ export const useAuthStore = defineStore('auth', {
     },
     async signIn(data: SignInData): Promise<User> {
       this.user = await signIn(data);
+      Cookies.set('authorization_token', this.user.token!, {
+        sameSite: 'Strict',
+      });
 
       return this.user;
     },
