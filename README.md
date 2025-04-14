@@ -11,10 +11,6 @@
 
 O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão e busca de salas de aula no prédio do Instituto de Ciências Exatas (ICEx) da UFMG. A aplicação terá algumas funcionalidades principais, que tem como objetivo fornecer ao usuário uma experiência mais personalizada e eficiente.
 
-## Figma
-
-[Link para o figma](https://www.figma.com/file/9E03uUlkhs4tlAyjkWmJHx/ICEx-Hub?type=design&node-id=202%3A2&mode=design&t=viZ9WwJ73szRuBgV-1)
-
 ### Principais Features
 
 ## Tecnologias
@@ -30,7 +26,6 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 
 ### Outras Tecnologias
 
-- Cypress para testes automatizados
 - Docker e docker-compose para contêineres
 - Figma para design e prototipagem
 - GitHub para controle de versão e colaboração no código
@@ -38,8 +33,21 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 - Quasar para framework de front-end
 
 ### Sprint Backlog
-- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
-- Como usuário, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
-- Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
-- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre 
 
+- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
+- Como aluno, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
+- Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
+- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre
+
+### Backlog do Produto
+
+- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
+- Como usuário, eu gostaria de fazer login na plataforma
+- Como aluno, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
+- Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
+- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre
+- Como administrador, eu gostaria de poder exportar um relatório com a ocupação das salas ao longo da semana, para análise da gestão do espaço físico
+- Como usuário, eu gostaria de visualizar no mapa a localização exata das salas do ICEx, para que eu consiga encontrá-las com mais facilidade dentro do prédio.
+- Como administrador, eu gostaria de bloquear temporariamente uma sala para manutenção ou eventos, impedindo que ela apareça nas buscas
+- Como aluno, eu gostaria de receber alertas sobre trocas de sala ou cancelamento de aula, para não perder tempo
+- Como aluno, eu gostaria de avaliar e comentar sobre salas (ex: ventilação, conforto), para ajudar outros alunos a escolher onde estudar
