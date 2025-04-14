@@ -10,3 +10,10 @@
 // Should return true if matches or false otherwise. This method should be used on
 // the last column('status'), so true will render the green ball and false will render
 // the red one.
+import { describe, it, expect } from 'vitest';
+
+describe('Tabela', () => {
+  it('faz alguma coisa', () => {
+    expect(1 + 1).toBe(2);
+  });
+});
