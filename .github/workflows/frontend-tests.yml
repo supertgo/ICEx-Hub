@@ -24,4 +24,4 @@ jobs:
         run: cd front && npm run typecheck
 
       - name: Run Tests
-        run: cd front && npx test
+        run: cd front && npm run test:ci
