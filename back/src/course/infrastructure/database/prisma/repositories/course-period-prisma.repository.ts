@@ -76,18 +76,36 @@ export class CoursePeriodPrismaRepository
 
     const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
 
-    const hasFilter = searchInput.filter ? searchInput.filter : null;
+    const hasNameFilter = searchInput.filter?.name
+      ? searchInput.filter.name
+      : null;
 
-    const filter = hasFilter
-      ? {
-          where: {
-            name: {
-              contains: searchInput.filter,
-              mode: 'insensitive',
-            },
-          },
-        }
-      : undefined;
+    const hasCourseIdFilter = searchInput.filter?.courseId
+      ? searchInput.filter.courseId
+      : null;
+
+    const where: any = {};
+
+    if (hasNameFilter) {
+      where.name = {
+        contains: searchInput.filter.name,
+        mode: 'insensitive',
+      };
+    }
+
+    if (hasCourseIdFilter) {
+      where.courseId = {
+        contains: searchInput.filter.courseId,
+        mode: 'insensitive',
+      };
+    }
+
+    const filter =
+      hasNameFilter || hasCourseIdFilter
+        ? {
+            where,
+          }
+        : undefined;
 
     const { count, models } = await this.executeQueries(
       filter,
