@@ -5,6 +5,7 @@ import { CoursePeriodRepository } from '@/course/domain/repositories/course-peri
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 import { CoursePeriodModelMapper } from '@/course/infrastructure/database/prisma/models/course-period-model.mapper';
 import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
+import { Prisma } from '@prisma/client';
 
 export class CoursePeriodPrismaRepository
   implements CoursePeriodRepository.Repository
@@ -84,7 +85,7 @@ export class CoursePeriodPrismaRepository
       ? searchInput.filter.courseId
       : null;
 
-    const where: any = {};
+    const where: Prisma.CoursePeriodWhereInput = {};
 
     if (hasNameFilter) {
       where.name = {
@@ -94,10 +95,7 @@ export class CoursePeriodPrismaRepository
     }
 
     if (hasCourseIdFilter) {
-      where.courseId = {
-        contains: searchInput.filter.courseId,
-        mode: 'insensitive',
-      };
+      where.courseId = searchInput.filter.courseId;
     }
 
     const filter =

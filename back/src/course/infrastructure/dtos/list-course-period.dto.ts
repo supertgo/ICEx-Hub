@@ -3,7 +3,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 import { ListEntityDto } from '@/shared/application/dtos/list-entity.dto';
 
-export class ListCoursesDto
+export class ListCoursePeriodsDto
   extends ListEntityDto
   implements ListCoursesUsecase.Input
 {
