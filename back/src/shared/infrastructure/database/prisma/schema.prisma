@@ -26,6 +26,7 @@ enum DayPattern {
   SATURDAY
   MONDAY_WEDNESDAY
   TUESDAY_THURSDAY
+  MONDAY_WEDNESDAY_FRIDAY
 }
 
 enum TimeSlot {
@@ -37,6 +38,7 @@ enum TimeSlot {
   EVENING_1 // 17:00 - 18:40
   EVENING_2 // 19:00 - 20:40
   EVENING_3 // 20:55 - 22:35
+  EVENING_1_2 // 17:00 - 20:40
 }
 
 model User {
