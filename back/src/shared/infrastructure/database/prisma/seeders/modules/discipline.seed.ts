@@ -71,7 +71,7 @@ export const disciplinesSI = [
   {
     id: faker.string.uuid(),
     name: 'Economia A I',
-    code: 'ECN101',
+    code: 'ECN140',
     periodo: 2,
     course: courseSI,
   },
@@ -176,14 +176,14 @@ export const disciplinesSI = [
   {
     id: faker.string.uuid(),
     name: 'Engenharia de Software',
-    code: 'DCC063',
+    code: 'DCC094',
     periodo: 6,
     course: courseSI,
   },
   {
     id: faker.string.uuid(),
     name: 'Sistemas Operacionais',
-    code: 'DCC065',
+    code: 'DCC605',
     periodo: 6,
     course: courseSI,
   },

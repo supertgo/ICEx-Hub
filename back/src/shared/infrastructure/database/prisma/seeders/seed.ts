@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { courseSeed } from './modules/course.seed';
 import { coursePeriodSeed } from './modules/course.period.seed';
 import { disciplineSeed } from './modules/discipline.seed';
+import { scheduleSeed } from './modules/schedule.seed';
 const prisma = new PrismaClient();
 
 const seed = async () => {
@@ -10,6 +11,7 @@ const seed = async () => {
   await courseSeed(prisma);
   await coursePeriodSeed(prisma);
   await disciplineSeed(prisma);
+  await scheduleSeed(prisma);
 };
 
 seed()
