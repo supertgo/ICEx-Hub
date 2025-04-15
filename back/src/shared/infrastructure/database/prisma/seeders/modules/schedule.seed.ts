@@ -516,7 +516,7 @@ export const scheduleSeed = async (prisma: PrismaClient) => {
       },
       create: {
         id: schedule.id,
-        disciplineId: getDisciplineId(schedule.disciplineCode) /* ALTERAR */,
+        disciplineId: getDisciplineId(schedule.disciplineCode),
         classroomId: getClassroomId(
           schedule.ClassroomBulding,
           schedule.classroomName,
