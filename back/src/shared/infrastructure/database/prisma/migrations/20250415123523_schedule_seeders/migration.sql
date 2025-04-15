@@ -1,0 +1,5 @@
+-- AlterEnum
+ALTER TYPE "DayPattern" ADD VALUE 'MONDAY_WEDNESDAY_FRIDAY';
+
+-- AlterEnum
+ALTER TYPE "TimeSlot" ADD VALUE 'EVENING_1_2';
