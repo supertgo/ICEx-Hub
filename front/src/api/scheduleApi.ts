@@ -12,7 +12,7 @@ export const listSchedules = async ({
   const params = new URLSearchParams(url.search);
 
   if (name) {
-    params.set('name', name);
+    params.set('name', name.trim());
   }
 
   if (courseId) {
