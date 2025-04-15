@@ -2,11 +2,18 @@ import { api } from 'boot/axios';
 import { type ListScheduleParams, type ScheduleData } from 'src/types/schedule';
 
 export const listSchedules = async ({
+  name,
+  dayPatterns,
+  timeSlots,
   courseId,
   coursePeriodId,
 }: ListScheduleParams): Promise<ScheduleData> => {
   const url = new URL('http://localhost:3000/schedule');
   const params = new URLSearchParams(url.search);
+
+  if (name) {
+    params.set('name', name);
+  }
 
   if (courseId) {
     params.set('courseId', courseId);
@@ -14,6 +21,16 @@ export const listSchedules = async ({
 
   if (coursePeriodId) {
     params.set('coursePeriodId', coursePeriodId);
+  }
+
+  if (timeSlots?.length) {
+    timeSlots.forEach((slot) => params.append('timeSlots', slot));
+  }
+
+  if (dayPatterns?.length) {
+    dayPatterns.forEach((dayPattern) =>
+      params.append('dayPatterns', dayPattern),
+    );
   }
 
   const response = await api.get(`/schedule?${params.toString()}`);
