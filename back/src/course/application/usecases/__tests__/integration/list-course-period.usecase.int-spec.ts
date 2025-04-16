@@ -92,7 +92,7 @@ describe('List course period usecase integration tests', () => {
       perPage: 2,
       sort: 'createdAt',
       sortDir: SortOrderEnum.ASC,
-      filter: 'TEST',
+      filter: { name: 'TEST', courseId: course.id },
     });
 
     expect(output).toMatchObject({
@@ -108,7 +108,7 @@ describe('List course period usecase integration tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'TEST',
+      filter: { name: 'TEST' },
     });
 
     expect(output).toMatchObject({
@@ -117,6 +117,28 @@ describe('List course period usecase integration tests', () => {
       currentPage: 2,
       perPage: 2,
       lastPage: 2,
+    });
+
+    output = await sut.execute({
+      page: 1,
+      perPage: 5,
+      sort: 'createdAt',
+      sortDir: SortOrderEnum.ASC,
+      filter: { courseId: course.id },
+    });
+
+    expect(output).toMatchObject({
+      items: [
+        entities[0].toJSON(),
+        entities[2].toJSON(),
+        entities[1].toJSON(),
+        entities[3].toJSON(),
+        entities[4].toJSON(),
+      ],
+      total: 5,
+      currentPage: 1,
+      perPage: 5,
+      lastPage: 1,
     });
   });
 });

@@ -9,7 +9,7 @@ import { CoursePeriodOutputMapper } from '@/course/application/dtos/course-perio
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 
 export namespace ListCoursePeriodUsecase {
-  export type Input = SearchInput;
+  export type Input = SearchInput<CoursePeriodRepository.Filter>;
 
   export type Output = PaginationOutput;
 

@@ -79,7 +79,7 @@ describe('List course period use cases unit tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'a',
+      filter: { name: 'a' },
     });
 
     expect(result.total).toBe(2);
@@ -104,7 +104,7 @@ describe('List course period use cases unit tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'a',
+      filter: { name: 'a' },
     });
 
     expect(result.items.length).toBe(0);
@@ -127,7 +127,7 @@ describe('List course period use cases unit tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'a',
+      filter: { name: 'a' },
     });
 
     expect(result.items.length).toBe(1);
@@ -152,7 +152,7 @@ describe('List course period use cases unit tests', () => {
       perPage: 2,
       sort: 'name',
       sortDir: SortOrderEnum.ASC,
-      filter: 'd',
+      filter: { name: 'd' },
     });
 
     expect(result.items.length).toBe(0);
