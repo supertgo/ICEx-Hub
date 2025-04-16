@@ -3,7 +3,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 import { ListEntityDto } from '@/shared/application/dtos/list-entity.dto';
 
-export class ListCoursesDto
+export class ListCoursePeriodsDto
   extends ListEntityDto
   implements ListCoursesUsecase.Input
 {
@@ -16,9 +16,16 @@ export class ListCoursesDto
   sort?: string | null;
 
   @ApiPropertyOptional({
-    description: 'The filter to apply to the search for now just name',
+    description: 'The filter to apply to the search using name',
     enum: ['name'],
   })
   @IsOptional()
-  filter?: string | null;
+  name?: string | null;
+
+  @ApiPropertyOptional({
+    description: 'The filter to apply to the search using courseId',
+    enum: ['courseId'],
+  })
+  @IsOptional()
+  courseId?: string | null;
 }

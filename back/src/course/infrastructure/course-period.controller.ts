@@ -6,7 +6,7 @@ import {
 } from '@nestjs/swagger';
 import { ListCoursePeriodUsecase } from '@/course/application/usecases/list-course-period.usecase';
 import { Controller, Get, Inject, Query } from '@nestjs/common';
-import { ListCoursesDto } from '@/course/infrastructure/dtos/list-course.dto';
+import { ListCoursePeriodsDto } from './dtos/list-course-period.dto';
 import {
   CoursePeriodCollectionPresenter,
   CoursePeriodPresenter,
@@ -31,8 +31,14 @@ export class CoursePeriodController {
   @ApiExtraModels(CoursePeriodPresenter, CoursePeriodCollectionPresenter)
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @Get()
-  async search(@Query() searchParams: ListCoursesDto) {
-    const result = await this.listCoursePeriodUseCase.execute(searchParams);
+  async search(@Query() searchParams: ListCoursePeriodsDto) {
+    const result = await this.listCoursePeriodUseCase.execute({
+      ...searchParams,
+      filter: {
+        name: searchParams?.name,
+        courseId: searchParams?.courseId,
+      },
+    });
 
     return CoursePeriodController.listCoursePeriodToResponse(result);
   }

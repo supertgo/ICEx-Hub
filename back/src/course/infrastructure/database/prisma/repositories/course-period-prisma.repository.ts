@@ -5,6 +5,7 @@ import { CoursePeriodRepository } from '@/course/domain/repositories/course-peri
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 import { CoursePeriodModelMapper } from '@/course/infrastructure/database/prisma/models/course-period-model.mapper';
 import { CoursePeriodWithIdNotFoundError } from '@/course/infrastructure/errors/course-period-with-id-not-found-error';
+import { Prisma } from '@prisma/client';
 
 export class CoursePeriodPrismaRepository
   implements CoursePeriodRepository.Repository
@@ -76,18 +77,33 @@ export class CoursePeriodPrismaRepository
 
     const orderBy = sortable ? searchInput.sortDir : SortOrderEnum.DESC;
 
-    const hasFilter = searchInput.filter ? searchInput.filter : null;
+    const hasNameFilter = searchInput.filter?.name
+      ? searchInput.filter.name
+      : null;
 
-    const filter = hasFilter
-      ? {
-          where: {
-            name: {
-              contains: searchInput.filter,
-              mode: 'insensitive',
-            },
-          },
-        }
-      : undefined;
+    const hasCourseIdFilter = searchInput.filter?.courseId
+      ? searchInput.filter.courseId
+      : null;
+
+    const where: Prisma.CoursePeriodWhereInput = {};
+
+    if (hasNameFilter) {
+      where.name = {
+        contains: searchInput.filter.name,
+        mode: 'insensitive',
+      };
+    }
+
+    if (hasCourseIdFilter) {
+      where.courseId = searchInput.filter.courseId;
+    }
+
+    const filter =
+      hasNameFilter || hasCourseIdFilter
+        ? {
+            where,
+          }
+        : undefined;
 
     const { count, models } = await this.executeQueries(
       filter,
