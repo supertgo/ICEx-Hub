@@ -22,6 +22,8 @@
         debounce="300"
         v-model="name"
         placeholder="Search"
+        filled
+        class="search-input"
       >
         <template v-slot:append>
           <q-icon name="search" />
@@ -29,7 +31,6 @@
       </q-input>
 
       <q-select
-        class="col"
         dense
         v-model="selectedTimeSlots"
         :options="timeSlotOptions"
@@ -38,11 +39,12 @@
         emit-value
         map-options
         clearable
-        use-chips
+        filled
+        style="max-width: 250px"
+        class="time-select"
       />
 
       <q-select
-        class="col"
         dense
         v-model="selectedDayPatterns"
         :options="dayPatternOptions"
@@ -51,7 +53,20 @@
         emit-value
         map-options
         clearable
-        use-chips
+        filled
+        style="max-width: 250px"
+        class="day-select"
+      />
+
+      <q-btn
+        flat
+        dense
+        color="grey-7"
+        icon="close"
+        label="Limpar Filtros"
+        style="height: 40px; align-self: center"
+        @click="clearFilters"
+        class="clear-btn"
       />
     </div>
 
@@ -116,6 +131,12 @@ const timeSlotOptions = Object.values(TimeSlotEnum).map((value) => ({
 const name = ref<string>('');
 const selectedTimeSlots = ref<TimeSlotEnum[]>([]);
 const selectedDayPatterns = ref<DayPatternEnum[]>([]);
+
+const clearFilters = () => {
+  name.value = '';
+  selectedTimeSlots.value = [];
+  selectedDayPatterns.value = [];
+};
 
 const { user } = useAuthStore();
 const rows = ref<ScheduleRows[]>([]);
