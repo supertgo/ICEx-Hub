@@ -7,6 +7,7 @@ export enum TimeSlotEnum {
   EVENING_1 = 'EVENING_1',
   EVENING_2 = 'EVENING_2',
   EVENING_3 = 'EVENING_3',
+  EVENING_1_2 = 'EVENING_1_2',
 }
 
 export enum DayPatternEnum {
@@ -18,4 +19,5 @@ export enum DayPatternEnum {
   SATURDAY = 'SATURDAY',
   MONDAY_WEDNESDAY = 'MONDAY_WEDNESDAY',
   TUESDAY_THURSDAY = 'TUESDAY_THURSDAY',
+  MONDAY_WEDNESDAY_FRIDAY = 'MONDAY_WEDNESDAY_FRIDAY',
 }
