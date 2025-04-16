@@ -5,7 +5,7 @@
 <template>
   <div :class="['welcome-text-and-status-circle', 'q-pa-md']">
     <div class="q-pa-md container" style="text-align: left">
-      Bem vindo(a)! <br />
+      Bem vindo(a) {{ user?.name || ' ' }}!<br />
       Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
     <div class="q-pa-md" style="text-align: right">
@@ -15,6 +15,49 @@
   </div>
 
   <div :class="['q-pa-md', 'table']">
+    <div
+      class="active-filters q-mb-sm"
+      v-if="hasCourseFilters || showRestoreButton"
+    >
+      <div>
+        <q-chip
+          v-if="user?.courseId && userFiltersEnabled.course"
+          dense
+          color="primary"
+          text-color="white"
+          icon="school"
+          removable
+          @remove="removeCourseFilter"
+        >
+          Seu curso
+        </q-chip>
+
+        <q-chip
+          v-if="user?.coursePeriodId && userFiltersEnabled.period"
+          dense
+          color="primary"
+          text-color="white"
+          icon="schedule"
+          removable
+          @remove="removePeriodFilter"
+        >
+          Seu período atual
+        </q-chip>
+      </div>
+
+      <q-btn
+        v-if="showRestoreButton"
+        flat
+        dense
+        color="primary"
+        icon="replay"
+        label="Restaurar Filtros"
+        @click="restoreUserFilters"
+        class="q-ml-sm"
+        style="height: 40px; align-self: center"
+      />
+    </div>
+
     <div class="filter-grid q-mb-md">
       <q-input
         borderless
@@ -79,6 +122,7 @@
       :columns="columns"
       row-key="name"
       hide-bottom
+      v-model:pagination="pagination"
     />
   </div>
 </template>
@@ -91,46 +135,49 @@ import { type ScheduleRows } from 'src/types/schedule';
 import {
   scheduleDataToOutput,
   columns,
-  TimeSlotEnum,
-  DayPatternEnum,
+  dayPatternOptions,
+  timeSlotOptions,
+  type TimeSlotEnum,
+  type DayPatternEnum,
 } from 'src/utils/schedule/table';
-import { onMounted, ref, watch } from 'vue';
-
-const timeSlotMap = {
-  [TimeSlotEnum.MORNING_1]: '7:30 - 9:10',
-  [TimeSlotEnum.MORNING_2]: '9:25 - 11:05',
-  [TimeSlotEnum.MORNING_3]: '11:10 - 12:00',
-  [TimeSlotEnum.AFTERNOON_1]: '13:00 - 14:40',
-  [TimeSlotEnum.AFTERNOON_2]: '14:55 - 16:35',
-  [TimeSlotEnum.EVENING_1]: '17:00 - 18:40',
-  [TimeSlotEnum.EVENING_2]: '19:00 - 20:40',
-  [TimeSlotEnum.EVENING_3]: '20:55 - 22:35',
-};
-
-const dayPatternMap = {
-  [DayPatternEnum.MONDAY]: 'Seg',
-  [DayPatternEnum.TUESDAY]: 'Ter',
-  [DayPatternEnum.WEDNESDAY]: 'Qua',
-  [DayPatternEnum.THURSDAY]: 'Qui',
-  [DayPatternEnum.FRIDAY]: 'Sex',
-  [DayPatternEnum.SATURDAY]: 'Sab',
-  [DayPatternEnum.MONDAY_WEDNESDAY]: 'Seg-Qua',
-  [DayPatternEnum.TUESDAY_THURSDAY]: 'Ter-Qui',
-};
-
-const dayPatternOptions = Object.values(DayPatternEnum).map((value) => ({
-  label: dayPatternMap[value],
-  value: value,
-}));
-
-const timeSlotOptions = Object.values(TimeSlotEnum).map((value) => ({
-  label: timeSlotMap[value],
-  value: value,
-}));
+import { computed, onMounted, ref, watch } from 'vue';
 
 const name = ref<string>('');
 const selectedTimeSlots = ref<TimeSlotEnum[]>([]);
 const selectedDayPatterns = ref<DayPatternEnum[]>([]);
+const pagination = ref();
+const userFiltersEnabled = ref({
+  course: true,
+  period: true,
+});
+
+const hasCourseFilters = computed(() => {
+  return (
+    (user?.courseId && userFiltersEnabled.value.course) ||
+    (user?.coursePeriodId && userFiltersEnabled.value.period)
+  );
+});
+
+const showRestoreButton = computed(() => {
+  return (
+    (user?.courseId && !userFiltersEnabled.value.course) ||
+    (user?.coursePeriodId && !userFiltersEnabled.value.period)
+  );
+});
+
+const removeCourseFilter = () => {
+  const period = userFiltersEnabled.value.period;
+  userFiltersEnabled.value = { course: false, period };
+};
+
+const removePeriodFilter = () => {
+  const course = userFiltersEnabled.value.course;
+  userFiltersEnabled.value = { course, period: false };
+};
+
+const restoreUserFilters = () => {
+  userFiltersEnabled.value = { course: true, period: true };
+};
 
 const clearFilters = () => {
   name.value = '';
@@ -146,24 +193,37 @@ onMounted(async () => {
   await loadSchedules();
 });
 
-watch([name, selectedTimeSlots, selectedDayPatterns], async (newValue) => {
-  await loadSchedules(...newValue);
-});
+watch(
+  [name, selectedTimeSlots, selectedDayPatterns, userFiltersEnabled],
+  async (newValue) => {
+    await loadSchedules(...newValue);
+  },
+);
 
 async function loadSchedules(
   name = '',
   timeSlots: TimeSlotEnum[] = [],
   dayPatterns: DayPatternEnum[] = [],
+  userFiltersEnabled = { course: true, period: true },
 ) {
   try {
     const schedules = await scheduleStore.listSchedules({
       name: name,
       dayPatterns,
       timeSlots,
-      courseId: user?.courseId,
-      coursePeriodId: user?.coursePeriodId,
+      ...(userFiltersEnabled.course && { courseId: user?.courseId }),
+      ...(userFiltersEnabled.period && {
+        coursePeriodId: user?.coursePeriodId,
+      }),
     });
+
     rows.value = scheduleDataToOutput(schedules);
+    pagination.value = {
+      page: schedules.meta.currentPage,
+      rowsNumber: schedules.meta.total,
+      rowsPerPage: schedules.meta.perPage,
+      descending: false,
+    };
   } catch (error) {
     console.error('Error loading schedules:', error);
   }

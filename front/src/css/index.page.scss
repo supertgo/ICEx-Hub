@@ -66,3 +66,19 @@
     }
   }
 }
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  .q-chip {
+    margin-right: 4px;
+  }
+
+  .q-btn {
+    margin-left: auto;
+  }
+}
