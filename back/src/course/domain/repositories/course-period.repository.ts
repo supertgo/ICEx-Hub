@@ -6,7 +6,10 @@ import {
 import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entity';
 
 export namespace CoursePeriodRepository {
-  export type Filter = string;
+  export type Filter = {
+    name?: string;
+    courseId?: string;
+  };
 
   export class SearchParams extends DefaultSearchParams<Filter> {}
 

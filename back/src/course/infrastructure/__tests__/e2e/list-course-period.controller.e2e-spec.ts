@@ -53,7 +53,7 @@ describe('Index Course Period E2E Tests', () => {
     const response = await request(app.getHttpServer())
       .get('/course-period')
       .query({
-        filter: 'A',
+        name: 'A',
         sort: 'name',
         sortDir: SortOrderEnum.ASC,
         perPage: 2,

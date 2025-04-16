@@ -5,7 +5,10 @@ import { CoursePeriodEntity } from '@/course/domain/entities/course-period.entit
 import { CoursePeriodRepository } from '@/course/domain/repositories/course-period.repository';
 
 export class CoursePeriodInMemoryRepository
-  extends InMemorySearchableRepository<CoursePeriodEntity>
+  extends InMemorySearchableRepository<
+    CoursePeriodEntity,
+    CoursePeriodRepository.Filter
+  >
   implements CoursePeriodRepository.Repository
 {
   assureCoursePeriodExists(coursePeriodId: string): Promise<void> {
@@ -18,15 +21,53 @@ export class CoursePeriodInMemoryRepository
 
   sortableFields = ['name', 'createdAt'];
 
+  async search(
+    params: CoursePeriodRepository.SearchParams,
+  ): Promise<CoursePeriodRepository.SearchResult> {
+    const itemFiltered = await this.applyFilters(this.items, params.filter);
+
+    const itemSorted = await this.applySort(
+      itemFiltered,
+      params.sort,
+      params.sortDir,
+    );
+
+    const itemsPaginated = await this.applyPagination(
+      itemSorted,
+      params.page,
+      params.perPage,
+    );
+
+    return new CoursePeriodRepository.SearchResult({
+      items: itemsPaginated,
+      total: itemFiltered.length,
+      currentPage: params.page,
+      perPage: params.perPage,
+      sort: params.sort,
+      sortDir: params.sortDir,
+      filter: params.filter,
+    });
+  }
+
   protected async applyFilters(
     items: CoursePeriodEntity[],
-    filter: string | null,
+    filter: CoursePeriodRepository.Filter | null,
   ): Promise<CoursePeriodEntity[]> {
     if (!filter) return items;
 
-    return items.filter((item) =>
-      item.props.name.toLowerCase().includes(filter.toLowerCase()),
-    );
+    return items.filter((item) => {
+      let matches = true;
+
+      if (!item.props.name.toLowerCase().includes(filter.name?.toLowerCase())) {
+        matches = false;
+      }
+
+      if (!(item.props.courseId === filter.courseId)) {
+        matches = false;
+      }
+
+      return matches;
+    });
   }
 
   protected async applySort(
