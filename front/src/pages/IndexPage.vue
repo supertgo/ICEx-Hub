@@ -51,7 +51,6 @@
         dense
         color="primary"
         icon="replay"
-        label="Restaurar Filtros"
         @click="restoreUserFilters"
         class="q-ml-sm"
         style="height: 40px; align-self: center"
@@ -207,6 +206,7 @@ async function loadSchedules(
   userFiltersEnabled = { course: true, period: true },
 ) {
   try {
+    rows.value = [];
     const schedules = await scheduleStore.listSchedules({
       name: name,
       dayPatterns,
@@ -218,6 +218,7 @@ async function loadSchedules(
     });
 
     rows.value = scheduleDataToOutput(schedules);
+
     pagination.value = {
       page: schedules.meta.currentPage,
       rowsNumber: schedules.meta.total,
