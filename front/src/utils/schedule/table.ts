@@ -36,7 +36,7 @@ export const timeSlotMap = {
   [TimeSlotEnum.AFTERNOON_1]: '13:00 - 14:40',
   [TimeSlotEnum.AFTERNOON_2]: '14:55 - 16:35',
   [TimeSlotEnum.EVENING_1]: '17:00 - 18:40',
-  [TimeSlotEnum.EVENING_1_2]: '17 - 20:40',
+  [TimeSlotEnum.EVENING_1_2]: '17:00 - 20:40',
   [TimeSlotEnum.EVENING_2]: '19:00 - 20:40',
   [TimeSlotEnum.EVENING_3]: '20:55 - 22:35',
 };
