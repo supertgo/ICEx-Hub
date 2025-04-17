@@ -8,7 +8,7 @@
       Bem vindo(a) {{ user?.name || ' ' }}!<br />
       Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
-    <div class="q-pa-md" style="text-align: right">
+    <div class="q-pa-md circles" style="text-align: right">
       <StatusCircle status="active" text="Sala liberada no momento" />
       <StatusCircle status="inactive" text="Sala ocupada no momento" />
     </div>
@@ -82,7 +82,6 @@
         map-options
         clearable
         filled
-        style="max-width: 250px"
         class="time-select"
       />
 
