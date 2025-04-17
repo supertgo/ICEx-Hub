@@ -22,8 +22,7 @@
       <div>
         <q-chip
           v-if="user?.courseId && userFiltersEnabled.course"
-          dense
-          color="primary"
+          color="blue-10"
           text-color="white"
           icon="school"
           removable
@@ -34,8 +33,7 @@
 
         <q-chip
           v-if="user?.coursePeriodId && userFiltersEnabled.period"
-          dense
-          color="primary"
+          color="blue-10"
           text-color="white"
           icon="schedule"
           removable
@@ -49,7 +47,7 @@
         v-if="showRestoreButton"
         flat
         dense
-        color="primary"
+        color="blue-10"
         icon="replay"
         @click="restoreUserFilters"
         class="q-ml-sm"
