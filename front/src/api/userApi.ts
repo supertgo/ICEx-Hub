@@ -18,18 +18,26 @@ export const signIn = async (data: SignInData): Promise<User> => {
   return response.data.data;
 };
 
-export const verifyToken = async (token: string): Promise<User> => {
+export const verifyToken = async (token: string): Promise<User | null> => {
   const response = await api.post('/user/verifyToken', {
     token,
   });
 
   const userId = response.data.data.id;
 
+  if (!userId) {
+    return null;
+  }
+
   const user = await api.get(`/user/${userId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!user) {
+    return null;
+  }
 
   return user.data.data;
 };
