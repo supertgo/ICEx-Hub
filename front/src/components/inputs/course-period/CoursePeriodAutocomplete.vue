@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useCourseStore } from 'stores/course';
-import type { Course } from 'src/types/course';
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
+import type { CoursePeriod } from 'src/types/coursePeriod';
+import { useCoursePeriodStore } from 'stores/coursePeriod';
 
 const props = defineProps({
   modelValue: {
@@ -16,15 +16,15 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const courseStore = useCourseStore();
+const coursePeriodStore = useCoursePeriodStore();
 
-const searchCourses = async (input: string) => {
-  const response: Course[] = await courseStore.autocomplete({
+const searchCoursePeriods = async (input: string) => {
+  const response: CoursePeriod[] = await coursePeriodStore.autocomplete({
     autocomplete: input,
   });
-  return response.map((course) => ({
-    label: `${course.code} - ${course.name}`,
-    value: course.id,
+  return response.map((period) => ({
+    label: period.name,
+    value: period.id,
   }));
 };
 </script>
@@ -33,8 +33,8 @@ const searchCourses = async (input: string) => {
   <AbstractAutocomplete
     :model-value="props.modelValue"
     :rules="props.rules"
-    label="course.name"
-    :search-fn="searchCourses"
+    label="coursePeriod.name"
+    :search-fn="searchCoursePeriods"
     @update:modelValue="emit('update:modelValue', $event)"
   />
 </template>
