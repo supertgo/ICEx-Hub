@@ -77,25 +77,37 @@ describe('Schedule Table Utilities', () => {
 
 
   describe('mapDayPattern', () => {
-    it('should return the correct label for a given dayPattern', () => {
+    it('should return the correct label for all valid day patterns', () => {
       expect(mapDayPattern(DayPatternEnum.MONDAY)).toBe('Seg');
+      expect(mapDayPattern(DayPatternEnum.TUESDAY)).toBe('Ter');
+      expect(mapDayPattern(DayPatternEnum.WEDNESDAY)).toBe('Qua');
+      expect(mapDayPattern(DayPatternEnum.THURSDAY)).toBe('Qui');
+      expect(mapDayPattern(DayPatternEnum.FRIDAY)).toBe('Sex');
+      expect(mapDayPattern(DayPatternEnum.SATURDAY)).toBe('Sab');
+      expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY)).toBe('Seg-Qua');
       expect(mapDayPattern(DayPatternEnum.TUESDAY_THURSDAY)).toBe('Ter-Qui');
       expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY_FRIDAY)).toBe('Seg-Qua-Sex');
     });
   
-    it('should return an empty string for an invalid dayPattern', () => {
+    it('should return an empty string for an invalid day pattern', () => {
       expect(mapDayPattern('INVALID_PATTERN' as DayPatternEnum)).toBe('');
     });
   });
 
   describe('mapTimeSlot', () => {
-    it('should return the correct start and end times for a valid timeSlot', () => {
+    it('should return the correct start and end times for all valid time slots', () => {
       expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({ start: '7:30', end: '9:10' });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_2)).toEqual({ start: '9:25', end: '11:05' });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_3)).toEqual({ start: '11:10', end: '12:00' });
       expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({ start: '13:00', end: '14:40' });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_2)).toEqual({ start: '14:55', end: '16:35' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1)).toEqual({ start: '17:00', end: '18:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1_2)).toEqual({ start: '17:00', end: '20:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_2)).toEqual({ start: '19:00', end: '20:40' });
       expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({ start: '20:55', end: '22:35' });
     });
   
-    it('should return empty strings for an invalid timeSlot', () => {
+    it('should return empty strings for an invalid time slot', () => {
       expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
     });
   });

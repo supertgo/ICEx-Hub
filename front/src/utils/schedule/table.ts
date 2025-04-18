@@ -68,6 +68,9 @@ export function mapDayPattern(dayPattern: DayPatternEnum): string {
 }
 export function mapTimeSlot(timeSlot: TimeSlotEnum): { start: string; end: string } {
   const timeRange = timeSlotMap[timeSlot];
+  if (!timeRange) {
+    return { start: '', end: '' };
+  }
   const [start, end] = timeRange.split(' - ');
   return { start: start ?? '', end: end ?? '' };
 }
