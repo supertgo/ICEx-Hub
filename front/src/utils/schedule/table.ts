@@ -63,6 +63,10 @@ export const timeSlotOptions = Object.values(TimeSlotEnum).map((value) => ({
   value: value,
 }));
 
+export function mapDayPattern(dayPattern: DayPatternEnum): string {
+  return dayPatternMap[dayPattern] || '';
+}
+
 //TODO Arthur & Laura -> schduleDataToOutput(create test for this method on table.spec.ts)
 export function scheduleDataToOutput(schedules: ScheduleData) {
   return schedules.data.map(
@@ -72,7 +76,7 @@ export function scheduleDataToOutput(schedules: ScheduleData) {
         code: item.discipline.code,
         start: item.timeSlot,
         end: item.timeSlot,
-        days: item.dayPattern,
+        days: mapDayPattern(item.dayPattern),
         unit: item.classroom.building,
         classroom: item.classroom.name,
         direction: 'Ver Mapa',

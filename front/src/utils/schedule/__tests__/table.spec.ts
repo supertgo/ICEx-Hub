@@ -10,11 +10,13 @@
 // Should return true if matches or false otherwise. This method should be used on
 // the last column('status'), so true will render the green ball and false will render
 // the red one.
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 import { describe, it, expect } from 'vitest';
 import {
   DayPatternEnum,
   dayPatternMap,
   dayPatternOptions,
+  mapDayPattern,
   TimeSlotEnum,
   timeSlotMap,
   timeSlotOptions,
@@ -82,6 +84,19 @@ describe('Schedule Table Utilities', () => {
       dayPatternOptions.forEach((option) => {
         expect(option.label).toBe(dayPatternMap[option.value]);
       });
+    });
+  });
+
+
+  describe('mapDayPattern', () => {
+    it('should return the correct label for a given dayPattern', () => {
+      expect(mapDayPattern(DayPatternEnum.MONDAY)).toBe('Seg');
+      expect(mapDayPattern(DayPatternEnum.TUESDAY_THURSDAY)).toBe('Ter-Qui');
+      expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY_FRIDAY)).toBe('Seg-Qua-Sex');
+    });
+  
+    it('should return an empty string for an invalid dayPattern', () => {
+      expect(mapDayPattern('INVALID_PATTERN' as DayPatternEnum)).toBe('');
     });
   });
 });
