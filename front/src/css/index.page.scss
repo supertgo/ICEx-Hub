@@ -3,6 +3,15 @@
   justify-content: space-between;
   max-width: 1480px;
   margin: auto;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .circles {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 }
 
 .table {
@@ -27,6 +36,13 @@
   height: 100%;
 }
 
+.time-select {
+  max-width: 250px;
+}
+.day-select {
+  max-width: 250px;
+}
+
 .filter-grid {
   display: grid;
   grid-template-columns: 3fr 1fr 1fr 1fr;
@@ -48,10 +64,14 @@
 
     .time-select {
       grid-area: time;
+      width: 100%;
+      max-width: 100%;
     }
 
     .day-select {
       grid-area: day;
+      width: 100%;
+      max-width: 100%;
     }
 
     .search-input {

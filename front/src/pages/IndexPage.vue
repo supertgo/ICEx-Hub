@@ -8,7 +8,7 @@
       Bem vindo(a) {{ user?.name || ' ' }}!<br />
       Pesquise por disciplina, ou use os filtros para encontrar sua sala.
     </div>
-    <div class="q-pa-md" style="text-align: right">
+    <div class="q-pa-md circles" style="text-align: right">
       <StatusCircle status="active" text="Sala liberada no momento" />
       <StatusCircle status="inactive" text="Sala ocupada no momento" />
     </div>
@@ -22,8 +22,7 @@
       <div>
         <q-chip
           v-if="user?.courseId && userFiltersEnabled.course"
-          dense
-          color="primary"
+          color="blue-10"
           text-color="white"
           icon="school"
           removable
@@ -34,8 +33,7 @@
 
         <q-chip
           v-if="user?.coursePeriodId && userFiltersEnabled.period"
-          dense
-          color="primary"
+          color="blue-10"
           text-color="white"
           icon="schedule"
           removable
@@ -49,7 +47,7 @@
         v-if="showRestoreButton"
         flat
         dense
-        color="primary"
+        color="blue-10"
         icon="replay"
         @click="restoreUserFilters"
         class="q-ml-sm"
@@ -82,7 +80,6 @@
         map-options
         clearable
         filled
-        style="max-width: 250px"
         class="time-select"
       />
 
