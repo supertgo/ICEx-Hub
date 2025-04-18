@@ -17,6 +17,7 @@ import {
   dayPatternMap,
   dayPatternOptions,
   mapDayPattern,
+  mapTimeSlot,
   TimeSlotEnum,
   timeSlotMap,
   timeSlotOptions,
@@ -97,6 +98,18 @@ describe('Schedule Table Utilities', () => {
   
     it('should return an empty string for an invalid dayPattern', () => {
       expect(mapDayPattern('INVALID_PATTERN' as DayPatternEnum)).toBe('');
+    });
+  });
+
+  describe('mapTimeSlot', () => {
+    it('should return the correct start and end times for a valid timeSlot', () => {
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({ start: '7:30', end: '9:10' });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({ start: '13:00', end: '14:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({ start: '20:55', end: '22:35' });
+    });
+  
+    it('should return empty strings for an invalid timeSlot', () => {
+      expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
     });
   });
 });
