@@ -66,7 +66,10 @@ export const timeSlotOptions = Object.values(TimeSlotEnum).map((value) => ({
 export function mapDayPattern(dayPattern: DayPatternEnum): string {
   return dayPatternMap[dayPattern] || '';
 }
-export function mapTimeSlot(timeSlot: TimeSlotEnum): { start: string; end: string } {
+export function mapTimeSlot(timeSlot: TimeSlotEnum): {
+  start: string;
+  end: string;
+} {
   const timeRange = timeSlotMap[timeSlot];
   if (!timeRange) {
     return { start: '', end: '' };
@@ -75,25 +78,23 @@ export function mapTimeSlot(timeSlot: TimeSlotEnum): { start: string; end: strin
   const [start, end] = timeRange.split(' - ');
   return { start: start ?? '', end: end ?? '' };
 }
-//TODO Arthur & Laura -> schduleDataToOutput(create test for this method on table.spec.ts)
-export function scheduleDataToOutput(schedules: ScheduleData) {
-  return schedules.data.map(
-    (item: Schedule) => {
-      const { start, end } = mapTimeSlot(item.timeSlot);
 
-      return {
-        name: item.discipline.name,
-        code: item.discipline.code,
-        start, // Usando o horário de início mapeado
-        end,   // Usando o horário de fim mapeado
-        days: mapDayPattern(item.dayPattern),
-        unit: item.classroom.building,
-        classroom: item.classroom.name,
-        direction: 'Ver Mapa',
-        status: false,
-      } as ScheduleRows;
-    },
-  );
+export function scheduleDataToOutput(schedules: ScheduleData) {
+  return schedules.data.map((item: Schedule) => {
+    const { start, end } = mapTimeSlot(item.timeSlot);
+
+    return {
+      name: item.discipline.name,
+      code: item.discipline.code,
+      start,
+      end,
+      days: mapDayPattern(item.dayPattern),
+      unit: item.classroom.building,
+      classroom: item.classroom.name,
+      direction: 'Ver Mapa',
+      status: false,
+    } as ScheduleRows;
+  });
 }
 
 export const columns: QTableColumn[] = [
