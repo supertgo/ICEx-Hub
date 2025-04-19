@@ -30,6 +30,13 @@ const onSubmit = async (event: Event) => {
   try {
     await authStore.signIn(data);
 
+    const callbackUrl = router.currentRoute.value.query.callbackUrl as string;
+
+    if (callbackUrl) {
+      await router.push(callbackUrl);
+      return;
+    }
+
     await router.push({ name: Routes.HOME });
   } catch (error) {
     errorRef.value = true;

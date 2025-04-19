@@ -1,11 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { listSchedules } from 'src/api/scheduleApi';
-import { type ScheduleData } from 'src/types/schedule';
+import { type ListScheduleParams, type ScheduleData } from 'src/types/schedule';
 
 export const useScheduleStore = defineStore('schedule', {
   actions: {
-    async listSchedules(): Promise<ScheduleData> {
-      const result = await listSchedules();
+    async listSchedules(params: ListScheduleParams): Promise<ScheduleData> {
+      const result = await listSchedules(params);
 
       return result;
     },

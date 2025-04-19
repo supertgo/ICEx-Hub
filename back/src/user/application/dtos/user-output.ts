@@ -6,6 +6,8 @@ export type UserOutput = {
   email: string;
   password: string;
   createdAt: Date;
+  courseId?: string;
+  coursePeriodId?: string;
 };
 
 export class UserOutputMapper {

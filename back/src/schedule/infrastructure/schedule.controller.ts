@@ -24,9 +24,9 @@ import {
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import {
   ApiBearerAuth,
+  ApiOkResponse,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
 } from '@nestjs/swagger';
 import { DayPatternEnum, TimeSlotEnum } from '../domain/schedule.constants';
 import { validateEnumArray } from '@/shared/domain/common';
@@ -56,27 +56,9 @@ export class ScheduleController {
     return new ScheduleCollectionPresenter(output);
   }
 
-  @ApiResponse({
-    status: 200,
-    schema: {
-      type: 'object',
-      properties: {
-        meta: {
-          type: 'object',
-          properties: {
-            totalItems: { type: 'number' },
-            itemCount: { type: 'number' },
-            itemsPerPage: { type: 'number' },
-            totalPages: { type: 'number' },
-            currentPage: { type: 'number' },
-          },
-        },
-        data: {
-          type: 'array',
-          items: { $ref: getSchemaPath(SchedulePresenter) },
-        },
-      },
-    },
+  @ApiOkResponse({
+    description: 'The schedule has been successfully listed.',
+    type: ScheduleCollectionPresenter,
   })
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
