@@ -41,8 +41,7 @@
         color="blue-10"
         icon="replay"
         @click="restoreUserFilters"
-        class="q-ml-sm"
-        style="height: 40px; align-self: center"
+        class="q-ml-sm table-filters-restore-button"
       />
     </div>
 
@@ -84,7 +83,6 @@
         map-options
         clearable
         filled
-        style="max-width: 250px"
         class="day-select"
       />
 
@@ -94,9 +92,8 @@
         color="grey-7"
         icon="close"
         label="Limpar Filtros"
-        style="height: 40px; align-self: center"
         @click="clearFilters"
-        class="clear-btn"
+        class="table-filters-restore-button clear-btn"
       />
     </div>
 
@@ -128,6 +125,8 @@ import {
   type DayPatternEnum,
 } from 'src/utils/schedule/table';
 import { computed, onMounted, ref, watch } from 'vue';
+import axios from 'axios';
+import { Notify } from 'quasar';
 
 const name = ref<string>('');
 const selectedTimeSlots = ref<TimeSlotEnum[]>([]);
@@ -196,7 +195,7 @@ async function loadSchedules(
   try {
     rows.value = [];
     const schedules = await scheduleStore.listSchedules({
-      name: name,
+      name,
       dayPatterns,
       timeSlots,
       ...(userFiltersEnabled.course && { courseId: user?.courseId }),
@@ -214,6 +213,27 @@ async function loadSchedules(
       descending: false,
     };
   } catch (error) {
+    let message = 'Não foi possível buscar pela agenda de horários.';
+
+    if (axios.isAxiosError(error)) {
+      if (error.status === 422) {
+        const resMessage = error.response?.data?.message;
+
+        if (resMessage.startsWith('Invalid timeSlot')) {
+          message = 'Não foi possível encontrar esse horário.';
+        }
+
+        if (resMessage.startsWith('Invalid dayPattern')) {
+          message = 'Não foi possível encontrar esse dia.';
+        }
+      }
+    }
+
+    Notify.create({
+      type: 'negative',
+      message,
+      timeout: 2000,
+    });
     console.error('Error loading schedules:', error);
   }
 }
