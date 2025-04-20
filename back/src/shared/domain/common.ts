@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { validate } from 'uuid';
 
 export type PropOrFactory<T> = T | ((index: number) => T);
 
@@ -39,4 +40,14 @@ export function validateEnumArray<T extends Record<string, unknown>>(
   }
 
   return validValues;
+}
+
+export function validateEntityId(id: string, entity = 'entity') {
+  const isValid = validate(id);
+
+  if (!isValid) {
+    throw new BadRequestException(`Invalid ${entity} uuid `);
+  }
+
+  return id;
 }
