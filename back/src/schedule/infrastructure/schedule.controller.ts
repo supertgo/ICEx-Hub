@@ -29,7 +29,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { DayPatternEnum, TimeSlotEnum } from '../domain/schedule.constants';
-import { validateEntityId, validateEnumArray } from '@/shared/domain/common';
+import { validateEntityUUID, validateEnumArray } from '@/shared/domain/common';
 
 @ApiTags('schedule')
 @Controller('schedule')
@@ -77,17 +77,17 @@ export class ScheduleController {
     );
 
     if (searchParams?.courseId) {
-      validateEntityId(searchParams.courseId, 'courseId');
+      validateEntityUUID(searchParams.courseId, 'course');
     }
 
     if (searchParams?.coursePeriodId) {
-      validateEntityId(searchParams.coursePeriodId, 'coursePeriodId');
+      validateEntityUUID(searchParams.coursePeriodId, 'course period');
     }
 
     const result = await this.listSchedulesUseCase.execute({
       ...searchParams,
       filter: {
-        name: searchParams?.name.trim(),
+        name: searchParams?.name?.trim(),
         dayPatterns: dayPatterns,
         timeSlots: timeSlots,
         courseId: searchParams?.courseId,
