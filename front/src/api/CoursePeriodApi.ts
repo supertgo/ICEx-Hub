@@ -1,14 +1,19 @@
 import { getAxiosWithAuth } from 'boot/axios';
-import type { CoursePeriod } from 'src/types/coursePeriod';
+import type { CoursePeriod, PaginationMeta } from 'src/types/coursePeriod';
 
 export const indexCoursePeriods = async (
   autocomplete: string,
-): Promise<CoursePeriod[]> => {
+  page: number,
+): Promise<{ data: CoursePeriod[]; meta: PaginationMeta }> => {
   const response = await getAxiosWithAuth().get('/course-period', {
     params: {
-      filter: autocomplete,
+      page: page,
+      courseId: autocomplete,
     },
   });
 
-  return response.data.data;
+  return {
+    data: response.data.data,
+    meta: response.data.meta,
+  };
 };

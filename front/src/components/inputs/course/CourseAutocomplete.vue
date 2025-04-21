@@ -2,6 +2,12 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import { useCourseStore } from 'stores/course';
 import type { Course } from 'src/types/course';
+type PaginationMeta = {
+  currentPage: number;
+  perPage: number;
+  lastPage: number;
+  total: number;
+};
 
 const props = defineProps({
   modelValue: {
@@ -18,14 +24,18 @@ const emit = defineEmits(['update:modelValue']);
 
 const courseStore = useCourseStore();
 
-const searchCourses = async (input: string) => {
-  const response: Course[] = await courseStore.autocomplete({
-    autocomplete: input,
-  });
-  return response.map((course: Course) => ({
+const searchCourses = async (input: string, page: number) => {
+  const response: { data: Course[]; meta: PaginationMeta } =
+    await courseStore.autocomplete({
+      autocomplete: input,
+      page: page,
+    });
+  const data = response.data.map((course: Course) => ({
     label: `${course.name} (${course.code})`,
     value: course.id,
   }));
+
+  return { data: data, meta: response.meta };
 };
 </script>
 

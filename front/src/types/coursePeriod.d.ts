@@ -1,3 +1,10 @@
+export interface PaginationMeta {
+  currentPage: number;
+  perPage: number;
+  lastPage: number;
+  total: number;
+}
+
 export interface CoursePeriod {
   id: string;
   name: string;
@@ -7,4 +14,5 @@ export interface CoursePeriod {
 
 export interface AutocompleteCoursePeriodData {
   autocomplete: string;
+  page: number;
 }
