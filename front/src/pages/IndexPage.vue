@@ -234,7 +234,6 @@ async function loadSchedules(
       message,
       timeout: 2000,
     });
-    console.error('Error loading schedules:', error);
   }
 }
 </script>
