@@ -14,6 +14,7 @@ import type {
   UpdatePasswordData,
   User,
 } from 'src/types/auth';
+import { Notify } from 'quasar';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -61,10 +62,18 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
-      this.user = await verifyToken(token);
-
-      if (this.user === null) {
+      try {
+        this.user = await verifyToken(token);
+      } catch (error) {
+        console.log(error);
+        const message = 'Não foi possível recuperar seu login';
         Cookies.remove('authorization_token');
+
+        Notify.create({
+          type: 'negative',
+          message,
+          timeout: 2000,
+        });
       }
     },
   },
