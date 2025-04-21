@@ -216,9 +216,9 @@ async function loadSchedules(
     let message = 'Não foi possível buscar pela agenda de horários.';
 
     if (axios.isAxiosError(error)) {
-      if (error.status === 422) {
-        const resMessage = error.response?.data?.message;
+      const resMessage = error.response?.data?.message;
 
+      if (error.status === 422) {
         if (resMessage.startsWith('Invalid timeSlot')) {
           message = 'Não foi possível encontrar esse horário.';
         }
@@ -226,6 +226,14 @@ async function loadSchedules(
         if (resMessage.startsWith('Invalid dayPattern')) {
           message = 'Não foi possível encontrar esse dia.';
         }
+      }
+
+      if (resMessage.startsWith('Invalid course period')) {
+        message = 'Não foi possível encontrar esse período.';
+      }
+
+      if (resMessage === 'Invalid course uuid') {
+        message = 'Não foi possível encontrar esse curso.';
       }
     }
 
