@@ -11,6 +11,7 @@ import {
   CoursePeriodCollectionPresenter,
   CoursePeriodPresenter,
 } from '@/course/infrastructure/presenters/course-period.presenter';
+import { validateEntityUUID } from '@/shared/domain/common';
 
 @ApiTags('course-period')
 @Controller('course-period')
@@ -32,10 +33,14 @@ export class CoursePeriodController {
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @Get()
   async search(@Query() searchParams: ListCoursePeriodsDto) {
+    if (searchParams?.courseId) {
+      validateEntityUUID(searchParams.courseId, 'course');
+    }
+
     const result = await this.listCoursePeriodUseCase.execute({
       ...searchParams,
       filter: {
-        name: searchParams?.name,
+        name: searchParams?.name?.trim(),
         courseId: searchParams?.courseId,
       },
     });
