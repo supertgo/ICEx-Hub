@@ -42,11 +42,11 @@ export function validateEnumArray<T extends Record<string, unknown>>(
   return validValues;
 }
 
-export function validateEntityId(id: string, entity = 'entity') {
+export function validateEntityUUID(id: string, entity = 'entity') {
   const isValid = validate(id);
 
   if (!isValid) {
-    throw new BadRequestException(`Invalid ${entity} uuid `);
+    throw new BadRequestException(`Invalid ${entity} uuid`);
   }
 
   return id;
