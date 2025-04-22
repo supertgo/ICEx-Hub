@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, nextTick } from 'vue';
 import type { QSelect } from 'quasar';
+import type { PaginatedResponse } from 'src/types/common';
 
 type ValidationRule = (val: unknown) => boolean | string;
 
@@ -35,19 +36,10 @@ type QuasarFilterMethod = (
   doneFn: (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void,
   abortFn: () => void,
 ) => void;
-type Option = { label: string; value: string };
-type PaginatedResponse = {
-  data: Option[];
-  meta: {
-    currentPage: number;
-    lastPage: number;
-    perPage: number;
-    total: number;
-  };
-};
 
 const onFilter: QuasarFilterMethod = (inputValue, doneFn, abortFn) => {
   autocomplete.value = inputValue;
+  nextPage.value = 1;
 
   props
     .searchFn(inputValue, nextPage.value)

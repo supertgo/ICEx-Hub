@@ -1,9 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import type {
-  AutocompleteCourseData,
-  Course,
-  PaginationMeta,
-} from 'src/types/course';
+import type { AutocompleteCourseData, Course } from 'src/types/course';
+import type { PaginationMeta } from 'src/types/common';
 import { indexCourses } from 'src/api/CourseApi';
 
 export const useCourseStore = defineStore('course', {

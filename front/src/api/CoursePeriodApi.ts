@@ -1,5 +1,6 @@
 import { getAxiosWithAuth } from 'boot/axios';
-import type { CoursePeriod, PaginationMeta } from 'src/types/coursePeriod';
+import type { CoursePeriod } from 'src/types/coursePeriod';
+import type { PaginationMeta } from 'src/types/common';
 
 export const indexCoursePeriods = async (
   autocomplete: string,

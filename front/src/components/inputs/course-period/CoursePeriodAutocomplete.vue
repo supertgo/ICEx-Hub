@@ -3,12 +3,7 @@ import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplet
 import type { CoursePeriod } from 'src/types/coursePeriod';
 import { useCoursePeriodStore } from 'stores/coursePeriod';
 import { computed, watch } from 'vue';
-type PaginationMeta = {
-  currentPage: number;
-  perPage: number;
-  lastPage: number;
-  total: number;
-};
+import type { PaginationMeta } from 'src/types/common';
 
 const props = defineProps({
   modelValue: {
@@ -72,6 +67,7 @@ watch(
     :rules="[...props.rules, courseRequired]"
     label="coursePeriod.name"
     :search-fn="searchCoursePeriods"
+    :disable="!props.courseId"
     @update:modelValue="emit('update:modelValue', $event)"
   />
 </template>

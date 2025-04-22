@@ -2,12 +2,7 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import { useCourseStore } from 'stores/course';
 import type { Course } from 'src/types/course';
-type PaginationMeta = {
-  currentPage: number;
-  perPage: number;
-  lastPage: number;
-  total: number;
-};
+import type { PaginationMeta } from 'src/types/common';
 
 const props = defineProps({
   modelValue: {

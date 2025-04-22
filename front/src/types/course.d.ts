@@ -1,10 +1,3 @@
-export interface PaginationMeta {
-  currentPage: number;
-  perPage: number;
-  lastPage: number;
-  total: number;
-}
-
 export interface Course {
   id: string;
   name: string;

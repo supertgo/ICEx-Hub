@@ -97,7 +97,7 @@ const onSubmit = async (event: Event) => {
         <course-period-autocomplete
           class="col"
           v-model="coursePeriodId"
-          :rules="[]"
+          :rules="[required]"
           :courseId="courseId"
         />
       </q-card-section>
