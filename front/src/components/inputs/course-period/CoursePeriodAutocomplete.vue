@@ -3,6 +3,7 @@ import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplet
 import type { CoursePeriod } from 'src/types/coursePeriod';
 import { useCoursePeriodStore } from 'stores/coursePeriod';
 import type { PaginationMeta } from 'src/types/common';
+import { watch } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -40,6 +41,15 @@ const searchCoursePeriods = async (input: string, page: number) => {
   }));
   return { data: data, meta: response.meta };
 };
+
+watch(
+  () => props.courseId,
+  (newCourseId, oldCourseId) => {
+    if (newCourseId !== oldCourseId) {
+      emit('update:modelValue', '');
+    }
+  },
+);
 </script>
 
 <template>
