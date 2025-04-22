@@ -128,11 +128,5 @@ export const columns: QTableColumn[] = [
   { name: 'days', align: 'center', label: 'Dias', field: 'days' },
   { name: 'unit', align: 'center', label: 'Unidade', field: 'unit' },
   { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom' },
-  {
-    name: 'direction',
-    align: 'center',
-    label: 'Como chegar',
-    field: 'direction',
-  },
   { name: 'status', align: 'center', label: 'Status', field: 'status' },
 ];
