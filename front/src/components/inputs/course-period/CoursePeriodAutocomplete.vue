@@ -2,7 +2,7 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import type { CoursePeriod } from 'src/types/coursePeriod';
 import { useCoursePeriodStore } from 'stores/coursePeriod';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import type { PaginationMeta } from 'src/types/common';
 
 const props = defineProps({
@@ -50,15 +50,6 @@ const courseRequired = computed(() => {
     return true;
   };
 });
-
-watch(
-  () => props.courseId,
-  (newCourseId, oldCourseId) => {
-    if (newCourseId !== oldCourseId) {
-      emit('update:modelValue', null);
-    }
-  },
-);
 </script>
 
 <template>
