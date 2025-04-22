@@ -30,14 +30,15 @@ const emit = defineEmits(['update:modelValue']);
 
 const coursePeriodStore = useCoursePeriodStore();
 
-const searchCoursePeriods = async (page: number) => {
+const searchCoursePeriods = async (input: string, page: number) => {
   if (!props.courseId) {
     return [];
   }
   const response: { data: CoursePeriod[]; meta: PaginationMeta } =
     await coursePeriodStore.autocomplete({
-      autocomplete: props.courseId,
+      autocomplete: input,
       page,
+      courseId: props.courseId,
     });
   const data = response.data.map((period) => ({
     label: period.name,
@@ -68,7 +69,7 @@ watch(
 <template>
   <AbstractAutocomplete
     :model-value="props.modelValue"
-    :rules="[, courseRequired, ...props.rules]"
+    :rules="[...props.rules, courseRequired]"
     label="coursePeriod.name"
     :search-fn="searchCoursePeriods"
     @update:modelValue="emit('update:modelValue', $event)"

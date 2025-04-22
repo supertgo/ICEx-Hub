@@ -11,7 +11,11 @@ export const useCoursePeriodStore = defineStore('coursePeriod', {
     async autocomplete(
       autocomplete: AutocompleteCoursePeriodData,
     ): Promise<{ data: CoursePeriod[]; meta: PaginationMeta }> {
-      return indexCoursePeriods(autocomplete.autocomplete, autocomplete.page);
+      return indexCoursePeriods(
+        autocomplete.autocomplete,
+        autocomplete.page,
+        autocomplete.courseId,
+      );
     },
   },
 });

@@ -78,10 +78,20 @@ const onScroll = async ({
 }) => {
   const lastIndex = options.value.length - 1;
 
-  if (!loading.value && nextPage.value <= lastPage.value && to >= lastIndex) {
+  if (
+    loading.value !== true &&
+    nextPage.value < lastPage.value &&
+    to === lastIndex
+  ) {
     loading.value = true;
-
     nextPage.value++;
+
+    const moreOptions = await props.searchFn(
+      autocomplete.value,
+      nextPage.value,
+    );
+    options.value = [...options.value, ...moreOptions.data];
+
     await nextTick();
     ref.refresh();
     loading.value = false;
