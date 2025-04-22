@@ -3,14 +3,14 @@ import type {
   AutocompleteCoursePeriodData,
   CoursePeriod,
 } from 'src/types/coursePeriod';
-import type { PaginationMeta } from 'src/types/common';
 import { indexCoursePeriods } from 'src/api/CoursePeriodApi';
+import { MetaData } from 'src/types/common';
 
 export const useCoursePeriodStore = defineStore('coursePeriod', {
   actions: {
     async autocomplete(
       autocomplete: AutocompleteCoursePeriodData,
-    ): Promise<{ data: CoursePeriod[]; meta: PaginationMeta }> {
+    ): Promise<{ data: CoursePeriod[]; meta: MetaData }> {
       return indexCoursePeriods(
         autocomplete.autocomplete,
         autocomplete.page,
