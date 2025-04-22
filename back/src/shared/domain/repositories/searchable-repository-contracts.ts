@@ -87,12 +87,7 @@ export class SearchParams<Filter = string> {
   private setPage(page: number): void {
     let _page = page;
 
-    if (
-      _page === (true as any) ||
-      Number.isNaN(_page) ||
-      _page < 1 ||
-      parseInt(_page as any) !== _page
-    ) {
+    if (_page === (true as any) || Number.isNaN(_page) || _page < 1) {
       _page = defaultInitialPage;
     }
 
