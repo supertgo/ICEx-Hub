@@ -2,7 +2,6 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import type { CoursePeriod } from 'src/types/coursePeriod';
 import { useCoursePeriodStore } from 'stores/coursePeriod';
-import { computed } from 'vue';
 import type { PaginationMeta } from 'src/types/common';
 
 const props = defineProps({
@@ -41,21 +40,12 @@ const searchCoursePeriods = async (input: string, page: number) => {
   }));
   return { data: data, meta: response.meta };
 };
-
-const courseRequired = computed(() => {
-  return () => {
-    if (!props.courseId) {
-      return 'O curso é obrigatório para selecionar o período';
-    }
-    return true;
-  };
-});
 </script>
 
 <template>
   <AbstractAutocomplete
     :model-value="props.modelValue"
-    :rules="[...props.rules, courseRequired]"
+    :rules="[...props.rules]"
     label="coursePeriod.name"
     :search-fn="searchCoursePeriods"
     :disable="!props.courseId"
