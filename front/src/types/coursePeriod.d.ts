@@ -7,4 +7,6 @@ export interface CoursePeriod {
 
 export interface AutocompleteCoursePeriodData {
   autocomplete: string;
+  page: number;
+  courseId: string;
 }
