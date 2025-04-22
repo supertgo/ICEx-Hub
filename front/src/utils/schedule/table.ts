@@ -94,8 +94,6 @@ export function isCurrentSchedule(schedule: Schedule) : 'active' | 'inactive' {
   return dayMatches && timeMatches ? 'active' : 'inactive';
 }
 
-
-//TODO Arthur & Laura -> schduleDataToOutput(create test for this method on table.spec.ts)
 export function scheduleDataToOutput(schedules: ScheduleData) {
   return schedules.data.map(
     (item: Schedule) => {

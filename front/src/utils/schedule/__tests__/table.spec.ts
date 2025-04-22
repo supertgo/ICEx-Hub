@@ -115,23 +115,28 @@ describe('Schedule Table Utilities', () => {
       expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
     });
   });
+  
+  const baseDiscipline = {
+    id: '1',
+    name: 'Algoritmos',
+    code: 'DCC101',
+    courseId: 'c1',
+    coursePeriodId: 'p1',
+  };
+  
+  const baseClassroom = {
+    id: '101',
+    name: 'Sala 101',
+    building: 'ICEX' as ClassroomBuildingEnum,
+  };
+  
   describe('isCurrentSchedule', () => {
     it('should return active if the current day and time match the schedule', () => {
       const mockSchedule = {
         dayPattern: [DayPatternEnum.MONDAY],
         timeSlot: TimeSlotEnum.MORNING_1,
-        discipline: {
-          id: '1',
-          name: 'Algoritmos',
-          code: 'DCC101',
-          courseId: 'c1',
-          coursePeriodId: 'p1',
-        },
-        classroom: {
-          id: '101',
-          name: 'Sala 101',
-          building: 'ICEX' as ClassroomBuildingEnum,
-        },
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
       };
       vi.setSystemTime(new Date('2024-04-08T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
@@ -142,18 +147,8 @@ describe('Schedule Table Utilities', () => {
       const mockSchedule = {
         dayPattern: [DayPatternEnum.TUESDAY],
         timeSlot: TimeSlotEnum.MORNING_1,
-        discipline: {
-          id: '1',
-          name: 'Algoritmos',
-          code: 'DCC101',
-          courseId: 'c1',
-          coursePeriodId: 'p1',
-        },
-        classroom: {
-          id: '101',
-          name: 'Sala 101',
-          building: 'ICEX' as ClassroomBuildingEnum,
-        },
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
       };
       vi.setSystemTime(new Date('2024-04-08T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
@@ -164,20 +159,10 @@ describe('Schedule Table Utilities', () => {
       const mockSchedule = {
         dayPattern: [DayPatternEnum.MONDAY],
         timeSlot: TimeSlotEnum.MORNING_1,
-        discipline: {
-          id: '1',
-          name: 'Algoritmos',
-          code: 'DCC101',
-          courseId: 'c1',
-          coursePeriodId: 'p1',
-        },
-        classroom: {
-          id: '101',
-          name: 'Sala 101',
-          building: 'ICEX' as ClassroomBuildingEnum,
-        },
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
       };
-
+  
       vi.setSystemTime(new Date('2024-04-08T10:00:00'));
       const result = isCurrentSchedule(mockSchedule);
       expect(result).toBe('inactive'); 
@@ -187,26 +172,16 @@ describe('Schedule Table Utilities', () => {
       const mockSchedule = {
         dayPattern: [DayPatternEnum.MONDAY, DayPatternEnum.WEDNESDAY],
         timeSlot: TimeSlotEnum.MORNING_1,
-        discipline: {
-          id: '1',
-          name: 'Algoritmos',
-          code: 'DCC101',
-          courseId: 'c1',
-          coursePeriodId: 'p1',
-        },
-        classroom: {
-          id: '101',
-          name: 'Sala 101',
-          building: 'ICEX' as ClassroomBuildingEnum,
-        },
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
       };
-
+  
       vi.setSystemTime(new Date('2024-04-10T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
       expect(result).toBe('active'); 
     });
   });
-
+  
   describe('scheduleDataToOutput', () => {
     const mockScheduleData: ScheduleData = {
       meta: {
@@ -217,20 +192,10 @@ describe('Schedule Table Utilities', () => {
       },
       data: [
         {
-          discipline: {
-            id: '1',
-            name: 'Algoritmos',
-            code: 'DCC101',
-            courseId: 'c1',
-            coursePeriodId: 'p1',
-          },
-          classroom: {
-            id: '101',
-            name: 'Sala 101',
-            building:'ICEX' as ClassroomBuildingEnum,
-          },
+          discipline: baseDiscipline,
+          classroom: baseClassroom,
           timeSlot: TimeSlotEnum.MORNING_1,
-          dayPattern: DayPatternEnum.MONDAY, 
+          dayPattern: DayPatternEnum.MONDAY,
         },
       ],
     };
