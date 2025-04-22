@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ValidationRule } from 'quasar'
+import type { ValidationRule } from 'quasar';
 
 const props = defineProps({
   modelValue: {
