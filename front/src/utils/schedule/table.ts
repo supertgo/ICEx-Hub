@@ -4,7 +4,8 @@ import {
   type ScheduleData,
   type ScheduleRows,
 } from 'src/types/schedule';
-
+import { h } from 'vue';
+import StatusCircle from '../../components/StatusCircle.vue';
 export enum TimeSlotEnum {
   MORNING_1 = 'MORNING_1',
   MORNING_2 = 'MORNING_2',
@@ -75,15 +76,25 @@ export function mapTimeSlot(timeSlot: TimeSlotEnum): { start: string; end: strin
   return { start: start ?? '', end: end ?? '' };
 }
 
-export function isCurrentSchedule(schedule: Schedule): boolean {
+function convertTimeToMinutes(time: string): number {
+  const [hours, minutes] = time.split(':').map(Number);
+  return ( hours?? 0) * 60 + (minutes ?? 0);
+}
+
+export function isCurrentSchedule(schedule: Schedule) : 'active' | 'inactive' {
   const now = new Date();
-  const currentDay = now.toLocaleDateString('pt-BR', { weekday: 'long' }).toUpperCase(); 
-  const currentTime = now.toTimeString().slice(0, 5); 
+  const currentDay = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
   const dayMatches = schedule.dayPattern.includes(currentDay);
   const { start, end } = mapTimeSlot(schedule.timeSlot);
-  const timeMatches = currentTime >= start && currentTime <= end;
-  return !(dayMatches && timeMatches);
+  const startMinutes = convertTimeToMinutes(start);
+  const endMinutes = convertTimeToMinutes(end);
+  const timeMatches = currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+  
+  return dayMatches && timeMatches ? 'active' : 'inactive';
 }
+
+
 //TODO Arthur & Laura -> schduleDataToOutput(create test for this method on table.spec.ts)
 export function scheduleDataToOutput(schedules: ScheduleData) {
   return schedules.data.map(
@@ -98,7 +109,7 @@ export function scheduleDataToOutput(schedules: ScheduleData) {
         unit: item.classroom.building,
         classroom: item.classroom.name,
         direction: 'Ver Mapa',
-        status: isCurrentSchedule(item),
+        status: h(StatusCircle, { status: isCurrentSchedule(item) ? 'active' : 'inactive' }),
       } as ScheduleRows;
     },
   );

@@ -1,8 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import {
   DayPatternEnum,
   dayPatternMap,
   dayPatternOptions,
+  isCurrentSchedule,
   mapDayPattern,
   mapTimeSlot,
   scheduleDataToOutput,
@@ -11,7 +12,7 @@ import {
   timeSlotOptions,
 } from '../table';
 import type { ScheduleData } from 'src/types/schedule';
-import { ClassroomBuildingEnum } from '../../../types/classroom'
+import type { ClassroomBuildingEnum } from '../../../types/classroom.d'
 
 describe('Schedule Table Utilities', () => {
   describe('timeSlotMap', () => {
@@ -114,6 +115,97 @@ describe('Schedule Table Utilities', () => {
       expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
     });
   });
+  describe('isCurrentSchedule', () => {
+    it('should return active if the current day and time match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: [DayPatternEnum.MONDAY],
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: {
+          id: '1',
+          name: 'Algoritmos',
+          code: 'DCC101',
+          courseId: 'c1',
+          coursePeriodId: 'p1',
+        },
+        classroom: {
+          id: '101',
+          name: 'Sala 101',
+          building: 'ICEX' as ClassroomBuildingEnum,
+        },
+      };
+      vi.setSystemTime(new Date('2024-04-08T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('active'); 
+    });
+  
+    it('should return inactive if the current day does not match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: [DayPatternEnum.TUESDAY],
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: {
+          id: '1',
+          name: 'Algoritmos',
+          code: 'DCC101',
+          courseId: 'c1',
+          coursePeriodId: 'p1',
+        },
+        classroom: {
+          id: '101',
+          name: 'Sala 101',
+          building: 'ICEX' as ClassroomBuildingEnum,
+        },
+      };
+      vi.setSystemTime(new Date('2024-04-08T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('inactive'); 
+    });
+  
+    it('should return inactive if the current time does not match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: [DayPatternEnum.MONDAY],
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: {
+          id: '1',
+          name: 'Algoritmos',
+          code: 'DCC101',
+          courseId: 'c1',
+          coursePeriodId: 'p1',
+        },
+        classroom: {
+          id: '101',
+          name: 'Sala 101',
+          building: 'ICEX' as ClassroomBuildingEnum,
+        },
+      };
+
+      vi.setSystemTime(new Date('2024-04-08T10:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('inactive'); 
+    });
+  
+    it('should handle schedules with multiple day patterns', () => {
+      const mockSchedule = {
+        dayPattern: [DayPatternEnum.MONDAY, DayPatternEnum.WEDNESDAY],
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: {
+          id: '1',
+          name: 'Algoritmos',
+          code: 'DCC101',
+          courseId: 'c1',
+          coursePeriodId: 'p1',
+        },
+        classroom: {
+          id: '101',
+          name: 'Sala 101',
+          building: 'ICEX' as ClassroomBuildingEnum,
+        },
+      };
+
+      vi.setSystemTime(new Date('2024-04-10T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('active'); 
+    });
+  });
 
   describe('scheduleDataToOutput', () => {
     const mockScheduleData: ScheduleData = {
@@ -135,7 +227,7 @@ describe('Schedule Table Utilities', () => {
           classroom: {
             id: '101',
             name: 'Sala 101',
-            building: ClassroomBuildingEnum.ICEX,
+            building:'ICEX' as ClassroomBuildingEnum,
           },
           timeSlot: TimeSlotEnum.MORNING_1,
           dayPattern: DayPatternEnum.MONDAY, 
@@ -144,6 +236,7 @@ describe('Schedule Table Utilities', () => {
     };
   
     beforeAll(() => {
+      vi.useRealTimers();
       vi.useFakeTimers();
       vi.setSystemTime(new Date('2024-04-08T08:00:00')); 
     });
@@ -165,8 +258,9 @@ describe('Schedule Table Utilities', () => {
         unit: 'ICEX',
         classroom: 'Sala 101',
         direction: 'Ver Mapa',
-        status: false, 
+        status: expect.any(Object),
       });
+      expect(result[0]?.status?.props?.status).toBe('active'); 
     });
   });
 });
