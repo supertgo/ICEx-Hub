@@ -115,7 +115,7 @@ describe('Schedule Table Utilities', () => {
       expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
     });
   });
-  
+
   const baseDiscipline = {
     id: '1',
     name: 'Algoritmos',
@@ -223,9 +223,8 @@ describe('Schedule Table Utilities', () => {
         unit: 'ICEX',
         classroom: 'Sala 101',
         direction: 'Ver Mapa',
-        status: expect.any(Object),
+        status: 'active',
       });
-      expect(result[0]?.status?.props?.status).toBe('active'); 
     });
   });
 });

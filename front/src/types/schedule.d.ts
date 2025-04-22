@@ -23,7 +23,7 @@ export interface ScheduleRows {
   unit: string;
   classroom: string;
   direction: string;
-  status: VNode;
+  status: 'active' | 'inactive';
 }
 
 export interface ListScheduleParams {

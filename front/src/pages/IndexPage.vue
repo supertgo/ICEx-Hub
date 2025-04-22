@@ -119,7 +119,13 @@
       row-key="name"
       hide-bottom
       v-model:pagination="pagination"
-    />
+    >
+    <template v-slot:body-cell-status="props">
+      <q-td :props="props">
+        <StatusCircle :status="props.value" />
+      </q-td>
+    </template>
+    </q-table>
   </div>
 </template>
 

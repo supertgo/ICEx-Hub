@@ -4,8 +4,6 @@ import {
   type ScheduleData,
   type ScheduleRows,
 } from 'src/types/schedule';
-import { h } from 'vue';
-import StatusCircle from '../../components/StatusCircle.vue';
 export enum TimeSlotEnum {
   MORNING_1 = 'MORNING_1',
   MORNING_2 = 'MORNING_2',
@@ -107,7 +105,7 @@ export function scheduleDataToOutput(schedules: ScheduleData) {
         unit: item.classroom.building,
         classroom: item.classroom.name,
         direction: 'Ver Mapa',
-        status: h(StatusCircle, { status: isCurrentSchedule(item) ? 'active' : 'inactive' }),
+        status: isCurrentSchedule(item),
       } as ScheduleRows;
     },
   );
