@@ -98,6 +98,7 @@ const onSubmit = async (event: Event) => {
           class="col"
           v-model="coursePeriodId"
           :rules="[required]"
+          :courseId="courseId"
         />
       </q-card-section>
 

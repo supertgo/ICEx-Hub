@@ -8,4 +8,5 @@ export interface Course {
 
 export interface AutocompleteCourseData {
   autocomplete: string;
+  page: number;
 }
