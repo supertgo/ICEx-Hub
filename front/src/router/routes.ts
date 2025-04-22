@@ -26,11 +26,17 @@ const routes: RouteRecordRaw[] = [
         path: '/updatePassword',
         component: () => import('pages/UpdatePasswordPage.vue'),
         name: Routes.UPDATE_PASSWORD,
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: '/updateName',
         component: () => import('pages/UpdateNamePage.vue'),
         name: Routes.UPDATE_NAME,
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },

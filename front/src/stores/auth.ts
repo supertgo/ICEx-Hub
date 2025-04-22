@@ -1,6 +1,19 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { signIn, signup, updateName, updatePassword } from 'src/api/userApi'
-import type { SignInData, SignupData, UpdateNameData, UpdatePasswordData, User } from 'src/types/auth'
+import { Cookies } from 'quasar';
+import {
+  signIn,
+  signup,
+  updateName,
+  updatePassword,
+  verifyToken,
+} from 'src/api/userApi';
+import type {
+  SignInData,
+  SignupData,
+  UpdateNameData,
+  UpdatePasswordData,
+  User,
+} from 'src/types/auth';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -28,11 +41,31 @@ export const useAuthStore = defineStore('auth', {
       const updateUser = await updateName(data, this.user.id);
       this.user.name = updateUser.name;
     },
-    async signIn(data: SignInData): Promise<void> {
+    async signIn(data: SignInData): Promise<User> {
       this.user = await signIn(data);
+      Cookies.set('authorization_token', this.user.token!, {
+        sameSite: 'Strict',
+      });
+
+      return this.user;
     },
     logout(): void {
       this.user = null;
+      Cookies.remove('authorization_token');
+    },
+
+    async initializeAuth(): Promise<void> {
+      const token = Cookies.get('authorization_token');
+
+      if (!token) {
+        return;
+      }
+
+      this.user = await verifyToken(token);
+
+      if (this.user === null) {
+        Cookies.remove('authorization_token');
+      }
     },
   },
 });
