@@ -223,7 +223,6 @@ describe('Schedule Table Utilities', () => {
         days: 'Seg',
         unit: 'ICEX',
         classroom: 'Sala 101',
-        direction: 'Ver Mapa',
         status: 'active',
       });
     });

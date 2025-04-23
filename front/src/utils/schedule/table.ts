@@ -107,7 +107,6 @@ export function scheduleDataToOutput(schedules: ScheduleData) {
         days: mapDayPattern(item.dayPattern),
         unit: item.classroom.building,
         classroom: item.classroom.name,
-        direction: 'Ver Mapa',
         status: isCurrentSchedule(item),
       } as ScheduleRows;
     },
@@ -131,11 +130,5 @@ export const columns: QTableColumn[] = [
   { name: 'days', align: 'center', label: 'Dias', field: 'days' },
   { name: 'unit', align: 'center', label: 'Unidade', field: 'unit' },
   { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom' },
-  {
-    name: 'direction',
-    align: 'center',
-    label: 'Como chegar',
-    field: 'direction',
-  },
   { name: 'status', align: 'center', label: 'Status', field: 'status' },
 ];

@@ -22,7 +22,6 @@ export interface ScheduleRows {
   days: string;
   unit: string;
   classroom: string;
-  direction: string;
   status: 'active' | 'inactive';
 }
 
