@@ -1,6 +1,8 @@
 import { type Classroom } from './classroom';
 import { type MetaData } from './common';
 import { type Discipline } from './discipline';
+import { type TimeSlotEnum } from '../utils/schedule/table';
+import { type DayPatternEnum } from '../utils/schedule/table';
 
 export interface Schedule {
   discipline: Discipline;

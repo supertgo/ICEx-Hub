@@ -2,7 +2,7 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import type { CoursePeriod } from 'src/types/coursePeriod';
 import { useCoursePeriodStore } from 'stores/coursePeriod';
-import type { PaginationMeta } from 'src/types/common';
+import type { MetaData } from 'src/types/common';
 import { watch } from 'vue';
 
 const props = defineProps({
@@ -29,7 +29,7 @@ const searchCoursePeriods = async (input: string, page: number) => {
   if (!props.courseId) {
     return [];
   }
-  const response: { data: CoursePeriod[]; meta: PaginationMeta } =
+  const response: { data: CoursePeriod[]; meta: MetaData } =
     await coursePeriodStore.autocomplete({
       autocomplete: input,
       page,

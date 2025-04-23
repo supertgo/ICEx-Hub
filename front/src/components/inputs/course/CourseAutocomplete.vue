@@ -2,7 +2,7 @@
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
 import { useCourseStore } from 'stores/course';
 import type { Course } from 'src/types/course';
-import type { PaginationMeta } from 'src/types/common';
+import type { MetaData } from 'src/types/common';
 
 const props = defineProps({
   modelValue: {
@@ -20,7 +20,7 @@ const emit = defineEmits(['update:modelValue']);
 const courseStore = useCourseStore();
 
 const searchCourses = async (input: string, page: number) => {
-  const response: { data: Course[]; meta: PaginationMeta } =
+  const response: { data: Course[]; meta: MetaData } =
     await courseStore.autocomplete({
       autocomplete: input,
       page: page,

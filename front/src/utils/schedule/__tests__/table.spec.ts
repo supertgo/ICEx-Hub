@@ -134,7 +134,7 @@ describe('Schedule Table Utilities', () => {
   describe('isCurrentSchedule', () => {
     it('should return active if the current day and time match the schedule', () => {
       const mockSchedule = {
-        dayPattern: [DayPatternEnum.MONDAY],
+        dayPattern: DayPatternEnum.MONDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
@@ -146,7 +146,7 @@ describe('Schedule Table Utilities', () => {
   
     it('should return inactive if the current day does not match the schedule', () => {
       const mockSchedule = {
-        dayPattern: [DayPatternEnum.TUESDAY],
+        dayPattern: DayPatternEnum.TUESDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
@@ -158,7 +158,7 @@ describe('Schedule Table Utilities', () => {
   
     it('should return inactive if the current time does not match the schedule', () => {
       const mockSchedule = {
-        dayPattern: [DayPatternEnum.MONDAY],
+        dayPattern: DayPatternEnum.MONDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
@@ -171,7 +171,7 @@ describe('Schedule Table Utilities', () => {
   
     it('should handle schedules with multiple day patterns', () => {
       const mockSchedule = {
-        dayPattern: [DayPatternEnum.MONDAY, DayPatternEnum.WEDNESDAY],
+        dayPattern: DayPatternEnum.MONDAY_WEDNESDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
