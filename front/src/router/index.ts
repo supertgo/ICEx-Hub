@@ -37,7 +37,12 @@ export default defineRouter(function (/* { store, ssrContext } */) {
       if (authStore.isAuthenticated) {
         next();
       } else {
-        next({ name: Routes.SIGN_IN });
+        next({
+          name: Routes.SIGN_IN,
+          query: {
+            callbackUrl: to.fullPath,
+          },
+        });
       }
     } else {
       next();

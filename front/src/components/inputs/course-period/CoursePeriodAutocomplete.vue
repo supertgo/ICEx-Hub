@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { useCourseStore } from 'stores/course';
-import type { Course } from 'src/types/course';
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
+import type { CoursePeriod } from 'src/types/coursePeriod';
+import { useCoursePeriodStore } from 'stores/coursePeriod';
+import type { PaginationMeta } from 'src/types/common';
+import { watch } from 'vue';
 
 const props = defineProps({
   modelValue: {
@@ -12,29 +14,51 @@ const props = defineProps({
     type: Array,
     required: false,
   },
+  courseId: {
+    type: String,
+    required: false,
+    default: null,
+  },
 });
 
 const emit = defineEmits(['update:modelValue']);
 
-const courseStore = useCourseStore();
+const coursePeriodStore = useCoursePeriodStore();
 
-const searchCourses = async (input: string) => {
-  const response: Course[] = await courseStore.autocomplete({
-    autocomplete: input,
-  });
-  return response.map((course) => ({
-    label: `${course.code} - ${course.name}`,
-    value: course.id,
+const searchCoursePeriods = async (input: string, page: number) => {
+  if (!props.courseId) {
+    return [];
+  }
+  const response: { data: CoursePeriod[]; meta: PaginationMeta } =
+    await coursePeriodStore.autocomplete({
+      autocomplete: input,
+      page,
+      courseId: props.courseId,
+    });
+  const data = response.data.map((period) => ({
+    label: period.name,
+    value: period.id,
   }));
+  return { data: data, meta: response.meta };
 };
+
+watch(
+  () => props.courseId,
+  (newCourseId, oldCourseId) => {
+    if (newCourseId !== oldCourseId) {
+      emit('update:modelValue', '');
+    }
+  },
+);
 </script>
 
 <template>
   <AbstractAutocomplete
     :model-value="props.modelValue"
-    :rules="props.rules"
-    label="course.name"
-    :search-fn="searchCourses"
+    :rules="[...props.rules]"
+    label="coursePeriod.name"
+    :search-fn="searchCoursePeriods"
+    :disable="!props.courseId"
     @update:modelValue="emit('update:modelValue', $event)"
   />
 </template>

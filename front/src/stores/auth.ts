@@ -61,12 +61,10 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
-      try {
-        this.user = await verifyToken(token);
-      } catch (error) {
-        this.user = null;
+      this.user = await verifyToken(token);
+
+      if (this.user === null) {
         Cookies.remove('authorization_token');
-        throw error;
       }
     },
   },

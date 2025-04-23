@@ -4,3 +4,10 @@ export interface MetaData {
   lastPage: number;
   total: number;
 }
+
+export type Option = { label: string; value: string };
+
+export type PaginatedResponse = {
+  data: Option[];
+  meta: MetaData;
+};

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { useCoursePeriodStore } from 'stores/coursePeriod';
-import type { CoursePeriod } from 'src/types/coursePeriod';
 import AbstractAutocomplete from 'components/inputs/abstract/AbstractAutocomplete.vue';
+import { useCourseStore } from 'stores/course';
+import type { Course } from 'src/types/course';
+import type { PaginationMeta } from 'src/types/common';
 
 const props = defineProps({
   modelValue: {
@@ -16,16 +17,20 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const coursePeriodStore = useCoursePeriodStore();
+const courseStore = useCourseStore();
 
-const searchCoursePeriods = async (input: string) => {
-  const response: CoursePeriod[] = await coursePeriodStore.autocomplete({
-    autocomplete: input,
-  });
-  return response.map((period) => ({
-    label: period.name,
-    value: period.id,
+const searchCourses = async (input: string, page: number) => {
+  const response: { data: Course[]; meta: PaginationMeta } =
+    await courseStore.autocomplete({
+      autocomplete: input,
+      page: page,
+    });
+  const data = response.data.map((course: Course) => ({
+    label: `${course.name} (${course.code})`,
+    value: course.id,
   }));
+
+  return { data: data, meta: response.meta };
 };
 </script>
 
@@ -33,8 +38,8 @@ const searchCoursePeriods = async (input: string) => {
   <AbstractAutocomplete
     :model-value="props.modelValue"
     :rules="props.rules"
-    label="coursePeriod.name"
-    :search-fn="searchCoursePeriods"
+    label="course.name"
+    :search-fn="searchCourses"
     @update:modelValue="emit('update:modelValue', $event)"
   />
 </template>

@@ -79,7 +79,6 @@ describe('Schedule Table Utilities', () => {
     });
   });
 
-
   describe('mapDayPattern', () => {
     it('should return the correct label for all valid day patterns', () => {
       expect(mapDayPattern(DayPatternEnum.MONDAY)).toBe('Seg');
@@ -90,7 +89,9 @@ describe('Schedule Table Utilities', () => {
       expect(mapDayPattern(DayPatternEnum.SATURDAY)).toBe('Sab');
       expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY)).toBe('Seg-Qua');
       expect(mapDayPattern(DayPatternEnum.TUESDAY_THURSDAY)).toBe('Ter-Qui');
-      expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY_FRIDAY)).toBe('Seg-Qua-Sex');
+      expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY_FRIDAY)).toBe(
+        'Seg-Qua-Sex',
+      );
     });
   
     it('should return an empty string for an invalid day pattern', () => {

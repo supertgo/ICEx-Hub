@@ -3,16 +3,7 @@
 </style>
 
 <template>
-  <div :class="['welcome-text-and-status-circle', 'q-pa-md']">
-    <div class="q-pa-md container" style="text-align: left">
-      Bem vindo(a) {{ user?.name || ' ' }}!<br />
-      Pesquise por disciplina, ou use os filtros para encontrar sua sala.
-    </div>
-    <div class="q-pa-md circles" style="text-align: right">
-      <StatusCircle status="active" text="Sala ocupada no momento" />
-      <StatusCircle status="inactive" text="Sala liberada no momento" />
-    </div>
-  </div>
+  <TableStatus :user-name="user?.name || ''" />
 
   <div :class="['q-pa-md', 'table']">
     <div
@@ -50,8 +41,7 @@
         color="blue-10"
         icon="replay"
         @click="restoreUserFilters"
-        class="q-ml-sm"
-        style="height: 40px; align-self: center"
+        class="q-ml-sm table-filters-restore-button"
       />
     </div>
 
@@ -93,7 +83,6 @@
         map-options
         clearable
         filled
-        style="max-width: 250px"
         class="day-select"
       />
 
@@ -103,9 +92,8 @@
         color="grey-7"
         icon="close"
         label="Limpar Filtros"
-        style="height: 40px; align-self: center"
         @click="clearFilters"
-        class="clear-btn"
+        class="table-filters-restore-button clear-btn"
       />
     </div>
 
@@ -130,7 +118,7 @@
 </template>
 
 <script setup lang="ts">
-import StatusCircle from 'src/components/StatusCircle.vue';
+import TableStatus from 'src/components/table/TableStatus.vue';
 import { useAuthStore } from 'src/stores/auth';
 import { useScheduleStore } from 'src/stores/schedule';
 import { type ScheduleRows } from 'src/types/schedule';
@@ -143,6 +131,8 @@ import {
   type DayPatternEnum,
 } from 'src/utils/schedule/table';
 import { computed, onMounted, ref, watch } from 'vue';
+import axios from 'axios';
+import { Notify } from 'quasar';
 
 const name = ref<string>('');
 const selectedTimeSlots = ref<TimeSlotEnum[]>([]);
@@ -211,7 +201,7 @@ async function loadSchedules(
   try {
     rows.value = [];
     const schedules = await scheduleStore.listSchedules({
-      name: name,
+      name,
       dayPatterns,
       timeSlots,
       ...(userFiltersEnabled.course && { courseId: user?.courseId }),
@@ -229,6 +219,27 @@ async function loadSchedules(
       descending: false,
     };
   } catch (error) {
+    let message = 'Não foi possível buscar pela agenda de horários.';
+
+    if (axios.isAxiosError(error)) {
+      if (error.status === 422) {
+        const resMessage = error.response?.data?.message;
+
+        if (resMessage.startsWith('Invalid timeSlot')) {
+          message = 'Não foi possível encontrar esse horário.';
+        }
+
+        if (resMessage.startsWith('Invalid dayPattern')) {
+          message = 'Não foi possível encontrar esse dia.';
+        }
+      }
+    }
+
+    Notify.create({
+      type: 'negative',
+      message,
+      timeout: 2000,
+    });
     console.error('Error loading schedules:', error);
   }
 }

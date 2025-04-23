@@ -65,7 +65,10 @@ export const timeSlotOptions = Object.values(TimeSlotEnum).map((value) => ({
 export function mapDayPattern(dayPattern: DayPatternEnum): string {
   return dayPatternMap[dayPattern] || '';
 }
-export function mapTimeSlot(timeSlot: TimeSlotEnum): { start: string; end: string } {
+export function mapTimeSlot(timeSlot: TimeSlotEnum): {
+  start: string;
+  end: string;
+} {
   const timeRange = timeSlotMap[timeSlot];
   if (!timeRange) {
     return { start: '', end: '' };
