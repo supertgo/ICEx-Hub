@@ -4,7 +4,7 @@ import type {
   CoursePeriod,
 } from 'src/types/coursePeriod';
 import { indexCoursePeriods } from 'src/api/CoursePeriodApi';
-import { MetaData } from 'src/types/common';
+import type { MetaData } from 'src/types/common';
 
 export const useCoursePeriodStore = defineStore('coursePeriod', {
   actions: {

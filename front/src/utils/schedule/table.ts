@@ -4,7 +4,6 @@ import {
   type ScheduleData,
   type ScheduleRows,
 } from 'src/types/schedule';
-
 export enum TimeSlotEnum {
   MORNING_1 = 'MORNING_1',
   MORNING_2 = 'MORNING_2',
@@ -74,27 +73,44 @@ export function mapTimeSlot(timeSlot: TimeSlotEnum): {
   if (!timeRange) {
     return { start: '', end: '' };
   }
-
   const [start, end] = timeRange.split(' - ');
   return { start: start ?? '', end: end ?? '' };
 }
 
-export function scheduleDataToOutput(schedules: ScheduleData) {
-  return schedules.data.map((item: Schedule) => {
-    const { start, end } = mapTimeSlot(item.timeSlot);
+function convertTimeToMinutes(time: string): number {
+  const [hours, minutes] = time.split(':').map(Number);
+  return ( hours?? 0) * 60 + (minutes ?? 0);
+}
 
-    return {
-      name: item.discipline.name,
-      code: item.discipline.code,
-      start,
-      end,
-      days: mapDayPattern(item.dayPattern),
-      unit: item.classroom.building,
-      classroom: item.classroom.name,
-      direction: 'Ver Mapa',
-      status: false,
-    } as ScheduleRows;
-  });
+export function isCurrentSchedule(schedule: Schedule) : 'active' | 'inactive' {
+  const now = new Date();
+  const currentDay = now.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const dayMatches = schedule.dayPattern.includes(currentDay);
+  const { start, end } = mapTimeSlot(schedule.timeSlot);
+  const startMinutes = convertTimeToMinutes(start);
+  const endMinutes = convertTimeToMinutes(end);
+  const timeMatches = currentMinutes >= startMinutes && currentMinutes <= endMinutes;
+  
+  return dayMatches && timeMatches ? 'active' : 'inactive';
+}
+
+export function scheduleDataToOutput(schedules: ScheduleData) {
+  return schedules.data.map(
+    (item: Schedule) => {
+      const { start, end } = mapTimeSlot(item.timeSlot);
+      return {
+        name: item.discipline.name,
+        code: item.discipline.code,
+        start, 
+        end,  
+        days: mapDayPattern(item.dayPattern),
+        unit: item.classroom.building,
+        classroom: item.classroom.name,
+        status: isCurrentSchedule(item),
+      } as ScheduleRows;
+    },
+  );
 }
 
 export const columns: QTableColumn[] = [
@@ -114,11 +130,5 @@ export const columns: QTableColumn[] = [
   { name: 'days', align: 'center', label: 'Dias', field: 'days' },
   { name: 'unit', align: 'center', label: 'Unidade', field: 'unit' },
   { name: 'classroom', align: 'center', label: 'Sala', field: 'classroom' },
-  {
-    name: 'direction',
-    align: 'center',
-    label: 'Como chegar',
-    field: 'direction',
-  },
   { name: 'status', align: 'center', label: 'Status', field: 'status' },
 ];

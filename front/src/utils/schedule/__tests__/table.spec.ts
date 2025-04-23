@@ -1,27 +1,18 @@
-//TODO Arthur & Laura -> Create a method that receive the dayPattern and return
-// in our pattern. Ex -> TUESDAY_THURSDAY: Ter - Qui
-
-//TODO Arthur & Laura > The table needs a method that map for every
-//timeSlot, the start and end hour. Ex: MORNING_1 -> (start: 7:30, end: 9:10).
-// You should use this method with the scheduleDataToOutput
-
-//TODO Arthur & Laura -> The table also needs a method that gets the resoult of the
-// method above with the dayPattern and checks if the current day and hour matches with some schedule.
-// Should return true if matches or false otherwise. This method should be used on
-// the last column('status'), so true will render the green ball and false will render
-// the red one.
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import {
   DayPatternEnum,
   dayPatternMap,
   dayPatternOptions,
+  isCurrentSchedule,
   mapDayPattern,
   mapTimeSlot,
+  scheduleDataToOutput,
   TimeSlotEnum,
   timeSlotMap,
   timeSlotOptions,
 } from '../table';
+import type { ScheduleData } from 'src/types/schedule';
+import type { ClassroomBuildingEnum } from '../../../types/classroom.d'
 
 describe('Schedule Table Utilities', () => {
   describe('timeSlotMap', () => {
@@ -89,39 +80,150 @@ describe('Schedule Table Utilities', () => {
   });
 
   describe('mapDayPattern', () => {
-    it('should return the correct label for a given dayPattern', () => {
+    it('should return the correct label for all valid day patterns', () => {
       expect(mapDayPattern(DayPatternEnum.MONDAY)).toBe('Seg');
+      expect(mapDayPattern(DayPatternEnum.TUESDAY)).toBe('Ter');
+      expect(mapDayPattern(DayPatternEnum.WEDNESDAY)).toBe('Qua');
+      expect(mapDayPattern(DayPatternEnum.THURSDAY)).toBe('Qui');
+      expect(mapDayPattern(DayPatternEnum.FRIDAY)).toBe('Sex');
+      expect(mapDayPattern(DayPatternEnum.SATURDAY)).toBe('Sab');
+      expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY)).toBe('Seg-Qua');
       expect(mapDayPattern(DayPatternEnum.TUESDAY_THURSDAY)).toBe('Ter-Qui');
       expect(mapDayPattern(DayPatternEnum.MONDAY_WEDNESDAY_FRIDAY)).toBe(
         'Seg-Qua-Sex',
       );
     });
-
-    it('should return an empty string for an invalid dayPattern', () => {
+  
+    it('should return an empty string for an invalid day pattern', () => {
       expect(mapDayPattern('INVALID_PATTERN' as DayPatternEnum)).toBe('');
     });
   });
 
   describe('mapTimeSlot', () => {
-    it('should return the correct start and end times for a valid timeSlot', () => {
-      expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({
+    it('should return the correct start and end times for all valid time slots', () => {
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({ start: '7:30', end: '9:10' });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_2)).toEqual({ start: '9:25', end: '11:05' });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_3)).toEqual({ start: '11:10', end: '12:00' });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({ start: '13:00', end: '14:40' });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_2)).toEqual({ start: '14:55', end: '16:35' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1)).toEqual({ start: '17:00', end: '18:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1_2)).toEqual({ start: '17:00', end: '20:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_2)).toEqual({ start: '19:00', end: '20:40' });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({ start: '20:55', end: '22:35' });
+    });
+  
+    it('should return empty strings for an invalid time slot', () => {
+      expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
+    });
+  });
+
+  const baseDiscipline = {
+    id: '1',
+    name: 'Algoritmos',
+    code: 'DCC101',
+    courseId: 'c1',
+    coursePeriodId: 'p1',
+  };
+  
+  const baseClassroom = {
+    id: '101',
+    name: 'Sala 101',
+    building: 'ICEX' as ClassroomBuildingEnum,
+  };
+  
+  describe('isCurrentSchedule', () => {
+    it('should return active if the current day and time match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: DayPatternEnum.MONDAY,
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
+      };
+      vi.setSystemTime(new Date('2024-04-08T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('active'); 
+    });
+  
+    it('should return inactive if the current day does not match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: DayPatternEnum.TUESDAY,
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
+      };
+      vi.setSystemTime(new Date('2024-04-08T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('inactive'); 
+    });
+  
+    it('should return inactive if the current time does not match the schedule', () => {
+      const mockSchedule = {
+        dayPattern: DayPatternEnum.MONDAY,
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
+      };
+  
+      vi.setSystemTime(new Date('2024-04-08T10:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('inactive'); 
+    });
+  
+    it('should handle schedules with multiple day patterns', () => {
+      const mockSchedule = {
+        dayPattern: DayPatternEnum.MONDAY_WEDNESDAY,
+        timeSlot: TimeSlotEnum.MORNING_1,
+        discipline: baseDiscipline,
+        classroom: baseClassroom,
+      };
+  
+      vi.setSystemTime(new Date('2024-04-10T08:00:00'));
+      const result = isCurrentSchedule(mockSchedule);
+      expect(result).toBe('active'); 
+    });
+  });
+  
+  describe('scheduleDataToOutput', () => {
+    const mockScheduleData: ScheduleData = {
+      meta: {
+        currentPage: 1,
+        perPage: 10,
+        lastPage: 1,
+        total: 1,
+      },
+      data: [
+        {
+          discipline: baseDiscipline,
+          classroom: baseClassroom,
+          timeSlot: TimeSlotEnum.MORNING_1,
+          dayPattern: DayPatternEnum.MONDAY,
+        },
+      ],
+    };
+  
+    beforeAll(() => {
+      vi.useRealTimers();
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2024-04-08T08:00:00')); 
+    });
+  
+    afterAll(() => {
+      vi.useRealTimers();
+    });
+  
+    it('should map schedule data correctly', () => {
+      const result = scheduleDataToOutput(mockScheduleData);
+  
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual({
+        name: 'Algoritmos',
+        code: 'DCC101',
         start: '7:30',
         end: '9:10',
-      });
-      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({
-        start: '13:00',
-        end: '14:40',
-      });
-      expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({
-        start: '20:55',
-        end: '22:35',
-      });
-    });
-
-    it('should return empty strings for an invalid timeSlot', () => {
-      expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({
-        start: '',
-        end: '',
+        days: 'Seg',
+        unit: 'ICEX',
+        classroom: 'Sala 101',
+        status: 'active',
       });
     });
   });
