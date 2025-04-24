@@ -108,7 +108,7 @@
       :columns="columns"
       :loading="loading"
       row-key="name"
-      no-data-label="I didn't find anything for you"
+      no-data-label="Nenhum resultado encontrado"
       virtual-scroll
       v-model:pagination="pagination"
       :virtual-scroll-item-size="48"
@@ -121,11 +121,18 @@
           <StatusCircle :status="props.value" />
         </q-td>
       </template>
+      <template v-slot:no-data="{ icon, message, filter }">
+        <div class="full-width row flex-center text-accent q-gutter-sm">
+          <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
+          <span> {{ message }} </span>
+        </div>
+      </template>
     </q-table>
   </div>
 </template>
 
 <script setup lang="ts">
+import StatusCircle from 'src/components/StatusCircle.vue';
 import TableStatus from 'src/components/table/TableStatus.vue';
 import { useAuthStore } from 'src/stores/auth';
 import { useScheduleStore } from 'src/stores/schedule';
