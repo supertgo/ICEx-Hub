@@ -33,4 +33,5 @@ export interface ListScheduleParams {
   dayPatterns?: string[] | null;
   courseId?: string | undefined;
   coursePeriodId?: string | undefined;
+  page?: number | null;
 }

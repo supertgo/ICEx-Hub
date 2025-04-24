@@ -3,11 +3,21 @@
   margin: auto;
 }
 
+.q-table {
+  max-height: 410px;
+  thead tr th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+}
+
 .container {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
 .discipline-column {
   font-weight: bold;
 }
