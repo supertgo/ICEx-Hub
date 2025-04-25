@@ -37,15 +37,15 @@ O sistema "ICEx-Hub" é uma plataforma que visa facilitar o processo de gestão 
 - Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
 - Como aluno, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
 - Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
-- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre
+- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplina durante aquele semestre
 
 ### Backlog do Produto
 
-- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem assento ou com letra maiúscula
+- Como usuário, eu gostaria de pesquisar as matérias e receber retornos mesmo se eu digitar o nome sem acento ou com letra maiúscula
 - Como usuário, eu gostaria de fazer login na plataforma
 - Como aluno, eu gostaria que, ao logar, o filtro de disciplinas esteja vinculado ao meu período e curso
 - Como usuário, eu gostaria de saber quais são as salas que estão disponíveis em um determinado horário, para que eu possa estudar
-- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplia durante aquele semestre
+- Como usuário, eu gostaria de saber qual sala corresponde à determinada disciplina durante aquele semestre
 - Como administrador, eu gostaria de poder exportar um relatório com a ocupação das salas ao longo da semana, para análise da gestão do espaço físico
 - Como usuário, eu gostaria de visualizar no mapa a localização exata das salas do ICEx, para que eu consiga encontrá-las com mais facilidade dentro do prédio.
 - Como administrador, eu gostaria de bloquear temporariamente uma sala para manutenção ou eventos, impedindo que ela apareça nas buscas
