@@ -7,6 +7,7 @@ export const listSchedules = async ({
   timeSlots,
   courseId,
   coursePeriodId,
+  page,
 }: ListScheduleParams): Promise<ScheduleData> => {
   const url = new URL(process.env.VITE_API_URL ?? 'http://localhost:3000');
   const params = new URLSearchParams(url.search);
@@ -31,6 +32,10 @@ export const listSchedules = async ({
     dayPatterns.forEach((dayPattern) =>
       params.append('dayPatterns', dayPattern),
     );
+  }
+
+  if (page) {
+    params.set('page', page.toString());
   }
 
   const response = await api.get(`/schedule?${params.toString()}`);

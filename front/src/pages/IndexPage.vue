@@ -100,24 +100,39 @@
     <q-table
       card-class="bg-grey-4 text-black"
       table-header-class="bg-blue-10 text-white font-bold text-uppercase"
+      class="q-table"
       flat
       bordered
+      hide-pagination
       :rows="rows"
       :columns="columns"
+      :loading="loading"
       row-key="name"
-      hide-bottom
+      no-data-label="Nenhum resultado encontrado"
+      virtual-scroll
       v-model:pagination="pagination"
+      :virtual-scroll-item-size="48"
+      :virtual-scroll-sticky-size-start="48"
+      :rows-per-page-options="[0]"
+      @virtual-scroll="onScroll"
     >
-    <template v-slot:body-cell-status="props">
-      <q-td :props="props">
-        <StatusCircle :status="props.value" />
-      </q-td>
-    </template>
+      <template v-slot:body-cell-status="props">
+        <q-td :props="props">
+          <StatusCircle :status="props.value" />
+        </q-td>
+      </template>
+      <template v-slot:no-data="{ icon, message, filter }">
+        <div class="full-width row flex-center text-accent q-gutter-sm">
+          <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
+          <span> {{ message }} </span>
+        </div>
+      </template>
     </q-table>
   </div>
 </template>
 
 <script setup lang="ts">
+import StatusCircle from 'src/components/StatusCircle.vue';
 import TableStatus from 'src/components/table/TableStatus.vue';
 import { useAuthStore } from 'src/stores/auth';
 import { useScheduleStore } from 'src/stores/schedule';
@@ -130,7 +145,8 @@ import {
   type TimeSlotEnum,
   type DayPatternEnum,
 } from 'src/utils/schedule/table';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, nextTick } from 'vue';
+import type { Component } from 'vue';
 import axios from 'axios';
 import { Notify } from 'quasar';
 
@@ -142,6 +158,9 @@ const userFiltersEnabled = ref({
   course: true,
   period: true,
 });
+const loading = ref(false);
+const nextPage = ref(1);
+const lastPage = ref(0);
 
 const hasCourseFilters = computed(() => {
   return (
@@ -188,6 +207,7 @@ onMounted(async () => {
 watch(
   [name, selectedTimeSlots, selectedDayPatterns, userFiltersEnabled],
   async (newValue) => {
+    nextPage.value = 1;
     await loadSchedules(...newValue);
   },
 );
@@ -197,9 +217,15 @@ async function loadSchedules(
   timeSlots: TimeSlotEnum[] = [],
   dayPatterns: DayPatternEnum[] = [],
   userFiltersEnabled = { course: true, period: true },
+  page?: number,
 ) {
   try {
-    rows.value = [];
+    const currentPage = page ?? nextPage.value;
+
+    if (currentPage === 1) {
+      rows.value = [];
+    }
+
     const schedules = await scheduleStore.listSchedules({
       name,
       dayPatterns,
@@ -208,9 +234,10 @@ async function loadSchedules(
       ...(userFiltersEnabled.period && {
         coursePeriodId: user?.coursePeriodId,
       }),
+      page: currentPage,
     });
 
-    rows.value = scheduleDataToOutput(schedules);
+    rows.value = [...rows.value, ...scheduleDataToOutput(schedules)];
 
     pagination.value = {
       page: schedules.meta.currentPage,
@@ -218,6 +245,8 @@ async function loadSchedules(
       rowsPerPage: schedules.meta.perPage,
       descending: false,
     };
+
+    lastPage.value = schedules.meta.lastPage;
   } catch (error) {
     let message = 'Não foi possível buscar pela agenda de horários.';
 
@@ -240,7 +269,36 @@ async function loadSchedules(
       message,
       timeout: 2000,
     });
-    console.error('Error loading schedules:', error);
   }
 }
+
+const onScroll = async (details: {
+  index: number;
+  from: number;
+  to: number;
+  direction: 'increase' | 'decrease';
+  ref: Component & { refresh?: () => void };
+}) => {
+  const lastIndex = rows.value.length - 1;
+
+  if (
+    loading.value !== true &&
+    nextPage.value < lastPage.value &&
+    details.to === lastIndex
+  ) {
+    loading.value = true;
+    nextPage.value++;
+
+    await loadSchedules(
+      name.value,
+      selectedTimeSlots.value,
+      selectedDayPatterns.value,
+      userFiltersEnabled.value,
+    );
+
+    await nextTick();
+    details.ref.refresh?.();
+    loading.value = false;
+  }
+};
 </script>
