@@ -5,10 +5,10 @@ import {
 } from '@/schedule/domain/entities/schedule.entity';
 import { DayPatternEnum, TimeSlotEnum } from '../../schedule.constants';
 import { ClassroomFakeBuilder } from '@/classroom/domain/fake-builder/classroom-fake.builder';
-import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
+import { DisciplineEntity } from '@/disciplinas/domain/entities/disciplina.entity';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
-import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { DisciplineDataBuilder } from '@/disciplinas/domain/testing/helper/discipline-data-builder';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 import { CoursePeriodDataBuilder } from '@/user/domain/testing/helper/course-period-data-builder';
 

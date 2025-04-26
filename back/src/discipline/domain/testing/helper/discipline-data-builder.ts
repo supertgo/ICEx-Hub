@@ -1,13 +1,5 @@
 import { faker } from '@faker-js/faker';
-
-export type DisciplineProps = {
-  name: string;
-  code: string;
-  courseId: string;
-  coursePeriodId: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
+import { DisciplineProps } from '@/discipline/domain/entities/discipline.entity';
 
 export function DisciplineDataBuilder(props: Partial<DisciplineProps>) {
   return {
