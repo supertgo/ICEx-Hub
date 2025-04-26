@@ -12,7 +12,6 @@ describe('Discipline model mapper integration tests', () => {
 
   beforeAll(async () => {
     setUpPrismaTest();
-    
     prismaService = new PrismaService();
     props = DisciplineDataBuilder({});
     await prismaService.$connect();
@@ -42,6 +41,5 @@ describe('Discipline model mapper integration tests', () => {
     const sut = DisciplineModelMapper.toEntity(model);
 
     expect(sut).toBeInstanceOf(DisciplineEntity);
-
   });
 });

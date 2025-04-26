@@ -10,6 +10,12 @@ export class DisciplineFakeBuilder<TBuild = any> {
 
   private _updatedAt: PropOrFactory<Date> | undefined = undefined;
 
+  private _code: PropOrFactory<string> | undefined = undefined;
+
+  private _courseId: PropOrFactory<string> | undefined = undefined;
+
+  private _coursePeriodId: PropOrFactory<string> | undefined = undefined;
+
   private countObjs: number;
 
   private faker: Faker;
@@ -32,6 +38,21 @@ export class DisciplineFakeBuilder<TBuild = any> {
     return this;
   }
 
+  withCode(valueOrFactory: PropOrFactory<string>) {
+    this._code = valueOrFactory;
+    return this;
+  }
+
+  withCourseId(valueOrFactory: PropOrFactory<string>) {
+    this._courseId = valueOrFactory;
+    return this;
+  }
+
+  withCoursePeriodId(valueOrFactory: PropOrFactory<string>) {
+    this._coursePeriodId = valueOrFactory;
+    return this;
+  }
+
   withCreatedAt(valueOrFactory: PropOrFactory<Date>) {
     this._createdAt = valueOrFactory;
     return this;
@@ -42,12 +63,37 @@ export class DisciplineFakeBuilder<TBuild = any> {
     return this;
   }
 
-  build(): TBuild extends DisciplineEntity[] ? Discipline[] : Discipline{
+  withInvalidCodeEmpty() {
+    this._code = '';
+    return this;
+  }
+
+  withInvalidCodeTooLong(value?: string) {
+    this._code = value ?? this.faker.string.alphanumeric(21);
+    return this;
+  }
+
+  withInvalidNameEmpty() {
+    this._name = '';
+    return this;
+  }
+
+  withInvalidNameTooLong(value?: string) {
+    this._name = value ?? this.faker.word.words(50);
+    return this;
+  }
+
+  build(): TBuild extends DisciplineEntity[]
+    ? DisciplineEntity[]
+    : DisciplineEntity {
     const disciplines = new Array(this.countObjs)
       .fill(undefined)
       .map((_, index) => {
         return new DisciplineEntity({
           name: this.callFactory(this._name, index),
+          code: this.callFactory(this._code, index),
+          courseId: this.callFactory(this._courseId, index),
+          coursePeriodId: this.callFactory(this._coursePeriodId, index),
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
           }),
@@ -62,6 +108,18 @@ export class DisciplineFakeBuilder<TBuild = any> {
 
   get name() {
     return this.getValue('name');
+  }
+
+  get code() {
+    return this.getValue('code');
+  }
+
+  get courseId() {
+    return this.getValue('courseId');
+  }
+
+  get coursePeriodId() {
+    return this.getValue('coursePeriodId');
   }
 
   get createdAt() {

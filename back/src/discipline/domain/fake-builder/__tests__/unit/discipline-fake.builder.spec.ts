@@ -8,7 +8,7 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
     it('_code should be a function', () => {
       expect(typeof faker['_code']).toBe('function');
     });
-
+  });
 
   describe('name prop', () => {
     const faker = DisciplineFakeBuilder.aDiscipline();
@@ -46,6 +46,7 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
       expect(disciplines[0].name).toBe('Discipline 0');
       expect(disciplines[1].name).toBe('Discipline 1');
     });
+  });
 
   describe('createdAt prop', () => {
     const faker = DisciplineFakeBuilder.aDiscipline();
@@ -55,7 +56,7 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
 
       expect(() => fakerDiscipline.createdAt).toThrow(
         new Error(
-          'Property createdAt does not have a factory, use \'with\' methods',
+          "Property createdAt does not have a factory, use 'with' methods",
         ),
       );
     });
@@ -102,7 +103,7 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
 
       expect(() => fakerDiscipline.updatedAt).toThrow(
         new Error(
-          'Property updatedAt does not have a factory, use \'with\' methods',
+          "Property updatedAt does not have a factory, use 'with' methods",
         ),
       );
     });

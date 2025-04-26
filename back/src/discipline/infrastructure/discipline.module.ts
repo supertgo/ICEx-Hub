@@ -54,5 +54,4 @@ import { AuthModule } from '@/auth/infrastructure/auth.module';
     },
   ],
 })
-
 export class DisciplineModule {}

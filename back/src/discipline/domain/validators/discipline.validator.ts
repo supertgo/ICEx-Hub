@@ -1,9 +1,31 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, IsUUID } from 'class-validator';
 import { ClassValidatorFields } from '@/shared/domain/entities/validators/class-validator-fields';
 import { DisciplineProps } from '@/discipline/domain/entities/discipline.entity';
 
 class DisciplineRules {
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(255)
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(20)
+  code: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  courseId: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  coursePeriodId: string;
+
+  @IsNotEmpty()
+  createdAt: Date;
+
   constructor(data: DisciplineProps) {
+    Object.assign(this, data);
   }
 }
 

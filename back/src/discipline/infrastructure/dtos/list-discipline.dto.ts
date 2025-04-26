@@ -1,9 +1,9 @@
-import { UpdateDisciplineUsecase } from '@/discipline/application/usecases/update-discipline.usecase';
-import { IsNotEmpty, IsString } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsIn, IsOptional } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ListDisciplinesUsecase } from '@/discipline/application/usecases/list-discipline.usecase';
+import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
-export class ListDisciplinesDto implements ListDisciplineUsecase.Input {
+export class ListDisciplinesDto implements ListDisciplinesUsecase.Input {
   @ApiPropertyOptional({ description: 'The page number' })
   @IsOptional()
   page?: number;
@@ -14,7 +14,7 @@ export class ListDisciplinesDto implements ListDisciplineUsecase.Input {
 
   @ApiPropertyOptional({
     description: 'The field that should be used for sorting',
-    enum: ['name', 'createdAt'],
+    enum: ['name', 'code', 'createdAt'],
   })
   @IsOptional()
   sort?: string | null;
@@ -28,9 +28,26 @@ export class ListDisciplinesDto implements ListDisciplineUsecase.Input {
   sortDir?: SortOrderEnum | null;
 
   @ApiPropertyOptional({
-    description: 'The filter to apply to the search',
-    enum: ['name'],
+    description: 'The name to filter disciplines',
   })
   @IsOptional()
-  filter?: string | null;
+  name?: string | null;
+
+  @ApiPropertyOptional({
+    description: 'The code to filter disciplines',
+  })
+  @IsOptional()
+  code?: string | null;
+
+  @ApiPropertyOptional({
+    description: 'The courseId to filter disciplines',
+  })
+  @IsOptional()
+  courseId?: string | null;
+
+  @ApiPropertyOptional({
+    description: 'The coursePeriodId to filter disciplines',
+  })
+  @IsOptional()
+  coursePeriodId?: string | null;
 }

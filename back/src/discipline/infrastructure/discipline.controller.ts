@@ -6,30 +6,27 @@ import {
   HttpCode,
   Inject,
   Param,
-  Patch,
-  Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UpdateDisciplineUsecase } from '@/discipline/application/usecases/update-discipline.usecase';
 import { GetDisciplineUsecase } from '@/discipline/application/usecases/get-discipline.usecase';
-import { ListDisciplinesUsecase } from '@/discipline/application/usecases/list-disciplines.usecase';
-import { DeleteDisciplineUsecase } from '@/discipline/application/usecases/delete-discipline.usecase';
-import { ListDisciplinesDto } from '@/discipline/infrastructure/dtos/list-disciplines.dto';
+import { ListDisciplinesUsecase } from '../../discipline/application/usecases/list-discipline.usecase';
+import { DeleteDisciplineUsecase } from '../../discipline/application/usecases/delete-discipline.usecase';
+import { ListDisciplinesDto } from '../../discipline/infrastructure/dtos/list-discipline.dto';
 import { UpdateDisciplineDto } from '@/discipline/infrastructure/dtos/update-discipline.dto';
 import { DisciplineOutput } from '@/discipline/application/dtos/discipline-output';
 import {
   DisciplineCollectionPresenter,
   DisciplinePresenter,
 } from '@/discipline/infrastructure/presenters/discipline.presenter';
-import { AuthService } from '@/auth/infrastructure/auth.service';
 import { AuthGuard } from '@/auth/infrastructure/auth.guard';
 import {
   ApiBearerAuth,
+  ApiOkResponse,
   ApiResponse,
   ApiTags,
-  ApiOkResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('discipline')
@@ -47,9 +44,6 @@ export class DisciplineController {
   @Inject(DeleteDisciplineUsecase.UseCase)
   private deleteDisciplineUseCase: DeleteDisciplineUsecase.UseCase;
 
-  @Inject(AuthService)
-  private authService: AuthService;
-
   static disciplineToResponse(output: DisciplineOutput): DisciplinePresenter {
     return new DisciplinePresenter(output);
   }
@@ -61,12 +55,11 @@ export class DisciplineController {
   }
 
   @ApiOkResponse({
-    description: 'The Discipline has been successfully created.',
+    description: 'The disciplines have been successfully listed.',
     type: DisciplineCollectionPresenter,
   })
   @ApiResponse({ status: 422, description: 'Unprocessable Entity' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @UseGuards(AuthGuard)
   @Get()
   async search(@Query() searchParams: ListDisciplinesDto) {
     const result = await this.listDisciplinesUseCase.execute(searchParams);
@@ -91,7 +84,10 @@ export class DisciplineController {
   @ApiResponse({ status: 404, description: 'Discipline not found' })
   @UseGuards(AuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateDisciplineDto: UpdateDisciplineDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateDisciplineDto: UpdateDisciplineDto,
+  ) {
     const output = await this.updateDisciplineUseCase.execute({
       id,
       ...updateDisciplineDto,

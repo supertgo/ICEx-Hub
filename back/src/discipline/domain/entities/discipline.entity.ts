@@ -97,6 +97,17 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
     return DisciplineFakeBuilder;
   }
 
+  toPrismaJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      code: this.code,
+      courseId: this.courseId,
+      coursePeriodId: this.coursePeriodId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
   toJSON() {
     return {
       id: this.id,

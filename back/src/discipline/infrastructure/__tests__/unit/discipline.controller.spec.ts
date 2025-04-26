@@ -27,7 +27,6 @@ describe('DisciplineController unit tests', () => {
     expect(sut).toBeDefined();
   });
 
-
   it('should list disciplines', async () => {
     const disciplines = [props];
     const output: ListDisciplinesUsecase.Output = {
