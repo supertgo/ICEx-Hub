@@ -10,11 +10,14 @@ export class DisciplineFakeBuilder<TBuild = any> {
 
   private _updatedAt: PropOrFactory<Date> | undefined = undefined;
 
-  private _code: PropOrFactory<string> | undefined = undefined;
+  private _code: PropOrFactory<string> = (_index) =>
+    this.faker.string.alpha(6).toUpperCase();
 
-  private _courseId: PropOrFactory<string> | undefined = undefined;
+  private _courseId: PropOrFactory<string> = (_index) =>
+    this.faker.string.uuid();
 
-  private _coursePeriodId: PropOrFactory<string> | undefined = undefined;
+  private _coursePeriodId: PropOrFactory<string> = (_index) =>
+    this.faker.string.uuid();
 
   private countObjs: number;
 
@@ -90,10 +93,13 @@ export class DisciplineFakeBuilder<TBuild = any> {
       .fill(undefined)
       .map((_, index) => {
         return new DisciplineEntity({
-          name: this.callFactory(this._name, index),
-          code: this.callFactory(this._code, index),
-          courseId: this.callFactory(this._courseId, index),
-          coursePeriodId: this.callFactory(this._coursePeriodId, index),
+          name: this.callFactory(this._name, index) ?? 'Default Name',
+          code: this.callFactory(this._code, index) ?? 'DEFAULT_CODE',
+          courseId:
+            this.callFactory(this._courseId, index) ?? 'DEFAULT_COURSE_ID',
+          coursePeriodId:
+            this.callFactory(this._coursePeriodId, index) ??
+            'DEFAULT_PERIOD_ID',
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
           }),

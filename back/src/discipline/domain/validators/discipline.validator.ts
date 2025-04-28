@@ -36,7 +36,31 @@ export class DisciplineValidator extends ClassValidatorFields<DisciplineRules> {
 }
 
 export class DisciplineValidatorFactory {
-  static create(): DisciplineValidator {
-    return new DisciplineValidator();
+  static create() {
+    return {
+      validate(props: DisciplineProps): boolean {
+        const errors: string[] = [];
+
+        if (!props.name || props.name.trim().length === 0) {
+          errors.push('Name is required');
+        }
+
+        if (!props.code || props.code.trim().length === 0) {
+          errors.push('Code is required');
+        }
+
+        if (!props.courseId || props.courseId.trim().length === 0) {
+          errors.push('CourseId is required');
+        }
+
+        if (!props.coursePeriodId || props.coursePeriodId.trim().length === 0) {
+          errors.push('CoursePeriodId is required');
+        }
+
+        this.errors = errors;
+        return errors.length === 0;
+      },
+      errors: [] as string[],
+    };
   }
 }

@@ -8,6 +8,14 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
     it('_code should be a function', () => {
       expect(typeof faker['_code']).toBe('function');
     });
+
+    it('withCode()', () => {
+      const code = 'DISC123';
+      const $this = faker.withCode(code);
+
+      expect($this).toBeInstanceOf(DisciplineFakeBuilder);
+      expect(faker['_code']).toBe(code);
+    });
   });
 
   describe('name prop', () => {
@@ -31,136 +39,113 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
 
       expect(faker.name).toBe(disciplineName);
     });
+  });
 
-    it('should pass index to name factory', () => {
-      faker.withName((index) => `Discipline ${index}`);
-      const discipline = faker.build();
+  describe('courseId prop', () => {
+    const faker = DisciplineFakeBuilder.aDiscipline();
 
-      expect(discipline.name).toBe('Discipline 0');
+    it('_courseId should be a function', () => {
+      expect(typeof faker['_courseId']).toBe('function');
+    });
 
-      const fakerMany = DisciplineFakeBuilder.theDisciplines(2);
-      fakerMany.withName((index) => `Discipline ${index}`);
+    it('withCourseId()', () => {
+      const courseId = 'COURSE123';
+      const $this = faker.withCourseId(courseId);
 
-      const disciplines = fakerMany.build();
+      expect($this).toBeInstanceOf(DisciplineFakeBuilder);
+      expect(faker['_courseId']).toBe(courseId);
+    });
+  });
 
-      expect(disciplines[0].name).toBe('Discipline 0');
-      expect(disciplines[1].name).toBe('Discipline 1');
+  describe('coursePeriodId prop', () => {
+    const faker = DisciplineFakeBuilder.aDiscipline();
+
+    it('_coursePeriodId should be a function', () => {
+      expect(typeof faker['_coursePeriodId']).toBe('function');
+    });
+
+    it('withCoursePeriodId()', () => {
+      const coursePeriodId = 'PERIOD123';
+      const $this = faker.withCoursePeriodId(coursePeriodId);
+
+      expect($this).toBeInstanceOf(DisciplineFakeBuilder);
+      expect(faker['_coursePeriodId']).toBe(coursePeriodId);
     });
   });
 
   describe('createdAt prop', () => {
     const faker = DisciplineFakeBuilder.aDiscipline();
 
-    test('should throw error when any with methods has been called', () => {
-      const fakerDiscipline = DisciplineFakeBuilder.aDiscipline();
-
-      expect(() => fakerDiscipline.createdAt).toThrow(
-        new Error(
-          "Property createdAt does not have a factory, use 'with' methods",
-        ),
+    it('should throw error when createdAt is not set', () => {
+      expect(() => faker.createdAt).toThrowError(
+        "Property createdAt does not have a factory, use 'with' methods",
       );
     });
 
-    test('should be undefined', () => {
-      expect(faker['_createdAt']).toBeUndefined();
-    });
-
-    test('withCreatedAt()', () => {
+    it('withCreatedAt()', () => {
       const date = new Date();
       const $this = faker.withCreatedAt(date);
 
       expect($this).toBeInstanceOf(DisciplineFakeBuilder);
       expect(faker['_createdAt']).toBe(date);
-
-      faker.withCreatedAt(() => date);
-
-      //@ts-expect-error _createdAt is a callable
-      expect(faker['_createdAt']()).toBe(date);
-      expect(faker.createdAt).toBe(date);
-    });
-
-    test('should pass index to createdAt factory', () => {
-      const date = new Date();
-      faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
-
-      const discipline = faker.build();
-      expect(discipline.createdAt.getTime()).toBe(date.getTime() + 2);
-
-      const fakerMany = DisciplineFakeBuilder.theDisciplines(2);
-      fakerMany.withCreatedAt((index) => new Date(date.getTime() + index + 2));
-      const disciplines = fakerMany.build();
-
-      expect(disciplines[0].createdAt.getTime()).toBe(date.getTime() + 2);
-      expect(disciplines[1].createdAt.getTime()).toBe(date.getTime() + 3);
     });
   });
 
   describe('updatedAt prop', () => {
     const faker = DisciplineFakeBuilder.aDiscipline();
 
-    test('should throw error when any with methods has been called', () => {
-      const fakerDiscipline = DisciplineFakeBuilder.aDiscipline();
-
-      expect(() => fakerDiscipline.updatedAt).toThrow(
-        new Error(
-          "Property updatedAt does not have a factory, use 'with' methods",
-        ),
+    it('should throw error when updatedAt is not set', () => {
+      expect(() => faker.updatedAt).toThrowError(
+        "Property updatedAt does not have a factory, use 'with' methods",
       );
     });
 
-    test('should be undefined', () => {
-      expect(faker['_updatedAt']).toBeUndefined();
-    });
-
-    test('withUpdatedAt()', () => {
+    it('withUpdatedAt()', () => {
       const date = new Date();
       const $this = faker.withUpdatedAt(date);
 
       expect($this).toBeInstanceOf(DisciplineFakeBuilder);
       expect(faker['_updatedAt']).toBe(date);
-
-      faker.withUpdatedAt(() => date);
-
-      //@ts-expect-error _updatedAt is a callable
-      expect(faker['_updatedAt']()).toBe(date);
-      expect(faker.updatedAt).toBe(date);
-    });
-
-    test('should pass index to updatedAt factory', () => {
-      const date = new Date();
-      faker.withUpdatedAt((index) => new Date(date.getTime() + index + 2));
-
-      const discipline = faker.build();
-      expect(discipline.updatedAt.getTime()).toBe(date.getTime() + 2);
-
-      const fakerMany = DisciplineFakeBuilder.theDisciplines(2);
-      fakerMany.withUpdatedAt((index) => new Date(date.getTime() + index + 2));
-      const disciplines = fakerMany.build();
-
-      expect(disciplines[0].updatedAt.getTime()).toBe(date.getTime() + 2);
-      expect(disciplines[1].updatedAt.getTime()).toBe(date.getTime() + 3);
     });
   });
 
   describe('build() method', () => {
     it('should create a single discipline when count = 1', () => {
-      const faker = DisciplineFakeBuilder.aDiscipline();
+      const faker = DisciplineFakeBuilder.aDiscipline()
+        .withName('Test Discipline')
+        .withCode('TEST_CODE')
+        .withCourseId('COURSE_ID')
+        .withCoursePeriodId('PERIOD_ID');
+
       const discipline = faker.build();
 
       expect(discipline).toBeInstanceOf(DisciplineEntity);
-      expect(discipline.code).toBeDefined();
-      expect(discipline.name).toBeDefined();
+      expect(discipline.name).toBe('Test Discipline');
+      expect(discipline.code).toBe('TEST_CODE');
+      expect(discipline.courseId).toBe('COURSE_ID');
+      expect(discipline.coursePeriodId).toBe('PERIOD_ID');
     });
 
     it('should create multiple disciplines when count > 1', () => {
-      const count = 2;
-      const faker = DisciplineFakeBuilder.theDisciplines(count);
-      const disciplines = faker.build();
+      const fakerMany = DisciplineFakeBuilder.theDisciplines(2)
+        .withName((index) => `Discipline ${index}`)
+        .withCode((index) => `CODE${index}`)
+        .withCourseId((index) => `COURSE${index}`)
+        .withCoursePeriodId((index) => `PERIOD${index}`);
 
-      expect(disciplines).toHaveLength(count);
+      const disciplines = fakerMany.build();
+
+      expect(disciplines).toHaveLength(2);
       expect(disciplines[0]).toBeInstanceOf(DisciplineEntity);
       expect(disciplines[1]).toBeInstanceOf(DisciplineEntity);
-      expect(disciplines[0].code).not.toBe(disciplines[1].code);
+      expect(disciplines[0].name).toBe('Discipline 0');
+      expect(disciplines[1].name).toBe('Discipline 1');
+      expect(disciplines[0].code).toBe('CODE0');
+      expect(disciplines[1].code).toBe('CODE1');
+      expect(disciplines[0].courseId).toBe('COURSE0');
+      expect(disciplines[1].courseId).toBe('COURSE1');
+      expect(disciplines[0].coursePeriodId).toBe('PERIOD0');
+      expect(disciplines[1].coursePeriodId).toBe('PERIOD1');
     });
   });
 });

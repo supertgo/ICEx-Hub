@@ -8,22 +8,23 @@ import { CoursePeriodDataBuilder } from '@/user/domain/testing/helper/course-per
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 
 export function DisciplineDataBuilder(props: Partial<DisciplineProps>) {
+  const course = props.courseId
+    ? { name: props.courseId }
+    : CourseDataBuilder({ name: 'Course 1', code: 'C1' });
+
+  const coursePeriod = props.coursePeriodId
+    ? { name: props.coursePeriodId }
+    : CoursePeriodDataBuilder({ name: 'Period 1' });
+
   return {
-    name: props.name ?? faker.person.jobTitle(),
-    code:
-      props.code ??
-      faker.string
-        .alphanumeric({
-          length: 6,
-        })
-        .toUpperCase(),
-    courseId: props.courseId ?? faker.string.uuid(),
-    coursePeriodId: props.coursePeriodId ?? faker.string.uuid(),
-    createdAt: props.createdAt ?? faker.date.recent(),
-    updatedAt: props.updatedAt ?? faker.date.recent(),
+    name: props.name ?? faker.string.alpha(10),
+    code: props.code ?? faker.string.alpha(6).toUpperCase(),
+    courseId: course.name,
+    coursePeriodId: coursePeriod.name,
+    createdAt: props.createdAt ?? new Date(),
+    updatedAt: props.updatedAt ?? new Date(),
   };
 }
-
 export function fakeDisciplineProps(): {
   id: string;
   course: CourseEntity;
@@ -33,9 +34,14 @@ export function fakeDisciplineProps(): {
     updatedAt: Date;
   };
 } & DisciplineProps {
-  const course = new CourseEntity(CourseDataBuilder({}));
-  const coursePeriodProps = CoursePeriodDataBuilder({});
-  const entity = new DisciplineEntity(DisciplineDataBuilder({}));
+  const course = new CourseEntity(CourseDataBuilder({ name: 'Course 1' }));
+  const coursePeriodProps = CoursePeriodDataBuilder({ name: 'Period 1' });
+  const entity = new DisciplineEntity(
+    DisciplineDataBuilder({
+      courseId: course.name,
+      coursePeriodId: coursePeriodProps.name,
+    }),
+  );
 
   return {
     id: entity.id,
@@ -43,8 +49,8 @@ export function fakeDisciplineProps(): {
     coursePeriodProps,
     name: entity.name,
     code: entity.code,
-    courseId: course.id,
-    coursePeriodId: faker.string.uuid(),
+    courseId: course.name,
+    coursePeriodId: coursePeriodProps.name,
     createdAt: entity.createdAt,
     updatedAt: entity.updatedAt,
   };
