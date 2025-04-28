@@ -55,7 +55,7 @@ describe('Schedule integration tests', () => {
     expect(() => new ScheduleEntity(props)).toThrow(EntityValidationError);
   });
 
-  it('should throw error with class', () => {
+  it('should throw error with an invalid class', () => {
     const props = {
       ...ScheduleDataBuilder({}),
       class: undefined as string,
