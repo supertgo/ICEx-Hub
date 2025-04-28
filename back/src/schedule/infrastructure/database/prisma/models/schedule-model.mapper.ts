@@ -32,6 +32,7 @@ export class ScheduleModelMapper {
       timeSlot: model.timeSlot as TimeSlotEnum,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
+      class: model.class,
     };
 
     try {

@@ -26,6 +26,7 @@ describe('Schedule presenter unit tests', () => {
     expect(sut.timeSlot).toEqual(props.timeSlot);
     expect(sut.createdAt).toEqual(props.createdAt);
     expect(sut.updatedAt).toEqual(props.updatedAt);
+    expect(sut.class).toEqual(props.class);
   });
 
   it('Should present the date as expected', () => {
@@ -38,6 +39,7 @@ describe('Schedule presenter unit tests', () => {
     expect(output.timeSlot).toEqual(props.timeSlot);
     expect(output.createdAt).toEqual(props.createdAt.toISOString());
     expect(output.updatedAt).toEqual(props.updatedAt.toISOString());
+    expect(output.class).toEqual(props.class);
   });
 
   describe('ScheduleCollectionPresenter', () => {
@@ -76,6 +78,7 @@ describe('Schedule presenter unit tests', () => {
       expect(output.data[0].timeSlot).toEqual(props.timeSlot);
       expect(output.data[0].createdAt).toEqual(props.createdAt.toISOString());
       expect(output.data[0].updatedAt).toEqual(props.updatedAt.toISOString());
+      expect(output.data[0].class).toEqual(props.class);
 
       expect(output.meta).toBeDefined();
       expect(output.meta.currentPage).toEqual(2);

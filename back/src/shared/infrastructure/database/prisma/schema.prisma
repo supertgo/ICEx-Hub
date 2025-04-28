@@ -110,6 +110,7 @@ model Schedule {
   discipline   Discipline @relation(fields: [disciplineId], references: [id])
   classroomId  String     @db.Uuid
   classroom    Classroom  @relation(fields: [classroomId], references: [id])
+  class        String     @db.VarChar(20)
 
   dayPattern DayPattern
   timeSlot   TimeSlot
@@ -117,7 +118,7 @@ model Schedule {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([classroomId, dayPattern, timeSlot], name: "unique_classroom_schedule")
+  @@unique([classroomId, dayPattern, timeSlot, class], name: "unique_classroom_schedule")
   @@map("schedules")
 }
 

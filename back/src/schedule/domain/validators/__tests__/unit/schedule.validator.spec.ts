@@ -34,5 +34,7 @@ describe('ScheduleValidatorFields Unit Tests', () => {
       'timeSlot should not be empty',
       'timeSlot must be one of the following values: MORNING_1, MORNING_2, MORNING_3, AFTERNOON_1, AFTERNOON_2, EVENING_1, EVENING_2, EVENING_3, EVENING_1_2',
     ]);
+
+    expect(sut.errors['class']).toStrictEqual(['class should not be empty']);
   });
 });

@@ -9,6 +9,7 @@ export interface Schedule {
   classroom: Classroom;
   timeSlot: TimeSlotEnum;
   dayPattern: DayPatternEnum;
+  class: string;
 }
 
 export interface ScheduleData {

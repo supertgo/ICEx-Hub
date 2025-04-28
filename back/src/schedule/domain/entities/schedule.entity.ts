@@ -22,6 +22,7 @@ export type ScheduleProps = {
   classroom?: ClassroomEntity | null;
   dayPattern: DayPatternEnum;
   timeSlot: TimeSlotEnum;
+  class?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -94,6 +95,14 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
     this.props.updatedAt = value;
   }
 
+  get class(): string | undefined {
+    return this.props.class;
+  }
+
+  private set class(value: string) {
+    this.props.class = value;
+  }
+
   static validate(props: ScheduleProps) {
     const validator = ScheduleValidatorFactory.create();
     const isValid = validator.validate(props);
@@ -128,6 +137,7 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
       timeSlot: this.timeSlot,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      class: this.class,
     };
   }
 }

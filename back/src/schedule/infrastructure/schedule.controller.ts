@@ -84,6 +84,7 @@ export class ScheduleController {
         timeSlots: timeSlots,
         courseId: searchParams?.courseId,
         coursePeriodId: searchParams?.coursePeriodId,
+        class: searchParams.class,
       },
     });
 

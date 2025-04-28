@@ -26,6 +26,9 @@ export class SchedulePresenter {
   @ApiProperty({ description: 'The days that the schedule will happen' })
   dayPattern: string;
 
+  @ApiProperty({ description: 'The class of the schedule' })
+  class: string;
+
   @ApiProperty({ description: 'The time that the schedule will happen' })
   timeSlot: string;
 
@@ -46,6 +49,7 @@ export class SchedulePresenter {
     this.timeSlot = output.timeSlot;
     this.createdAt = output.createdAt;
     this.updatedAt = output.updatedAt;
+    this.class = output.class;
   }
 }
 

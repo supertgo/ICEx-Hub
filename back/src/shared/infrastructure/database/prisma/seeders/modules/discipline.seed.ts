@@ -50,7 +50,7 @@ export const disciplinesSI = [
   {
     id: faker.string.uuid(),
     name: 'Matemática Discreta',
-    code: 'DCC111',
+    code: 'DCC216',
     periodo: 2,
     course: courseSI,
   },

@@ -13,7 +13,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '1026',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Geometria Analítica e Álgebra Linear',
@@ -22,7 +24,9 @@ export const schedules = [
     timeSlot: TimeSlot.MORNING_2,
     classroomName: '311',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TB5',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução à Lógica Computacional',
@@ -31,7 +35,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '2009',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TN',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução à Lógica Computacional',
@@ -40,7 +46,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '313',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Programação e Desenvolvimento de Software I',
@@ -49,7 +57,9 @@ export const schedules = [
     timeSlot: TimeSlot.MORNING_1,
     classroomName: '307',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TA',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Programação e Desenvolvimento de Software I',
@@ -58,7 +68,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '307',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Fundamentos de Sistemas de Informação',
@@ -67,7 +79,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '1015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Cálculo Diferencial e Integral I',
@@ -76,7 +90,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '208',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Cálculo Diferencial e Integral I',
@@ -85,25 +101,31 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '412',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Matemática Discreta',
-    disciplineCode: 'DCC111',
+    disciplineCode: 'DCC216',
     dayPattern: DayPattern.MONDAY_WEDNESDAY,
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '413',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Matemática Discreta',
-    disciplineCode: 'DCC111',
+    disciplineCode: 'DCC216',
     dayPattern: DayPattern.TUESDAY_THURSDAY,
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '410',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Programação e Desenvolvimento de Software II',
@@ -112,7 +134,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '212',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Programação e Desenvolvimento de Software II',
@@ -121,7 +145,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '310',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Álgebra Linear Computacional',
@@ -130,7 +156,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '1022',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TM',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Álgebra Linear Computacional',
@@ -139,16 +167,20 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '2013',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ TZ1 TZ3',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Economia A I',
     disciplineCode: 'ECN140',
-    dayPattern: DayPattern.TUESDAY,
+    dayPattern: DayPattern.TUESDAY_THURSDAY,
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '213',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Economia A I',
@@ -157,7 +189,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '1018',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TE',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Cálculo Diferencial e Integral II',
@@ -166,7 +200,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '410',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Cálculo Diferencial e Integral II',
@@ -175,7 +211,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '407',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução a Sistemas Lógicos',
@@ -184,7 +222,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '309',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução a Sistemas Lógicos',
@@ -193,7 +233,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '2013',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Estruturas de Dados',
@@ -202,7 +244,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '308',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Estruturas de Dados',
@@ -211,7 +255,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '308',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TN1 / TN2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução a Bancos de Dados',
@@ -220,7 +266,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '207',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TE',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução a Bancos de Dados',
@@ -229,7 +277,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '2009',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TM2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Estatística e Probabilidades',
@@ -238,7 +288,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '307',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Estatística e Probabilidades',
@@ -247,7 +299,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '302',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TE1 / TE2',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Usuários da Informação',
@@ -256,7 +310,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '1015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Organização de Computadores',
@@ -265,7 +321,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '212',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Organização de Computadores',
@@ -274,7 +332,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '213',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Algoritmos I',
@@ -283,7 +343,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '307',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Algoritmos I',
@@ -292,7 +354,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '307',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TN',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Administração de Recursos Humanos',
@@ -301,7 +365,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1_2,
     classroomName: '213',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Organização e Tratamento da Informação',
@@ -310,7 +376,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '413',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Interação Humano Computador',
@@ -319,7 +387,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '312',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Linguagens de Programação',
@@ -328,7 +398,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '1019',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Linguagens de Programação',
@@ -337,7 +409,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '1025',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TM',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução à Contabilidade',
@@ -346,7 +420,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '410',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Introdução à Contabilidade',
@@ -355,7 +431,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '1020',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Administração da Produção',
@@ -364,7 +442,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1_2,
     classroomName: '1017',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Engenharia de Software',
@@ -373,7 +453,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '1015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Engenharia de Software',
@@ -382,7 +464,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '210',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TN',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Sistemas Operacionais',
@@ -391,7 +475,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '302',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Sistemas Operacionais',
@@ -400,7 +486,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_1,
     classroomName: '212',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TM',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Administração de Custos',
@@ -409,7 +497,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1_2,
     classroomName: '1026',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Engenharia de Software II',
@@ -418,7 +508,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1,
     classroomName: '211',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Redes de Computadores',
@@ -427,7 +519,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '406',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Redes de Computadores',
@@ -436,7 +530,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '311',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TN',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Administração Financeira',
@@ -445,7 +541,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1_2,
     classroomName: '207',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Administração Mercadológica',
@@ -454,7 +552,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_1_2,
     classroomName: '212',
     ClassroomBulding: CLASSROOM_BUILDING.CAD3,
+    class: 'TZ',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Ética na Computação',
@@ -463,7 +563,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '2015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Ética na Computação',
@@ -472,7 +574,9 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '2015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TW1',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Computação e Sociedade',
@@ -481,7 +585,9 @@ export const schedules = [
     timeSlot: TimeSlot.EVENING_2,
     classroomName: '2015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TW',
   },
+
   {
     id: faker.string.uuid(),
     disciplineName: 'Computação e Sociedade',
@@ -490,6 +596,7 @@ export const schedules = [
     timeSlot: TimeSlot.AFTERNOON_2,
     classroomName: '2015',
     ClassroomBulding: CLASSROOM_BUILDING.ICEX,
+    class: 'TN1',
   },
 ];
 
@@ -504,6 +611,7 @@ export const scheduleSeed = async (prisma: PrismaClient) => {
           ),
           dayPattern: schedule.dayPattern,
           timeSlot: schedule.timeSlot,
+          class: schedule.class,
         },
       },
       update: {
@@ -513,6 +621,7 @@ export const scheduleSeed = async (prisma: PrismaClient) => {
           schedule.ClassroomBulding,
           schedule.classroomName,
         ),
+        class: schedule.class,
       },
       create: {
         id: schedule.id,
@@ -523,6 +632,7 @@ export const scheduleSeed = async (prisma: PrismaClient) => {
         ),
         dayPattern: schedule.dayPattern,
         timeSlot: schedule.timeSlot,
+        class: schedule.class,
       },
     });
   }
@@ -537,5 +647,9 @@ function getClassroomId(building: CLASSROOM_BUILDING, name: string) {
 }
 
 function getDisciplineId(code: string) {
-  return disciplinesSI.find((discipline) => discipline.code === code).id;
+  try {
+    return disciplinesSI.find((discipline) => discipline.code === code).id;
+  } catch (e) {
+    throw 'error ' + e;
+  }
 }

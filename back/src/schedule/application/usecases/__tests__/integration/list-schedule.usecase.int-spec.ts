@@ -159,4 +159,22 @@ describe('List schedules usecase integration tests', () => {
 
     expect(output.items.length).toBeGreaterThanOrEqual(1);
   });
+
+  it('should filter by class', async () => {
+    const schedules = await SchedulePrismaTestingHelper.createCompleteSchedules(
+      prismaService,
+      11,
+    );
+
+    const output = await sut.execute({
+      filter: {
+        class: schedules[0].class,
+      },
+    });
+
+    expect(output.items.length).toBeGreaterThanOrEqual(1);
+    output.items.forEach((item) => {
+      expect(item.class).toEqual(schedules[0].class);
+    });
+  });
 });

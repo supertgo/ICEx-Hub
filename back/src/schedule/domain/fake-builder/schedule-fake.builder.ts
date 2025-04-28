@@ -21,6 +21,9 @@ export class ScheduleFakeBuilder<TBuild = any> {
 
   private _updatedAt: PropOrFactory<Date> | undefined = undefined;
 
+  private _class: PropOrFactory<string> = (_index) =>
+    this.faker.string.alpha(3);
+
   private countObjs: number;
 
   private faker: Faker;
@@ -46,6 +49,12 @@ export class ScheduleFakeBuilder<TBuild = any> {
 
   withDisciplineId(valueOrFactory: PropOrFactory<string>) {
     this._discplineId = valueOrFactory;
+
+    return this;
+  }
+
+  withClass(valueOrFactory: PropOrFactory<string>) {
+    this._class = valueOrFactory;
 
     return this;
   }
@@ -87,6 +96,7 @@ export class ScheduleFakeBuilder<TBuild = any> {
           ...(this._updatedAt && {
             updatedAt: this.callFactory(this._updatedAt, index),
           }),
+          class: this.callFactory(this._class, index),
         });
       });
 
@@ -103,6 +113,10 @@ export class ScheduleFakeBuilder<TBuild = any> {
 
   get dayPattern() {
     return this.getValue('DayPattern');
+  }
+
+  get class() {
+    return this.getValue('class');
   }
 
   get timeSlot() {

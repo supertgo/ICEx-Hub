@@ -66,6 +66,7 @@ export class SchedulePrismaTestingHelper {
           disciplineId: discipline.id,
           timeSlot: entity.timeSlot,
           dayPattern: entity.dayPattern,
+          class: entity.class,
         },
         include: {
           classroom: true,
