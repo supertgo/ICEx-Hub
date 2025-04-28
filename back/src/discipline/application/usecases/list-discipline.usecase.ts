@@ -16,7 +16,21 @@ export namespace ListDisciplinesUsecase {
     constructor(private repository: DisciplineRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      const params = new DisciplineRepository.SearchParams(input);
+      let filter: string | undefined;
+
+      try {
+        filter = input.filter ? JSON.parse(input.filter) : undefined;
+      } catch {
+        filter = input.filter;
+      }
+
+      const params = new DisciplineRepository.SearchParams({
+        page: input.page,
+        perPage: input.perPage,
+        sort: input.sort,
+        sortDir: input.sortDir,
+        filter: filter as DisciplineRepository.Filter,
+      });
 
       const searchResult = await this.repository.search(params);
 

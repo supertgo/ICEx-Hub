@@ -12,14 +12,6 @@ export type DisciplineOutput = {
 
 export class DisciplineOutputMapper {
   static toOutput(entity: DisciplineEntity): DisciplineOutput {
-    return {
-      id: entity.id,
-      name: entity.name,
-      code: entity.code,
-      courseId: entity.courseId,
-      coursePeriodId: entity.coursePeriodId,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    };
+    return entity.toJSON();
   }
 }

@@ -6,9 +6,8 @@ describe('Discipline entity integration tests', () => {
   describe('Constructor tests', () => {
     it('should throw error with invalid name', () => {
       const props = {
-        ...DisciplineDataBuilder({}),
+        ...DisciplineDataBuilder({ name: '' }),
       };
-
       expect(() => new DisciplineEntity(props)).toThrow(EntityValidationError);
     });
   });

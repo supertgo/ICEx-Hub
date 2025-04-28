@@ -13,7 +13,7 @@ describe('Get discipline use case test', () => {
     sut = new GetDisciplineUsecase.UseCase(repository);
   });
 
-  it('should throw DisciplineWithEmailNotFoundError if discipline does not exist', async () => {
+  it('should throw DisciplineWithIdNotFoundError if discipline does not exist', async () => {
     const input = { id: 'non-existent-id' };
 
     await expect(sut.execute(input)).rejects.toThrow(

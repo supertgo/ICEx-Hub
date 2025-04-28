@@ -1,5 +1,4 @@
-import { SignUpDto } from '@/user/infrastructure/dtos/sign-up.dto';
-import { en, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserRepository } from '@/user/domain/repositories/user.repository';
@@ -17,7 +16,6 @@ import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '@/global-config';
 import { UpdateUserDto } from '@/user/infrastructure/dtos/update-user.dto';
 import { UserEntity } from '@/user/domain/entities/user.entity';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
 import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
@@ -97,6 +95,8 @@ describe('Update user e2e tests', () => {
       'id',
       'name',
       'email',
+      'courseId',
+      'coursePeriodId',
       'createdAt',
     ]);
 

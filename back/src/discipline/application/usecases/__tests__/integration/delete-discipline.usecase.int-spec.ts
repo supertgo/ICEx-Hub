@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteDisciplineUsecase } from '@/discipline/application/usecases/delete-discipline.usecase';
+import { fakeDisciplineProps } from '@/discipline/domain/testing/helper/discipline-data-builder';
 
 describe('Delete Discipline usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -23,6 +24,7 @@ describe('Delete Discipline usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new DeleteDisciplineUsecase.UseCase(repository);
+    await prismaService.schedule.deleteMany();
     await prismaService.discipline.deleteMany();
   });
 
@@ -31,8 +33,42 @@ describe('Delete Discipline usecase integration tests', () => {
     await module.close();
   });
 
-  it('should throw error when discipline not found', () => { });
-
   it('should delete a discipline', async () => {
+    const { course, coursePeriodProps, ...discipline } = fakeDisciplineProps();
+
+    await prismaService.course.create({
+      data: course,
+    });
+
+    const coursePeriodData = await prismaService.coursePeriod.create({
+      data: {
+        name: coursePeriodProps.name,
+        course: {
+          connect: {
+            id: course.id,
+          },
+        },
+      },
+    });
+
+    const createdDiscipline = await prismaService.discipline.create({
+      data: {
+        id: discipline.id,
+        name: discipline.name,
+        code: discipline.code,
+        coursePeriodId: coursePeriodData.id,
+        courseId: course.id,
+      },
+    });
+
+    await sut.execute({ id: createdDiscipline.id });
+
+    const disciplineCount = await prismaService.discipline.count({
+      where: {
+        id: createdDiscipline.id,
+      },
+    });
+
+    expect(disciplineCount).toBe(0);
   });
 });

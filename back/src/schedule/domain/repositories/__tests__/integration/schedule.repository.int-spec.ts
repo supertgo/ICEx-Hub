@@ -14,8 +14,8 @@ import {
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { ClassroomEntity } from '@/classroom/domain/entities/classroom.entity';
-import { DisciplineDataBuilder } from '@/disciplinas/domain/testing/helper/discipline-data-builder';
-import { DisciplineEntity } from '@/disciplinas/domain/entities/disciplina.entity';
+import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
 import { CourseDataBuilderAsEntity } from '@/user/domain/testing/helper/course-data-builder';
 import { CoursePeriodDataBuilder } from '@/course/domain/testing/helper/course-period-data-builder';
 

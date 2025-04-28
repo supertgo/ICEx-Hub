@@ -72,6 +72,8 @@ describe('Create user e2e tests', () => {
       'id',
       'name',
       'email',
+      'courseID',
+      'coursePeriodId',
       'createdAt',
     ]);
 
