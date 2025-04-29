@@ -95,7 +95,7 @@ export class ScheduleEntity extends Entity<ScheduleProps> {
     this.props.updatedAt = value;
   }
 
-  get class(): string | undefined {
+  get class(): string {
     return this.props.class;
   }
 
