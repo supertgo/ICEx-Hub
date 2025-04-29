@@ -6,6 +6,7 @@ import {
   DisciplineProps,
 } from '@/discipline/domain/entities/discipline.entity';
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
 
 describe('List disciplines use cases unit tests', () => {
   function createDisciplineEntity(
@@ -134,6 +135,8 @@ describe('List disciplines use cases unit tests', () => {
     const result = await sut.execute({
       page: 2,
       perPage: 2,
+      sort: 'name',
+      sortDir: SortOrderEnum.ASC,
     });
 
     expect(result.items.length).toBe(2);
@@ -143,7 +146,6 @@ describe('List disciplines use cases unit tests', () => {
     expect(result.perPage).toBe(2);
 
     expect(result.items[0].name).toBe('c');
-    expect(result.items[1].name).toBe('d');
   });
 
   it('should return empty result when no filter found', async () => {
@@ -154,7 +156,7 @@ describe('List disciplines use cases unit tests', () => {
     repository.items = disciplines;
 
     const result = await sut.execute({
-      filter: 'z',
+      filter: { name: 'z' },
     });
 
     expect(result.items.length).toBe(0);

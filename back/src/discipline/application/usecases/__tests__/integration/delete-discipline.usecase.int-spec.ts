@@ -4,7 +4,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteDisciplineUsecase } from '@/discipline/application/usecases/delete-discipline.usecase';
-import { fakeDisciplineProps } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { faker } from '@faker-js/faker';
+import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 
 describe('Delete Discipline usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -33,39 +36,33 @@ describe('Delete Discipline usecase integration tests', () => {
     await module.close();
   });
 
+  it('should throw error when discipline not found', () => {
+    const id = faker.string.uuid();
+    expect(() => sut.execute({ id })).rejects.toThrow(
+      new DisciplineWithIdNotFoundError(id),
+    );
+  });
+
   it('should delete a discipline', async () => {
-    const { course, coursePeriodProps, ...discipline } = fakeDisciplineProps();
+    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    await prismaService.course.create({
-      data: course,
-    });
+    const periodo =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
-    const coursePeriodData = await prismaService.coursePeriod.create({
+    const discipline = await prismaService.discipline.create({
       data: {
-        name: coursePeriodProps.name,
-        course: {
-          connect: {
-            id: course.id,
-          },
-        },
+        name: 'Original Discipline Name',
+        code: 'DISC123',
+        courseId: curso.id,
+        coursePeriodId: periodo.id,
       },
     });
 
-    const createdDiscipline = await prismaService.discipline.create({
-      data: {
-        id: discipline.id,
-        name: discipline.name,
-        code: discipline.code,
-        coursePeriodId: coursePeriodData.id,
-        courseId: course.id,
-      },
-    });
-
-    await sut.execute({ id: createdDiscipline.id });
+    await sut.execute({ id: discipline.id });
 
     const disciplineCount = await prismaService.discipline.count({
       where: {
-        id: createdDiscipline.id,
+        id: discipline.id,
       },
     });
 
