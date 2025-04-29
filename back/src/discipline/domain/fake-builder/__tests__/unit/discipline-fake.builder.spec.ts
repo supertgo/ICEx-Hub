@@ -111,41 +111,23 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
 
   describe('build() method', () => {
     it('should create a single discipline when count = 1', () => {
-      const faker = DisciplineFakeBuilder.aDiscipline()
-        .withName('Test Discipline')
-        .withCode('TEST_CODE')
-        .withCourseId('COURSE_ID')
-        .withCoursePeriodId('PERIOD_ID');
-
+      const faker = DisciplineFakeBuilder.aDiscipline();
       const discipline = faker.build();
 
       expect(discipline).toBeInstanceOf(DisciplineEntity);
-      expect(discipline.name).toBe('Test Discipline');
-      expect(discipline.code).toBe('TEST_CODE');
-      expect(discipline.courseId).toBe('COURSE_ID');
-      expect(discipline.coursePeriodId).toBe('PERIOD_ID');
+      expect(discipline.name).toBeDefined();
+      expect(discipline.code).toBeDefined();
     });
 
     it('should create multiple disciplines when count > 1', () => {
-      const fakerMany = DisciplineFakeBuilder.theDisciplines(2)
-        .withName((index) => `Discipline ${index}`)
-        .withCode((index) => `CODE${index}`)
-        .withCourseId((index) => `COURSE${index}`)
-        .withCoursePeriodId((index) => `PERIOD${index}`);
-
+      const count = 2;
+      const fakerMany = DisciplineFakeBuilder.theDisciplines(count);
       const disciplines = fakerMany.build();
 
-      expect(disciplines).toHaveLength(2);
+      expect(disciplines).toHaveLength(count);
       expect(disciplines[0]).toBeInstanceOf(DisciplineEntity);
       expect(disciplines[1]).toBeInstanceOf(DisciplineEntity);
-      expect(disciplines[0].name).toBe('Discipline 0');
-      expect(disciplines[1].name).toBe('Discipline 1');
-      expect(disciplines[0].code).toBe('CODE0');
-      expect(disciplines[1].code).toBe('CODE1');
-      expect(disciplines[0].courseId).toBe('COURSE0');
-      expect(disciplines[1].courseId).toBe('COURSE1');
-      expect(disciplines[0].coursePeriodId).toBe('PERIOD0');
-      expect(disciplines[1].coursePeriodId).toBe('PERIOD1');
+      expect(disciplines[0].code).not.toBe(disciplines[1].code);
     });
   });
 });

@@ -93,13 +93,10 @@ export class DisciplineFakeBuilder<TBuild = any> {
       .fill(undefined)
       .map((_, index) => {
         return new DisciplineEntity({
-          name: this.callFactory(this._name, index) ?? 'Default Name',
-          code: this.callFactory(this._code, index) ?? 'DEFAULT_CODE',
-          courseId:
-            this.callFactory(this._courseId, index) ?? 'DEFAULT_COURSE_ID',
-          coursePeriodId:
-            this.callFactory(this._coursePeriodId, index) ??
-            'DEFAULT_PERIOD_ID',
+          name: this.callFactory(this._name, index),
+          code: this.callFactory(this._code, index),
+          courseId: this.callFactory(this._courseId, index),
+          coursePeriodId: this.callFactory(this._coursePeriodId, index),
           ...(this._createdAt && {
             createdAt: this.callFactory(this._createdAt, index),
           }),
