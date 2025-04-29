@@ -36,6 +36,7 @@ describe('List course period usecase integration tests', () => {
     await prismaService.$disconnect();
     await module.close();
   });
+
   it('should retrieve course periods orderedBy createdAt as default', async () => {
     await CoursePrismaTestingHelper.createCoursePeriods(prismaService, 11);
 

@@ -8,7 +8,7 @@ import {
 import { DisciplineOutputMapper } from '@/discipline/application/dtos/discipline-output';
 
 export namespace ListDisciplinesUsecase {
-  export type Input = SearchInput;
+  export type Input = SearchInput<DisciplineRepository.Filter>;
 
   export type Output = PaginationOutput;
 
@@ -16,22 +16,7 @@ export namespace ListDisciplinesUsecase {
     constructor(private repository: DisciplineRepository.Repository) {}
 
     async execute(input: Input): Promise<Output> {
-      let filter: string | undefined;
-
-      try {
-        filter = input.filter ? JSON.parse(input.filter) : undefined;
-      } catch {
-        filter = input.filter;
-      }
-
-      const params = new DisciplineRepository.SearchParams({
-        page: input.page,
-        perPage: input.perPage,
-        sort: input.sort,
-        sortDir: input.sortDir,
-        filter: filter as DisciplineRepository.Filter,
-      });
-
+      const params = new DisciplineRepository.SearchParams(input);
       const searchResult = await this.repository.search(params);
 
       return this.toOutput(searchResult);

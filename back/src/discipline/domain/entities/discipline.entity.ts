@@ -2,6 +2,7 @@ import { Entity } from '@/shared/domain/entities/entity';
 import { DisciplineValidatorFactory } from '@/discipline/domain/validators/discipline.validator';
 import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
 import { DisciplineFakeBuilder } from '../fake-builder/discipline-fake.builder';
+import { FieldsErrors } from '@/shared/domain/entities/validators/validator-fields.interface';
 
 export type DisciplineProps = {
   name: string;
@@ -89,7 +90,12 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
     const isValid = validator.validate(props);
 
     if (!isValid) {
-      throw new EntityValidationError(validator.errors);
+      throw new EntityValidationError(
+        validator.errors.reduce((acc, error) => {
+          acc[error] = ['Invalid value'];
+          return acc;
+        }, {} as FieldsErrors),
+      );
     }
   }
 

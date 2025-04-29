@@ -1,14 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteCourseUsecase } from '@/course/application/usecases/delete-course.usecase';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { faker } from '@faker-js/faker';
-import {
-  CoursePrismaTestingHelper,
-} from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Delete Course usecase integration tests', () => {
   const prismaService = new PrismaClient();

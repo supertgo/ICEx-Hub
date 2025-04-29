@@ -9,6 +9,10 @@ import { DatabaseModule } from '@/shared/infrastructure/database/database.module
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
 import { ListDisciplinesUsecase } from '@/discipline/application/usecases/list-discipline.usecase';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { faker } from '@faker-js/faker';
+import { DisciplinePrismaTestingHelper } from '@/discipline/infrastructure/database/prisma/testing/discipline-prisma.testing-helper';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('List disciplines usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -37,23 +41,10 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should retrieve all disciplines from database and paginate', async () => {
-    const course = await prismaService.course.create({
-      data: {
-        id: 'course-1',
-        name: 'Course 1',
-        code: 'C1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
-
-    for (let i = 0; i < 11; i++) {
-      const discipline = DisciplineDataBuilder({
-        name: `Discipline ${i}`,
-        courseId: course.id,
-      });
-      await prismaService.discipline.create({ data: discipline });
-    }
+    const disciplines = await DisciplinePrismaTestingHelper.createDisciplines(
+      prismaService,
+      11,
+    );
 
     const output = await sut.execute({});
 
@@ -65,13 +56,17 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should filter disciplines by name', async () => {
-    const discipline1 = DisciplineDataBuilder({ name: 'Math' });
-    const discipline2 = DisciplineDataBuilder({ name: 'Physics' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Math' },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Physics' },
+    );
 
     const output = await sut.execute({
-      filter: JSON.stringify({ name: 'Math' }),
+      filter: { name: 'Math' },
     });
 
     expect(output.items).toHaveLength(1);
@@ -79,13 +74,16 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should filter disciplines by code', async () => {
-    const discipline1 = DisciplineDataBuilder({ code: 'MATH123' });
-    const discipline2 = DisciplineDataBuilder({ code: 'PHYS456' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
-
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { code: 'MATH123' },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { code: 'PHYS456' },
+    );
     const output = await sut.execute({
-      filter: JSON.stringify({ code: 'MATH123' }),
+      filter: { code: 'MATH123' },
     });
 
     expect(output.items).toHaveLength(1);
@@ -93,38 +91,57 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should filter disciplines by courseId', async () => {
-    const discipline1 = DisciplineDataBuilder({ courseId: 'course-1' });
-    const discipline2 = DisciplineDataBuilder({ courseId: 'course-2' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
+    const curso1 = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const curso2 = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { courseId: curso1.id },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { courseId: curso2.id },
+    );
 
     const output = await sut.execute({
-      filter: JSON.stringify({ courseId: 'course-1' }),
+      filter: { courseId: curso1.id },
     });
 
     expect(output.items).toHaveLength(1);
-    expect(output.items[0].courseId).toBe('course-1');
+    expect(output.items[0].courseId).toBe(curso1.id);
   });
 
   it('should filter disciplines by coursePeriodId', async () => {
-    const discipline1 = DisciplineDataBuilder({ coursePeriodId: 'period-1' });
-    const discipline2 = DisciplineDataBuilder({ coursePeriodId: 'period-2' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
+    const periodo1 =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+    const periodo2 =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { coursePeriodId: periodo1.id, courseId: periodo1.courseId },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { coursePeriodId: periodo2.id, courseId: periodo2.courseId },
+    );
 
     const output = await sut.execute({
-      filter: JSON.stringify({ coursePeriodId: 'period-1' }),
+      filter: { coursePeriodId: periodo1.id },
     });
 
     expect(output.items).toHaveLength(1);
-    expect(output.items[0].coursePeriodId).toBe('period-1');
+    expect(output.items[0].coursePeriodId).toBe(periodo1.id);
   });
 
   it('should sort disciplines by name in ascending order', async () => {
-    const discipline1 = DisciplineDataBuilder({ name: 'Physics' });
-    const discipline2 = DisciplineDataBuilder({ name: 'Math' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Physics' },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Math' },
+    );
 
     const output = await sut.execute({
       sort: 'name',
@@ -137,10 +154,14 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should sort disciplines by name in descending order', async () => {
-    const discipline1 = DisciplineDataBuilder({ name: 'Physics' });
-    const discipline2 = DisciplineDataBuilder({ name: 'Math' });
-    await prismaService.discipline.create({ data: discipline1 });
-    await prismaService.discipline.create({ data: discipline2 });
+    const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Physics' },
+    );
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Math' },
+    );
 
     const output = await sut.execute({
       sort: 'name',
@@ -153,24 +174,15 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should return empty result when no disciplines match the filter', async () => {
-    const course = await prismaService.course.create({
-      data: {
-        id: 'course-1',
-        name: 'Course 1',
-        code: 'C1',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
+    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    const discipline = DisciplineDataBuilder({
-      name: 'Math',
-      courseId: course.id,
-    });
-    await prismaService.discipline.create({ data: discipline });
+    const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
+      prismaService,
+      { name: 'Math', courseId: curso.id },
+    );
 
     const output = await sut.execute({
-      filter: JSON.stringify({ name: 'Biology' }),
+      filter: { name: 'Biology' },
     });
 
     expect(output.items).toHaveLength(0);
