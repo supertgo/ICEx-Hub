@@ -130,4 +130,66 @@ describe('DisciplineFakeBuilder Unit Tests', () => {
       expect(disciplines[0].code).not.toBe(disciplines[1].code);
     });
   });
+
+  it('should throw error when accessing unset properties', () => {
+    const faker = DisciplineFakeBuilder.aDiscipline();
+
+    expect(() => faker.createdAt).toThrowError(
+      "Property createdAt does not have a factory, use 'with' methods",
+    );
+    expect(() => faker.updatedAt).toThrowError(
+      "Property updatedAt does not have a factory, use 'with' methods",
+    );
+  });
+
+  it('should return dynamic properties correctly', () => {
+    const disciplineName = 'Dynamic Name';
+    const disciplineCode = 'DYNAMIC123';
+
+    const faker = DisciplineFakeBuilder.aDiscipline()
+      .withName(disciplineName)
+      .withCode(disciplineCode);
+
+    expect(faker.name).toBe(disciplineName);
+    expect(faker.code).toBe(disciplineCode);
+  });
+
+  it('should apply custom properties and factories to multiple disciplines', () => {
+    const count = 3;
+    const nameFactory = jest.fn((index) => `Discipline ${index + 1}`);
+    const codeFactory = jest.fn((index) => `CODE${index + 1}`);
+
+    const disciplines = DisciplineFakeBuilder.theDisciplines(count)
+      .withName(nameFactory)
+      .withCode(codeFactory)
+      .build();
+
+    expect(disciplines).toHaveLength(count);
+    disciplines.forEach((discipline, index) => {
+      expect(discipline.name).toBe(`Discipline ${index + 1}`);
+      expect(discipline.code).toBe(`CODE${index + 1}`);
+    });
+  });
+
+  it('should use factory functions for properties', () => {
+    const nameFactory = jest.fn(() => 'Factory Name');
+    const codeFactory = jest.fn(() => 'FACTORY123');
+
+    const discipline = DisciplineFakeBuilder.aDiscipline()
+      .withName(nameFactory)
+      .withCode(codeFactory)
+      .build();
+
+    expect(nameFactory).toHaveBeenCalled();
+    expect(codeFactory).toHaveBeenCalled();
+    expect(discipline.name).toBe('Factory Name');
+    expect(discipline.code).toBe('FACTORY123');
+  });
+
+  it('should set countObjs correctly when using theDisciplines()', () => {
+    const count = 5;
+    const fakerMany = DisciplineFakeBuilder.theDisciplines(count);
+
+    expect(fakerMany['countObjs']).toBe(count);
+  });
 });
