@@ -106,6 +106,15 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         });
       }
 
+      if (searchInput.filter.class) {
+        andConditions.push({
+          class: {
+            contains: searchInput.filter.class,
+            mode: 'insensitive',
+          },
+        });
+      }
+
       if (andConditions.length > 0) {
         whereFilter.AND = andConditions;
       }
@@ -154,6 +163,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
           dayPattern: true,
           timeSlot: true,
           updatedAt: true,
+          class: true,
         },
         skip:
           (searchInput.page && searchInput.page > 0
@@ -183,6 +193,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         disciplineId: entity.disciplineId,
         classroomId: entity.classroomId,
         dayPattern: entity.dayPattern,
+        class: entity.class,
       },
       include: {
         classroom: true,
@@ -218,6 +229,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
         disciplineId: entity.disciplineId,
         classroomId: entity.classroomId,
         dayPattern: entity.dayPattern,
+        class: entity.class,
       },
     });
   }
@@ -244,6 +256,7 @@ export class SchedulePrismaRepository implements ScheduleRepository.Repository {
           dayPattern: true,
           timeSlot: true,
           updatedAt: true,
+          class: true,
         },
       });
 

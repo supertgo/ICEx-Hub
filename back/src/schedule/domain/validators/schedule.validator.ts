@@ -34,6 +34,9 @@ class ScheduleRules {
   @IsDate()
   createdAt: Date;
 
+  @IsNotEmpty()
+  class: string;
+
   constructor(data: ScheduleProps) {
     Object.assign(this, data);
   }

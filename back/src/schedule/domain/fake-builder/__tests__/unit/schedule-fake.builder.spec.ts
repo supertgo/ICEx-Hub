@@ -37,6 +37,19 @@ describe('ScheduleFakeBuilder Unit Tests', () => {
     });
   });
 
+  describe('class prop', () => {
+    test('should be defined', () => {
+      expect(fakeEntity['_class']).toBeDefined();
+    });
+
+    test('withClass()', () => {
+      const alpha = faker.string.alpha(3);
+      const fakerSchedule = ScheduleFakeBuilder.aSchedule().withClass(alpha);
+
+      expect(fakerSchedule['_class']).toBe(alpha);
+    });
+  });
+
   describe('dayPattern prop', () => {
     test('should init with a schedule that happens every tuesday and thursday', () => {
       const fakerSchedule = ScheduleFakeBuilder.aSchedule().build();

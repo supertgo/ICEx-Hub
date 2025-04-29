@@ -103,6 +103,14 @@ export class ScheduleInMemoryRepository
         }
       }
 
+      if (filter.class) {
+        const classLower = filter.class.toLowerCase();
+        const classMatches = schedule.class.toLowerCase() === classLower;
+        if (!classMatches) {
+          matches = false;
+        }
+      }
+
       return matches;
     });
   }

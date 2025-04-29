@@ -72,6 +72,7 @@ describe('Schedule prisma repository integration tests', () => {
       disciplineId: disciplineData.id,
       dayPattern: entity.dayPattern,
       timeSlot: entity.timeSlot,
+      class: entity.class,
     };
   }
 
@@ -124,6 +125,7 @@ describe('Schedule prisma repository integration tests', () => {
       timeSlot: entity.timeSlot,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      class: entity.class,
     });
   });
 
@@ -153,6 +155,7 @@ describe('Schedule prisma repository integration tests', () => {
       timeSlot: entity.timeSlot,
       createdAt: entity.createdAt,
       updatedAt: entity.updatedAt,
+      class: entity.class,
     });
   });
 

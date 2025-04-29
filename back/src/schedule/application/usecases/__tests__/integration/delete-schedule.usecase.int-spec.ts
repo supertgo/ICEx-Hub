@@ -84,6 +84,7 @@ describe('Delete Schedule usecase integration tests', () => {
         disciplineId: discipline.id,
         timeSlot: entity.timeSlot,
         dayPattern: entity.dayPattern,
+        class: entity.class,
       },
     });
 

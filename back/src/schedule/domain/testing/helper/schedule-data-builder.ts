@@ -31,6 +31,7 @@ export function ScheduleDataBuilder(props: Partial<ScheduleProps>) {
     timeSlot: props.timeSlot || TimeSlotEnum.EVENING_1,
     createdAt: props.createdAt || new Date(),
     updatedAt: props.createdAt || new Date(),
+    class: props.class || faker.string.alpha(3),
   };
 }
 
@@ -58,5 +59,6 @@ export function fakeScheduleProps(): {
     disciplineId: discipline.id,
     dayPattern: entity.dayPattern,
     timeSlot: entity.timeSlot,
+    class: entity.class,
   };
 }

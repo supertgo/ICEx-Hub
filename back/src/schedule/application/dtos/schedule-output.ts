@@ -10,6 +10,7 @@ export type ScheduleOutput = {
   classroom: ClassroomOutput | null;
   dayPattern: string;
   timeSlot: string;
+  class: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

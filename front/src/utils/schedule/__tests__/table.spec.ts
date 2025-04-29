@@ -12,7 +12,7 @@ import {
   timeSlotOptions,
 } from '../table';
 import type { ScheduleData } from 'src/types/schedule';
-import type { ClassroomBuildingEnum } from '../../../types/classroom.d'
+import type { ClassroomBuildingEnum } from '../../../types/classroom.d';
 
 describe('Schedule Table Utilities', () => {
   describe('timeSlotMap', () => {
@@ -93,7 +93,7 @@ describe('Schedule Table Utilities', () => {
         'Seg-Qua-Sex',
       );
     });
-  
+
     it('should return an empty string for an invalid day pattern', () => {
       expect(mapDayPattern('INVALID_PATTERN' as DayPatternEnum)).toBe('');
     });
@@ -101,21 +101,53 @@ describe('Schedule Table Utilities', () => {
 
   describe('mapTimeSlot', () => {
     it('should return the correct start and end times for all valid time slots', () => {
-      expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({ start: '7:30', end: '9:10' });
-      expect(mapTimeSlot(TimeSlotEnum.MORNING_2)).toEqual({ start: '9:25', end: '11:05' });
-      expect(mapTimeSlot(TimeSlotEnum.MORNING_3)).toEqual({ start: '11:10', end: '12:00' });
-      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({ start: '13:00', end: '14:40' });
-      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_2)).toEqual({ start: '14:55', end: '16:35' });
-      expect(mapTimeSlot(TimeSlotEnum.EVENING_1)).toEqual({ start: '17:00', end: '18:40' });
-      expect(mapTimeSlot(TimeSlotEnum.EVENING_1_2)).toEqual({ start: '17:00', end: '20:40' });
-      expect(mapTimeSlot(TimeSlotEnum.EVENING_2)).toEqual({ start: '19:00', end: '20:40' });
-      expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({ start: '20:55', end: '22:35' });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_1)).toEqual({
+        start: '7:30',
+        end: '9:10',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_2)).toEqual({
+        start: '9:25',
+        end: '11:05',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.MORNING_3)).toEqual({
+        start: '11:10',
+        end: '12:00',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_1)).toEqual({
+        start: '13:00',
+        end: '14:40',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.AFTERNOON_2)).toEqual({
+        start: '14:55',
+        end: '16:35',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1)).toEqual({
+        start: '17:00',
+        end: '18:40',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_1_2)).toEqual({
+        start: '17:00',
+        end: '20:40',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_2)).toEqual({
+        start: '19:00',
+        end: '20:40',
+      });
+      expect(mapTimeSlot(TimeSlotEnum.EVENING_3)).toEqual({
+        start: '20:55',
+        end: '22:35',
+      });
     });
-  
+
     it('should return empty strings for an invalid time slot', () => {
-      expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({ start: '', end: '' });
+      expect(mapTimeSlot('INVALID_SLOT' as TimeSlotEnum)).toEqual({
+        start: '',
+        end: '',
+      });
     });
   });
+
+  const baseClass = 'TZ1';
 
   const baseDiscipline = {
     id: '1',
@@ -124,13 +156,13 @@ describe('Schedule Table Utilities', () => {
     courseId: 'c1',
     coursePeriodId: 'p1',
   };
-  
+
   const baseClassroom = {
     id: '101',
     name: 'Sala 101',
     building: 'ICEX' as ClassroomBuildingEnum,
   };
-  
+
   describe('isCurrentSchedule', () => {
     it('should return active if the current day and time match the schedule', () => {
       const mockSchedule = {
@@ -138,51 +170,55 @@ describe('Schedule Table Utilities', () => {
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
+        class: baseClass,
       };
       vi.setSystemTime(new Date('2024-04-08T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
-      expect(result).toBe('active'); 
+      expect(result).toBe('active');
     });
-  
+
     it('should return inactive if the current day does not match the schedule', () => {
       const mockSchedule = {
         dayPattern: DayPatternEnum.TUESDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
+        class: baseClass,
       };
       vi.setSystemTime(new Date('2024-04-08T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
-      expect(result).toBe('inactive'); 
+      expect(result).toBe('inactive');
     });
-  
+
     it('should return inactive if the current time does not match the schedule', () => {
       const mockSchedule = {
         dayPattern: DayPatternEnum.MONDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
+        class: baseClass,
       };
-  
+
       vi.setSystemTime(new Date('2024-04-08T10:00:00'));
       const result = isCurrentSchedule(mockSchedule);
-      expect(result).toBe('inactive'); 
+      expect(result).toBe('inactive');
     });
-  
+
     it('should handle schedules with multiple day patterns', () => {
       const mockSchedule = {
         dayPattern: DayPatternEnum.MONDAY_WEDNESDAY,
         timeSlot: TimeSlotEnum.MORNING_1,
         discipline: baseDiscipline,
         classroom: baseClassroom,
+        class: baseClass,
       };
-  
+
       vi.setSystemTime(new Date('2024-04-10T08:00:00'));
       const result = isCurrentSchedule(mockSchedule);
-      expect(result).toBe('active'); 
+      expect(result).toBe('active');
     });
   });
-  
+
   describe('scheduleDataToOutput', () => {
     const mockScheduleData: ScheduleData = {
       meta: {
@@ -197,27 +233,29 @@ describe('Schedule Table Utilities', () => {
           classroom: baseClassroom,
           timeSlot: TimeSlotEnum.MORNING_1,
           dayPattern: DayPatternEnum.MONDAY,
+          class: baseClass,
         },
       ],
     };
-  
+
     beforeAll(() => {
       vi.useRealTimers();
       vi.useFakeTimers();
-      vi.setSystemTime(new Date('2024-04-08T08:00:00')); 
+      vi.setSystemTime(new Date('2024-04-08T08:00:00'));
     });
-  
+
     afterAll(() => {
       vi.useRealTimers();
     });
-  
+
     it('should map schedule data correctly', () => {
       const result = scheduleDataToOutput(mockScheduleData);
-  
+
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         name: 'Algoritmos',
         code: 'DCC101',
+        class: 'TZ1',
         start: '7:30',
         end: '9:10',
         days: 'Seg',

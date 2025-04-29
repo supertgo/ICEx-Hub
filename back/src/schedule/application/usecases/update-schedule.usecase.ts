@@ -11,6 +11,7 @@ export namespace UpdateScheduleUsecase {
     id: string;
     classroomId?: string;
     disciplineId?: string;
+    class?: string;
   };
 
   export type Output = ScheduleOutput;

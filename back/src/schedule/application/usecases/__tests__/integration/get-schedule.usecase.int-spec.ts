@@ -67,6 +67,7 @@ describe('Get schedule usecase integration tests', () => {
       },
       id: schedule.id,
       timeSlot: schedule.timeSlot,
+      class: schedule.class,
     });
   });
 });
