@@ -7,6 +7,7 @@ import { GetDisciplineUsecase } from '@/discipline/application/usecases/get-disc
 import { faker } from '@faker-js/faker';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
+import { DisciplinePrismaTestingHelper } from '@/discipline/infrastructure/database/prisma/testing/discipline-prisma.testing-helper';
 
 describe('Get discipline usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -42,9 +43,8 @@ describe('Get discipline usecase integration tests', () => {
   });
 
   it('should retrieve a discipline', async () => {
-    const discipline = await prismaService.discipline.create({
-      data: DisciplineDataBuilder({}),
-    });
+    const discipline =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService);
 
     const output = await sut.execute({ id: discipline.id });
 

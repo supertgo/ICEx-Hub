@@ -5,6 +5,8 @@ import { ValidationErrors } from '@/shared/domain/errors/validation-errors';
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
 
 describe('Discipline model mapper integration tests', () => {
   let prismaService: PrismaService;
@@ -34,11 +36,20 @@ describe('Discipline model mapper integration tests', () => {
   });
 
   it('should map discipline model to entity', async () => {
-    const model: Discipline = await prismaService.discipline.create({
-      data: props,
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const coursePeriod =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const discipline = await prismaService.discipline.create({
+      data: {
+        name: 'Original Discipline Name',
+        code: 'DISC123',
+        courseId: course.id,
+        coursePeriodId: coursePeriod.id,
+      },
     });
 
-    const sut = DisciplineModelMapper.toEntity(model);
+    const sut = DisciplineModelMapper.toEntity(discipline as Discipline);
 
     expect(sut).toBeInstanceOf(DisciplineEntity);
   });
