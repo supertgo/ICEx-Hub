@@ -8,8 +8,9 @@ import { DisciplinePrismaRepository } from '@/discipline/infrastructure/database
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
-import { faker } from '@faker-js/faker';
+import { en, faker } from '@faker-js/faker';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
+import { DisciplinePrismaTestingHelper } from '@/discipline/infrastructure/database/prisma/testing/discipline-prisma.testing-helper';
 
 describe('Discipline prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -35,47 +36,50 @@ describe('Discipline prisma repository integration tests', () => {
   });
 
   it('should throw error when entity does not exist', async () => {
-    await expect(repository.findById('1')).rejects.toThrow(
-      new DisciplineWithIdNotFoundError('1'),
+    const nonExistentId = faker.string.uuid();
+    await expect(repository.findById(nonExistentId)).rejects.toThrow(
+      new DisciplineWithIdNotFoundError(nonExistentId),
     );
   });
 
   it('should find discipline by id', async () => {
-    const entity = new DisciplineEntity(DisciplineDataBuilder({}));
-
-    const createdDiscipline = await prismaService.discipline.create({
-      data: entity.toPrismaJSON(),
-    });
+    const createdDiscipline =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService);
 
     const discipline = await repository.findById(createdDiscipline.id);
 
     expect(discipline).not.toBeNull();
     expect(discipline.toJSON()).toStrictEqual({
-      ...entity.toJSON(),
       id: createdDiscipline.id,
+      name: createdDiscipline.name,
+      code: createdDiscipline.code,
+      courseId: createdDiscipline.courseId,
+      coursePeriodId: createdDiscipline.coursePeriodId,
+      createdAt: createdDiscipline.createdAt,
+      updatedAt: createdDiscipline.updatedAt,
     });
   });
 
   it('should insert a new discipline', async () => {
-    const entity = new DisciplineEntity(DisciplineDataBuilder({}));
-    await repository.insert(entity);
+    const discipline =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService);
 
     const insertedDiscipline = await prismaService.discipline.findUnique({
-      where: { id: entity.id },
+      where: { id: discipline.id },
     });
 
     expect(insertedDiscipline).not.toBeNull();
-    expect(insertedDiscipline).toStrictEqual(entity.toJSON());
+    expect(insertedDiscipline).toStrictEqual(discipline);
   });
 
   it('should return one discipline if there is only one with find all', async () => {
-    const entity = new DisciplineEntity(DisciplineDataBuilder({}));
-    await repository.insert(entity);
+    const disciplina =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService);
 
     const disciplines = await repository.findAll();
 
     expect(disciplines).toHaveLength(1);
-    expect(disciplines[0].toJSON()).toStrictEqual(entity.toJSON());
+    expect(disciplines[0].toJSON()).toStrictEqual(disciplina);
   });
 
   it('should throw error when trying to update non-existent discipline', async () => {
@@ -91,16 +95,16 @@ describe('Discipline prisma repository integration tests', () => {
   });
 
   it('should update a discipline successfully', async () => {
-    const entity = new DisciplineEntity(
-      DisciplineDataBuilder({ name: 'Old Name' }),
-    );
-    await repository.insert(entity);
+    const createdDiscipline =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService, {
+        name: 'Old Name',
+      });
 
-    entity.name = 'New Name';
-    await repository.update(entity);
+    createdDiscipline.name = 'New Name';
+    await repository.update(createdDiscipline as DisciplineEntity);
 
     const updatedDiscipline = await prismaService.discipline.findUnique({
-      where: { id: entity.id },
+      where: { id: createdDiscipline.id },
     });
 
     expect(updatedDiscipline).not.toBeNull();
@@ -116,15 +120,14 @@ describe('Discipline prisma repository integration tests', () => {
   });
 
   it('should delete a discipline successfully', async () => {
-    const entity = new DisciplineEntity(
-      DisciplineDataBuilder({ name: 'John' }),
-    );
-    await repository.insert(entity);
+    const createdDiscipline =
+      await DisciplinePrismaTestingHelper.createDiscipline(prismaService, {
+        name: 'Discipline to Delete',
+      });
 
-    await repository.delete(entity.id);
-
+    await repository.delete(createdDiscipline.id);
     const disciplineCount = await prismaService.discipline.count({
-      where: { id: entity.id },
+      where: { id: createdDiscipline.id },
     });
 
     expect(disciplineCount).toBe(0);
