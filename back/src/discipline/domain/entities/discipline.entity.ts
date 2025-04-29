@@ -91,8 +91,8 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
 
     if (!isValid) {
       throw new EntityValidationError(
-        validator.errors.reduce((acc, error) => {
-          acc[error] = ['Invalid value'];
+        Object.entries(validator.errors).reduce((acc, [field, messages]) => {
+          acc[field] = messages;
           return acc;
         }, {} as FieldsErrors),
       );

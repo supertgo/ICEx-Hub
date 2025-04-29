@@ -21,11 +21,11 @@ class DisciplineRules {
   @IsUUID()
   coursePeriodId: string;
 
-  @IsNotEmpty()
-  createdAt: Date;
-
   constructor(data: DisciplineProps) {
-    Object.assign(this, data);
+    this.name = data.name;
+    this.code = data.code;
+    this.courseId = data.courseId;
+    this.coursePeriodId = data.coursePeriodId;
   }
 }
 
@@ -37,30 +37,6 @@ export class DisciplineValidator extends ClassValidatorFields<DisciplineRules> {
 
 export class DisciplineValidatorFactory {
   static create() {
-    return {
-      validate(props: DisciplineProps): boolean {
-        const errors: string[] = [];
-
-        if (!props.name || props.name.trim().length === 0) {
-          errors.push('Name is required');
-        }
-
-        if (!props.code || props.code.trim().length === 0) {
-          errors.push('Code is required');
-        }
-
-        if (!props.courseId || props.courseId.trim().length === 0) {
-          errors.push('CourseId is required');
-        }
-
-        if (!props.coursePeriodId || props.coursePeriodId.trim().length === 0) {
-          errors.push('CoursePeriodId is required');
-        }
-
-        this.errors = errors;
-        return errors.length === 0;
-      },
-      errors: [] as string[],
-    };
+    return new DisciplineValidator();
   }
 }
