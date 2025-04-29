@@ -3,10 +3,11 @@ import { DisciplinePrismaRepository } from '@/discipline/infrastructure/database
 import { Test, TestingModule } from '@nestjs/testing';
 import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
-import { fakeDisciplineProps } from '@/discipline/domain/testing/helper/discipline-data-builder';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 import { UpdateDisciplineUsecase } from '@/discipline/application/usecases/update-discipline.usecase';
 import { faker } from '@faker-js/faker';
+import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Update discipline usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -41,51 +42,81 @@ describe('Update discipline usecase integration tests', () => {
     );
   });
 
-  it('should update a discipline', async () => {
-    const { course, coursePeriodProps, ...discipline } = fakeDisciplineProps();
+  it('should update a discipline name', async () => {
+    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    await prismaService.course.create({
-      data: course,
-    });
+    const periodo =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
-    const coursePeriodData = await prismaService.coursePeriod.create({
+    const discipline = await prismaService.discipline.create({
       data: {
-        name: coursePeriodProps.name,
-        course: {
-          connect: {
-            id: course.id,
-          },
-        },
+        name: 'Original Discipline Name',
+        code: 'DISC123',
+        courseId: curso.id,
+        coursePeriodId: periodo.id,
       },
     });
 
-    const createdDiscipline = await prismaService.discipline.create({
+    const newName = 'Updated Discipline Name';
+
+    const output = await sut.execute({
+      id: discipline.id,
+      name: newName,
+    });
+
+    expect(output.name).toBe(newName);
+  });
+
+  it('should update a discipline code', async () => {
+    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+
+    const periodo =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const discipline = await prismaService.discipline.create({
       data: {
-        id: discipline.id,
-        name: discipline.name,
-        code: discipline.code,
-        coursePeriodId: coursePeriodData.id,
-        courseId: course.id,
+        name: 'Original Discipline Name',
+        code: 'DISC123',
+        courseId: curso.id,
+        coursePeriodId: periodo.id,
       },
     });
 
-    const updatedName = 'Updated Discipline Name';
-    const updatedCode = 'UPDATED123';
+    const newCode = 'UpdatedCode';
 
-    const result = await sut.execute({
-      id: createdDiscipline.id,
-      name: updatedName,
-      code: updatedCode,
+    const output = await sut.execute({
+      id: discipline.id,
+      code: newCode,
     });
 
-    const updatedDiscipline = await prismaService.discipline.findUnique({
-      where: { id: createdDiscipline.id },
+    expect(output.code).toBe(newCode);
+  });
+
+  it('should update multiple fields of a discipline', async () => {
+    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+
+    const periodo =
+      await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
+
+    const discipline = await prismaService.discipline.create({
+      data: {
+        name: 'Original Discipline Name',
+        code: 'DISC123',
+        courseId: curso.id,
+        coursePeriodId: periodo.id,
+      },
     });
 
-    expect(updatedDiscipline).toBeDefined();
-    expect(updatedDiscipline?.name).toEqual(updatedName);
-    expect(updatedDiscipline?.code).toEqual(updatedCode);
-    expect(result.name).toEqual(updatedName);
-    expect(result.code).toEqual(updatedCode);
+    const newName = 'Updated Discipline Name';
+    const newCode = 'UPDATED123';
+
+    const output = await sut.execute({
+      id: discipline.id,
+      name: newName,
+      code: newCode,
+    });
+
+    expect(output.name).toBe(newName);
+    expect(output.code).toBe(newCode);
   });
 });
