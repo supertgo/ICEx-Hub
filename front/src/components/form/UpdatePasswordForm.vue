@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
-import { minLength, required } from 'src/utils/userValidation';
+import { required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { UpdatePasswordData } from 'src/types/auth';
@@ -54,11 +54,11 @@ const onSubmit = async (event: Event) => {
   <q-card class="q-pa-md" style="max-width: 400px; width: 100%">
     <h2 class="text-h6 text-center">{{ $t('auth.changePassword.title') }}</h2>
     <q-form @submit="onSubmit">
-      <OldPasswordInput v-model="currentPassword" :rules="[required, minLength(6)]" />
+      <OldPasswordInput v-model="currentPassword" :rules="[required]" />
 
       <PasswordInput
         v-model="password"
-        :rules="[required, minLength(6)]"
+        :rules="[required]"
         label="auth.fields.newPassword"
       />
 

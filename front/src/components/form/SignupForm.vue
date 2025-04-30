@@ -3,12 +3,7 @@ import NameInput from 'components/inputs/user/NameInput.vue';
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
 import RepeatPasswordInput from 'components/inputs/user/RepeatPasswordInput.vue';
-import {
-  email,
-  minLength,
-  passwordMatch,
-  required,
-} from 'src/utils/userValidation';
+import { email, passwordMatch, required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { SignupData } from 'src/types/auth';
@@ -76,11 +71,7 @@ const onSubmit = async (event: Event) => {
       </q-card-section>
 
       <q-card-section class="row q-gutter-md">
-        <PasswordInput
-          class="col"
-          v-model="password"
-          :rules="[required, minLength(6)]"
-        />
+        <PasswordInput class="col" v-model="password" :rules="[required]" />
         <RepeatPasswordInput
           class="col"
           v-model="repeatPassword"
