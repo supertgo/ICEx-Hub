@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { DisciplinePrismaRepository } from '@/discipline/infrastructure/database/prisma/repositories/discipline-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DeleteDisciplineUsecase } from '@/discipline/application/usecases/delete-discipline.usecase';
 import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
@@ -27,8 +30,7 @@ describe('Delete Discipline usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new DeleteDisciplineUsecase.UseCase(repository);
-    await prismaService.schedule.deleteMany();
-    await prismaService.discipline.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
@@ -44,17 +46,16 @@ describe('Delete Discipline usecase integration tests', () => {
   });
 
   it('should delete a discipline', async () => {
-    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
-
-    const periodo =
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const period =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
     const discipline = await prismaService.discipline.create({
       data: {
         name: 'Original Discipline Name',
         code: 'DISC123',
-        courseId: curso.id,
-        coursePeriodId: periodo.id,
+        courseId: course.id,
+        coursePeriodId: period.id,
       },
     });
 

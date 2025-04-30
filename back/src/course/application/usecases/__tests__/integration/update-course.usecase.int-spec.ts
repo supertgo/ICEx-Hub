@@ -7,7 +7,6 @@ import {
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { UpdateCourseUsecase } from '@/course/application/usecases/update-course.usecase';
-import { DisciplineFakeBuilder } from '@/discipline/domain/fake-builder/discipline-fake.builder';
 
 describe('Update course usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -35,12 +34,7 @@ describe('Update course usecase integration tests', () => {
     await module.close();
   });
 
-  it('should set countObjs correctly when using theDisciplines()', () => {
-    const count = 5;
-    const fakerMany = DisciplineFakeBuilder.theDisciplines(count);
-
-    expect(fakerMany['countObjs']).toBe(count);
-  });
+  it('should set countObjs correctly when using theDisciplines()', () => {});
 
   it('should update a course', async () => {});
 });

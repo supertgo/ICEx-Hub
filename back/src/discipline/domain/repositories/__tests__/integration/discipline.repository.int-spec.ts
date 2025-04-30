@@ -8,7 +8,7 @@ import { DisciplinePrismaRepository } from '@/discipline/infrastructure/database
 import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
-import { en, faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 import { DisciplinePrismaTestingHelper } from '@/discipline/infrastructure/database/prisma/testing/discipline-prisma.testing-helper';
 
@@ -73,13 +73,13 @@ describe('Discipline prisma repository integration tests', () => {
   });
 
   it('should return one discipline if there is only one with find all', async () => {
-    const disciplina =
+    const discipline =
       await DisciplinePrismaTestingHelper.createDiscipline(prismaService);
 
     const disciplines = await repository.findAll();
 
     expect(disciplines).toHaveLength(1);
-    expect(disciplines[0].toJSON()).toStrictEqual(disciplina);
+    expect(disciplines[0].toJSON()).toStrictEqual(discipline);
   });
 
   it('should throw error when trying to update non-existent discipline', async () => {

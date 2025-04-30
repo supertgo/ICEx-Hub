@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { DisciplinePrismaRepository } from '@/discipline/infrastructure/database/prisma/repositories/discipline-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
-import { setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { DatabaseModule } from '@/shared/infrastructure/database/database.module';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 import { UpdateDisciplineUsecase } from '@/discipline/application/usecases/update-discipline.usecase';
@@ -27,7 +30,7 @@ describe('Update discipline usecase integration tests', () => {
 
   beforeEach(async () => {
     sut = new UpdateDisciplineUsecase.UseCase(repository);
-    await prismaService.discipline.deleteMany();
+    await resetDatabase(prismaService);
   });
 
   afterAll(async () => {
@@ -43,17 +46,17 @@ describe('Update discipline usecase integration tests', () => {
   });
 
   it('should update a discipline name', async () => {
-    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    const periodo =
+    const period =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
     const discipline = await prismaService.discipline.create({
       data: {
         name: 'Original Discipline Name',
         code: 'DISC123',
-        courseId: curso.id,
-        coursePeriodId: periodo.id,
+        courseId: course.id,
+        coursePeriodId: period.id,
       },
     });
 
@@ -68,17 +71,17 @@ describe('Update discipline usecase integration tests', () => {
   });
 
   it('should update a discipline code', async () => {
-    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    const periodo =
+    const period =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
     const discipline = await prismaService.discipline.create({
       data: {
         name: 'Original Discipline Name',
         code: 'DISC123',
-        courseId: curso.id,
-        coursePeriodId: periodo.id,
+        courseId: course.id,
+        coursePeriodId: period.id,
       },
     });
 
@@ -93,17 +96,17 @@ describe('Update discipline usecase integration tests', () => {
   });
 
   it('should update multiple fields of a discipline', async () => {
-    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
 
-    const periodo =
+    const period =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
     const discipline = await prismaService.discipline.create({
       data: {
         name: 'Original Discipline Name',
         code: 'DISC123',
-        courseId: curso.id,
-        coursePeriodId: periodo.id,
+        courseId: course.id,
+        coursePeriodId: period.id,
       },
     });
 

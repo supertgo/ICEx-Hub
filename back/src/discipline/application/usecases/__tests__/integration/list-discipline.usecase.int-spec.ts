@@ -91,46 +91,46 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should filter disciplines by courseId', async () => {
-    const curso1 = await CoursePrismaTestingHelper.createCourse(prismaService);
-    const curso2 = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course1 = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course2 = await CoursePrismaTestingHelper.createCourse(prismaService);
     const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
       prismaService,
-      { courseId: curso1.id },
+      { courseId: course1.id },
     );
     const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
       prismaService,
-      { courseId: curso2.id },
+      { courseId: course2.id },
     );
 
     const output = await sut.execute({
-      filter: { courseId: curso1.id },
+      filter: { courseId: course1.id },
     });
 
     expect(output.items).toHaveLength(1);
-    expect(output.items[0].courseId).toBe(curso1.id);
+    expect(output.items[0].courseId).toBe(course1.id);
   });
 
   it('should filter disciplines by coursePeriodId', async () => {
-    const periodo1 =
+    const period1 =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
-    const periodo2 =
+    const period2 =
       await CoursePeriodPrismaTestingHelper.createCoursePeriod(prismaService);
 
     const discipline1 = await DisciplinePrismaTestingHelper.createDiscipline(
       prismaService,
-      { coursePeriodId: periodo1.id, courseId: periodo1.courseId },
+      { coursePeriodId: period1.id, courseId: period1.courseId },
     );
     const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
       prismaService,
-      { coursePeriodId: periodo2.id, courseId: periodo2.courseId },
+      { coursePeriodId: period2.id, courseId: period2.courseId },
     );
 
     const output = await sut.execute({
-      filter: { coursePeriodId: periodo1.id },
+      filter: { coursePeriodId: period1.id },
     });
 
     expect(output.items).toHaveLength(1);
-    expect(output.items[0].coursePeriodId).toBe(periodo1.id);
+    expect(output.items[0].coursePeriodId).toBe(period1.id);
   });
 
   it('should sort disciplines by name in ascending order', async () => {
@@ -174,11 +174,11 @@ describe('List disciplines usecase integration tests', () => {
   });
 
   it('should return empty result when no disciplines match the filter', async () => {
-    const curso = await CoursePrismaTestingHelper.createCourse(prismaService);
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
 
     const discipline2 = await DisciplinePrismaTestingHelper.createDiscipline(
       prismaService,
-      { name: 'Math', courseId: curso.id },
+      { name: 'Math', courseId: course.id },
     );
 
     const output = await sut.execute({
