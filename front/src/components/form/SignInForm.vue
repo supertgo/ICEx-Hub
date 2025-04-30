@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
-import { email, minLength, required } from 'src/utils/userValidation';
+import { email, required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { SignInData } from 'src/types/auth';
@@ -61,7 +61,7 @@ const onSubmit = async (event: Event) => {
     <q-form @submit="onSubmit">
       <EmailInput v-model="emailRef" :rules="[required, email]" />
 
-      <PasswordInput v-model="password" :rules="[required, minLength(6)]" />
+      <PasswordInput v-model="password" :rules="[required]" />
 
       <div>
         <q-btn
