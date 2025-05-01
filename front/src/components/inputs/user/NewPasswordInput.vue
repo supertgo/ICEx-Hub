@@ -1,5 +1,12 @@
 <template>
-  <q-input v-model="modelValue" label="Nome" :rules="rules" dense filled />
+  <q-input
+    v-model="modelValue"
+    label="Senha nova"
+    type="password"
+    :rules="rules"
+    filled
+    dense
+  />
 </template>
 
 <script setup lang="ts">

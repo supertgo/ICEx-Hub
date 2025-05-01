@@ -16,22 +16,23 @@ const emit = defineEmits(['update:isVisible']);
 
 const isVisible = ref<boolean>(props.isVisible);
 
-watch(() => props.isVisible, (value) => {
-  isVisible.value = value;
-});
-
+watch(
+  () => props.isVisible,
+  (value) => {
+    isVisible.value = value;
+  },
+);
 
 watch(isVisible, (newValue) => {
   emit('update:isVisible', newValue);
 });
-
 </script>
 
 <template>
-  <q-dialog v-model="isVisible" >
-    <q-card style="min-width: 20em;">
+  <q-dialog v-model="isVisible">
+    <q-card style="min-width: 20em">
       <q-card-section>
-        <div class="text-h6 text-center">{{ $t('common.error') }}</div>
+        <div class="text-h6 text-center">Erro</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none text-center">
@@ -45,6 +46,4 @@ watch(isVisible, (newValue) => {
   </q-dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

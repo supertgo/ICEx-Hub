@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
-import { email, minLength, required } from 'src/utils/userValidation';
+import { email, required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { SignInData } from 'src/types/auth';
 import axios from 'axios';
 import ErrorDialog from 'components/common/ErrorDialog.vue';
-import { useI18n } from 'vue-i18n';
 import { Routes } from 'src/enums/Routes';
 import { useRouter } from 'vue-router';
 
@@ -17,7 +16,6 @@ const errorRef = ref<boolean>(false);
 const message = ref<string>('');
 const router = useRouter();
 
-const { t } = useI18n();
 const onSubmit = async (event: Event) => {
   event.preventDefault();
   const authStore = useAuthStore();
@@ -40,15 +38,15 @@ const onSubmit = async (event: Event) => {
     await router.push({ name: Routes.HOME });
   } catch (error) {
     errorRef.value = true;
-    message.value = t('common.defaultError');
+    message.value = 'Erro';
 
     if (axios.isAxiosError(error)) {
       if (error.status == 400) {
         if (error.response?.data?.message === `Invalid credentials`) {
-          message.value = t('auth.signIn.error.invalidCredentials');
+          message.value = 'Email ou senha inválidos';
         }
       } else if (error.status === 404) {
-        message.value = t('auth.signIn.error.userNotFound');
+        message.value = 'Usuário não foi encontrado';
       }
     }
   }
@@ -57,16 +55,16 @@ const onSubmit = async (event: Event) => {
 
 <template>
   <q-card class="q-pa-md" style="max-width: 400px; width: 100%">
-    <h2 class="text-h6 text-center">{{ $t('auth.signIn.title') }}</h2>
+    <h2 class="text-h6 text-center">Entrar</h2>
     <q-form @submit="onSubmit">
       <EmailInput v-model="emailRef" :rules="[required, email]" />
 
-      <PasswordInput v-model="password" :rules="[required, minLength(6)]" />
+      <PasswordInput v-model="password" :rules="[required]" />
 
       <div>
         <q-btn
           type="submit"
-          :label="$t('auth.signIn.submit')"
+          label="Enviar"
           color="primary"
           class="full-width"
         ></q-btn>
@@ -79,7 +77,7 @@ const onSubmit = async (event: Event) => {
       dense
       no-caps
       color="primary"
-      :label="$t('auth.signIn.noAccount')"
+      label="Não possui uma conta? Cadastre-se"
       @click="$router.push({ name: Routes.SIGNUP })"
     ></q-btn>
   </q-card>

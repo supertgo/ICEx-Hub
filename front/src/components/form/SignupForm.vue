@@ -3,18 +3,12 @@ import NameInput from 'components/inputs/user/NameInput.vue';
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
 import RepeatPasswordInput from 'components/inputs/user/RepeatPasswordInput.vue';
-import {
-  email,
-  minLength,
-  passwordMatch,
-  required,
-} from 'src/utils/userValidation';
+import { email, passwordMatch, required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { SignupData } from 'src/types/auth';
 import axios from 'axios';
 import ErrorDialog from 'components/common/ErrorDialog.vue';
-import { useI18n } from 'vue-i18n';
 import { Routes } from 'src/enums/Routes';
 import { useRouter } from 'vue-router';
 import CourseAutocomplete from 'components/inputs/course/CourseAutocomplete.vue';
@@ -30,7 +24,6 @@ const errorRef = ref<boolean>(false);
 const message = ref<string>('');
 const route = useRouter();
 
-const { t } = useI18n();
 const onSubmit = async (event: Event) => {
   event.preventDefault();
   const authStore = useAuthStore();
@@ -47,7 +40,7 @@ const onSubmit = async (event: Event) => {
     await route.push({ name: Routes.SIGN_IN });
   } catch (error) {
     errorRef.value = true;
-    message.value = t('common.defaultError');
+    message.value = 'Erro';
 
     if (axios.isAxiosError(error)) {
       if (error.status == 409) {
@@ -55,9 +48,7 @@ const onSubmit = async (event: Event) => {
           error.response?.data?.message ===
           `User with email ${emailRef.value} already exists`
         ) {
-          message.value = t('auth.signup.error.emailExist', {
-            email: emailRef.value,
-          });
+          message.value = `Usuário com o email ${emailRef.value} já existe`;
         }
       }
     }
@@ -67,7 +58,7 @@ const onSubmit = async (event: Event) => {
 
 <template>
   <q-card class="q-pa-md" style="max-width: 800px; width: 100%">
-    <h2 class="text-h6 text-center">{{ $t('auth.signup.title') }}</h2>
+    <h2 class="text-h6 text-center">Cadastrar</h2>
     <q-form @submit="onSubmit">
       <q-card-section class="row q-gutter-md">
         <NameInput class="col" v-model="name" :rules="[required]" />
@@ -76,11 +67,7 @@ const onSubmit = async (event: Event) => {
       </q-card-section>
 
       <q-card-section class="row q-gutter-md">
-        <PasswordInput
-          class="col"
-          v-model="password"
-          :rules="[required, minLength(6)]"
-        />
+        <PasswordInput class="col" v-model="password" :rules="[required]" />
         <RepeatPasswordInput
           class="col"
           v-model="repeatPassword"
@@ -93,19 +80,21 @@ const onSubmit = async (event: Event) => {
           class="col"
           v-model="courseId"
           :rules="[required]"
+          label="Curso"
         />
         <course-period-autocomplete
           class="col"
           v-model="coursePeriodId"
           :rules="[required]"
           :courseId="courseId"
+          label="Período"
         />
       </q-card-section>
 
       <div>
         <q-btn
           type="submit"
-          :label="$t('auth.signup.submit')"
+          label="Registrar"
           color="primary"
           class="full-width"
         ></q-btn>
@@ -117,7 +106,7 @@ const onSubmit = async (event: Event) => {
       dense
       no-caps
       color="primary"
-      :label="$t('auth.signup.alreadyHaveAccount')"
+      label="Já possui cadastro? Faça login"
       @click="$router.push({ name: Routes.SIGN_IN })"
     ></q-btn>
   </q-card>

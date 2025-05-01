@@ -4,7 +4,6 @@ import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import type { UpdateNameData } from 'src/types/auth';
 import ErrorDialog from 'components/common/ErrorDialog.vue';
-import { useI18n } from 'vue-i18n';
 import { Routes } from 'src/enums/Routes';
 import { useRouter } from 'vue-router';
 import { Notify } from 'quasar';
@@ -15,7 +14,6 @@ const errorRef = ref<boolean>(false);
 const message = ref<string>('');
 const router = useRouter();
 
-const { t } = useI18n();
 const onSubmit = async (event: Event) => {
   event.preventDefault();
   const authStore = useAuthStore();
@@ -27,28 +25,28 @@ const onSubmit = async (event: Event) => {
     await authStore.updateName(data);
     Notify.create({
       type: 'positive',
-      message: t('auth.updateName.success'),
+      message: 'Nome alterado com sucesso',
       timeout: 2000,
     });
 
     void router.push({ name: Routes.HOME });
   } catch {
     errorRef.value = true;
-    message.value = t('common.defaultError');
+    message.value = 'Algo deu errado. Tente novamente mais tarde';
   }
 };
 </script>
 
 <template>
   <q-card class="q-pa-md" style="max-width: 400px; width: 100%">
-    <h2 class="text-h6 text-center">{{ $t('auth.updateName.title') }}</h2>
+    <h2 class="text-h6 text-center">Alterar nome</h2>
     <q-form @submit="onSubmit">
       <NameInput v-model="name" :rules="[required]"></NameInput>
 
       <div>
         <q-btn
           type="submit"
-          :label="$t('auth.updateName.submit')"
+          label="Alterar"
           color="primary"
           class="full-width"
         ></q-btn>

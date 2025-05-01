@@ -1,7 +1,7 @@
 <template>
   <q-input
     v-model="modelValue"
-    :label="$t('auth.fields.currentPassword')"
+    label="Senha atual"
     type="password"
     :rules="rules"
     filled
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ValidationRule } from 'quasar'
+import type { ValidationRule } from 'quasar';
 
 const props = defineProps({
   modelValue: {

@@ -51,9 +51,7 @@ watch(
             <q-item-section avatar>
               <q-icon name="logout"></q-icon>
             </q-item-section>
-            <q-item-section>
-              {{ $t('auth.logout.title') }}
-            </q-item-section>
+            <q-item-section>Sair</q-item-section>
           </q-item>
 
           <q-item
@@ -64,9 +62,7 @@ watch(
             <q-item-section avatar>
               <q-icon name="lock"></q-icon>
             </q-item-section>
-            <q-item-section>
-              {{ $t('auth.changePassword.title') }}
-            </q-item-section>
+            <q-item-section>Alterar senha</q-item-section>
           </q-item>
 
           <q-item
@@ -77,9 +73,7 @@ watch(
             <q-item-section avatar>
               <q-icon name="badge"></q-icon>
             </q-item-section>
-            <q-item-section>
-              {{ $t('auth.updateName.title') }}
-            </q-item-section>
+            <q-item-section>Alterar nome</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
