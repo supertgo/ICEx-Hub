@@ -1,27 +1,22 @@
 import { faker } from '@faker-js/faker';
-
-export type DisciplineProps = {
-  name: string;
-  code: string;
-  courseId: string;
-  coursePeriodId: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
+import {
+  DisciplineEntity,
+  DisciplineProps,
+} from '@/discipline/domain/entities/discipline.entity';
 
 export function DisciplineDataBuilder(props: Partial<DisciplineProps>) {
   return {
-    name: props.name ?? faker.person.jobTitle(),
-    code:
-      props.code ??
-      faker.string
-        .alphanumeric({
-          length: 6,
-        })
-        .toUpperCase(),
-    courseId: props.courseId ?? faker.string.uuid(),
-    coursePeriodId: props.coursePeriodId ?? faker.string.uuid(),
-    createdAt: props.createdAt ?? faker.date.recent(),
-    updatedAt: props.updatedAt ?? faker.date.recent(),
+    name: props.name ?? faker.string.alpha(10),
+    code: props.code ?? faker.string.alpha(6).toUpperCase(),
+    courseId: props.courseId || faker.string.uuid(),
+    coursePeriodId: props.coursePeriodId || faker.string.uuid(),
+    createdAt: props.createdAt ?? new Date(),
+    updatedAt: props.updatedAt ?? new Date(),
   };
+}
+
+export function DisciplineDataBuilderAsEntity(
+  props: Partial<DisciplineProps> = {},
+): DisciplineEntity {
+  return new DisciplineEntity(DisciplineDataBuilder(props));
 }

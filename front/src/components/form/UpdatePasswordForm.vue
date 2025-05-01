@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
@@ -53,7 +54,7 @@ const onSubmit = async (event: Event) => {
     <h2 class="text-h6 text-center">Alterar senha</h2>
     <q-form @submit="onSubmit">
       <OldPasswordInput v-model="currentPassword" :rules="[required]" />
-
+      
       <NewPasswordInput v-model="password" :rules="[required]" />
 
       <div>

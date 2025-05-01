@@ -23,7 +23,7 @@ describe('EnvConfigService unit tests', () => {
   });
 
   it('should return port variable', () => {
-    expect(sut.getNodeEnv()).toBe('test');
+    expect(sut.getNodeEnv()).toBe('development');
   });
 
   it('should return jwt secret', () => {

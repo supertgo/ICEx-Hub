@@ -13,9 +13,7 @@ export class EnvConfigModule extends ConfigModule {
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
     return super.forRoot({
       ...options,
-      envFilePath: [
-        join(__dirname, `../../../../.env.${process.env.NODE_ENV}`),
-      ],
+      envFilePath: [join(__dirname, `../../../../.env`)],
     });
   }
 }
