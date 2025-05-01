@@ -111,8 +111,8 @@
       no-data-label="Nenhum resultado encontrado"
       virtual-scroll
       v-model:pagination="pagination"
-      :virtual-scroll-item-size="48"
-      :virtual-scroll-sticky-size-start="48"
+      :virtual-scroll-item-size="10"
+      :virtual-scroll-sticky-size-start="10"
       :rows-per-page-options="[0]"
       @virtual-scroll="onScroll"
     >
