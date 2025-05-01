@@ -51,7 +51,7 @@
         dense
         debounce="300"
         v-model="name"
-        placeholder="Search"
+        placeholder="Pesquisar"
         filled
         class="search-input"
       >

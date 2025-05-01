@@ -1,7 +1,7 @@
 <template>
   <q-input
     v-model="modelValue"
-    :label="$t('auth.fields.email')"
+    label="Email"
     type="email"
     :rules="rules"
     filled
@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { ValidationRule } from 'quasar'
+import { computed } from 'vue';
+import type { ValidationRule } from 'quasar';
 
 const props = defineProps({
   modelValue: {
@@ -22,12 +22,12 @@ const props = defineProps({
     type: Array<ValidationRule>,
     default: () => [],
   },
-})
+});
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
 const modelValue = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
-})
+});
 </script>
