@@ -1,4 +1,8 @@
 import { Entity } from '@/shared/domain/entities/entity';
+import { DisciplineValidatorFactory } from '@/discipline/domain/validators/discipline.validator';
+import { EntityValidationError } from '@/shared/domain/errors/validation-errors';
+import { DisciplineFakeBuilder } from '../fake-builder/discipline-fake.builder';
+import { FieldsErrors } from '@/shared/domain/entities/validators/validator-fields.interface';
 
 export type DisciplineProps = {
   name: string;
@@ -17,11 +21,10 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
     public readonly props: DisciplineProps,
     id?: string,
   ) {
-    //DisciplineEntity.validate(props);
+    DisciplineEntity.validate(props);
     super(props, id);
     this.props.createdAt = this.props.createdAt ?? new Date();
   }
-
   get name(): string {
     return this.props.name;
   }
@@ -82,18 +85,23 @@ export class DisciplineEntity extends Entity<DisciplineProps> {
     this.props.updatedAt = value;
   }
 
-  // static validate(props: DisciplineProps) {
-  //   const validator = DisciplineValidatorFactory.create();
-  //   const isValid = validator.validate(props);
-  //
-  //   if (!isValid) {
-  //     throw new EntityValidationError(validator.errors);
-  //   }
-  // }
-  //
-  // static fake() {
-  //   return DisciplineFakeBuilder;
-  // }
+  static validate(props: DisciplineProps) {
+    const validator = DisciplineValidatorFactory.create();
+    const isValid = validator.validate(props);
+
+    if (!isValid) {
+      throw new EntityValidationError(
+        Object.entries(validator.errors).reduce((acc, [field, messages]) => {
+          acc[field] = messages;
+          return acc;
+        }, {} as FieldsErrors),
+      );
+    }
+  }
+
+  static fake() {
+    return DisciplineFakeBuilder;
+  }
 
   toJSON() {
     return {

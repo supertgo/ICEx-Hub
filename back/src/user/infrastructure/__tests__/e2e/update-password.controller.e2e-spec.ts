@@ -94,6 +94,8 @@ describe('Update user e2e tests', () => {
       'id',
       'name',
       'email',
+      'courseId',
+      'coursePeriodId',
       'createdAt',
     ]);
 

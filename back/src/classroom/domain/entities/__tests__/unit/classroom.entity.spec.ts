@@ -13,7 +13,6 @@ function commonAssertions(sut: ClassroomEntity, props: ClassroomProps) {
   expect(sut.props.name).toBe(props.name);
   expect(sut.props.building).toBe(props.building);
 }
-
 describe('Classroom entity unit tests', () => {
   let sut: ClassroomEntity;
 

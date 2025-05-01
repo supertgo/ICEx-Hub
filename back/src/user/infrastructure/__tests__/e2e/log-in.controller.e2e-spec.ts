@@ -16,7 +16,6 @@ import { applyGlobalConfig } from '@/global-config';
 import { HashProvider } from '@/shared/application/providers/hash-provider';
 import { SignInDto } from '@/user/infrastructure/dtos/sign-in.dto';
 import { BcryptjsHashProvider } from '@/user/infrastructure/providers/hash-provider/bcryptjs-hash.provider';
-import { UserDataBuilder } from '@/user/domain/testing/helper/user-data-builder';
 import { LogInUserPresenter } from '@/user/infrastructure/presenters/log-in-user.presenter';
 import { UserEntity } from '@/user/domain/entities/user.entity';
 import { UserPrismaTestingHelper } from '@/user/infrastructure/database/prisma/testing/user-prisma.testing-helper';
@@ -77,8 +76,9 @@ describe('Log in user e2e tests', () => {
       'id',
       'name',
       'email',
+      'courseId',
+      'coursePeriodId',
       'createdAt',
-      'token',
     ]);
 
     const data = response.body.data;
