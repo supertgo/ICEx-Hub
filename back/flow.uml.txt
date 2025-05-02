@@ -1,0 +1,111 @@
+@startuml
+title IcexHub - Main Flows
+
+actor User as U
+participant "API Gateway" as A
+participant "AuthService" as Auth
+participant "UserController" as UC
+participant "ClassroomController" as CC
+participant "CourseController" as CourseC
+participant "ScheduleController" as SC
+participant "CoursePeriodController" as CPC
+database Database as DB
+
+== Authentication Flow ==
+U -> A: POST /user/login (SignInDto)
+A -> UC: login()
+UC -> Auth: authenticate(email, password)
+Auth -> DB: verify credentials
+DB --> Auth: user data
+Auth --> UC: JWT token
+UC --> A: LogInUserPresenter (200)
+A --> U: 200 OK (with token)
+
+== User Management Flow ==
+group User Registration
+  U -> A: POST /user (SignUpDto)
+  A -> UC: create()
+  UC -> Auth: validateNewUser()
+  Auth -> DB: check email exists
+  DB --> Auth:
+  Auth --> UC: validation result
+  UC -> DB: create user
+  DB --> UC: User
+  UC --> A: UserPresenter (201)
+  A --> U: 201 Created
+end
+
+group Password Update
+  U -> A: PATCH /user/{id}/password [Bearer]
+  A -> UC: updatePassword()
+  UC -> Auth: verifyToken()
+  Auth --> UC: token valid
+  UC -> Auth: verifyOldPassword()
+  Auth -> DB: check password
+  DB --> Auth:
+  Auth --> UC: password valid
+  UC -> DB: update password
+  DB --> UC:
+  UC --> A: 200 OK
+  A --> U: 200 OK
+end
+
+== Classroom Management Flow ==
+group Classroom Search
+  U -> A: GET /classroom [Bearer]
+  A -> CC: search()
+  CC -> DB: fetch classrooms
+  DB --> CC: Classroom[]
+  CC --> A: ClassroomCollectionPresenter (200)
+  A --> U: 200 OK
+end
+
+group Classroom Update
+  U -> A: PUT /classroom/{id} [Bearer]
+  A -> CC: update()
+  CC -> DB: update classroom
+  DB --> CC: updated Classroom
+  CC --> A: 200 OK
+  A --> U: 200 OK
+end
+
+== Course Management Flow ==
+group Course Creation
+  U -> A: PUT /course/{id} [Bearer]
+  A -> CourseC: create()
+  CourseC -> DB: create course
+  DB --> CourseC: Course
+  CourseC --> A: CoursePresenter (200)
+  A --> U: 200 OK
+end
+
+group Course Search
+  U -> A: GET /course
+  A -> CourseC: search()
+  CourseC -> DB: fetch courses
+  DB --> CourseC: Course[]
+  CourseC --> A: CourseCollectionPresenter (200)
+  A --> U: 200 OK
+end
+
+== Schedule Management Flow ==
+group Schedule Update
+  U -> A: PUT /schedule/{id} [Bearer]
+  A -> SC: update()
+  SC -> DB: update schedule
+  DB --> SC: updated Schedule
+  SC --> A: 200 OK
+  A --> U: 200 OK
+end
+
+== Course Period Flow ==
+group Course Period Search
+  U -> A: GET /course-period
+  A -> CPC: search()
+  CPC -> DB: fetch periods
+  DB --> CPC: CoursePeriod[]
+  CPC --> A: CoursePeriodCollectionPresenter (200)
+  A --> U: 200 OK
+end
+
+@enduml
