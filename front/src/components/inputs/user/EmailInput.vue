@@ -4,9 +4,12 @@
     label="Email"
     type="email"
     :rules="rules"
-    filled
     dense
-  />
+    rounded
+    outlined
+  >
+    <template v-slot:prepend> <q-icon name="email" /> </template>
+  </q-input>
 </template>
 
 <script setup lang="ts">
@@ -31,3 +34,30 @@ const modelValue = computed({
   set: (value) => emit('update:modelValue', value),
 });
 </script>
+
+<style lang="scss">
+.custom-email-input {
+  margin-bottom: 16px;
+
+  .q-field__control {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:before {
+      border-color: #c4c4c4;
+    }
+
+    &:hover:before {
+      border-color: #888;
+    }
+  }
+
+  &.has-error .q-field__control {
+    background-color: #fff0f0;
+  }
+
+  .q-icon {
+    color: #666;
+  }
+}
+</style>

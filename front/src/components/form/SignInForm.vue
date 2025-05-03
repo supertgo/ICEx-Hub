@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import EmailInput from 'components/inputs/user/EmailInput.vue';
 import PasswordInput from 'components/inputs/user/PasswordInput.vue';
+import AppBrand from '../AppBrand.vue';
 import { email, required } from 'src/utils/userValidation';
 import { ref } from 'vue';
 import { useAuthStore } from 'stores/auth';
@@ -54,8 +55,10 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <q-card class="q-pa-md" style="max-width: 400px; width: 100%">
-    <h2 class="text-h6 text-center">Entrar</h2>
+  <q-card class="q-pa-md" style="max-width: 500px; width: 100%">
+    <h2 class="text-h6 text-center">
+      <AppBrand></AppBrand>
+    </h2>
     <q-form @submit="onSubmit">
       <EmailInput v-model="emailRef" :rules="[required, email]" />
 
@@ -64,19 +67,19 @@ const onSubmit = async (event: Event) => {
       <div>
         <q-btn
           type="submit"
-          label="Enviar"
-          color="primary"
+          label="Entrar"
+          color="blue-10"
           class="full-width"
         ></q-btn>
       </div>
     </q-form>
 
     <q-btn
-      class="q-pt-md"
+      class="full-width q-mt-sm"
       flat
       dense
       no-caps
-      color="primary"
+      color="blue-10"
       label="Não possui uma conta? Cadastre-se"
       @click="$router.push({ name: Routes.SIGNUP })"
     ></q-btn>
