@@ -12,7 +12,10 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
 
   async insert(entity: CourseEntity): Promise<CourseEntity> {
     const created = await this.prismaService.course.create({
-      data: entity.toJSON(),
+      data: {
+        ...entity.toJSON(),
+        sanitized_name: sanitizeString(entity.name),
+      },
     });
 
     return CourseModelMapper.toEntity(created as Course);
