@@ -1,5 +1,14 @@
 <template>
-  <q-input v-model="modelValue" label="Nome" :rules="rules" dense filled />
+  <q-input
+    v-model="modelValue"
+    label="Nome"
+    :rules="rules"
+    dense
+    rounded
+    outlined
+  >
+    <template v-slot:prepend> <q-icon name="person" /> </template>
+  </q-input>
 </template>
 
 <script setup lang="ts">

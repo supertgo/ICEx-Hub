@@ -61,9 +61,10 @@ export const useAuthStore = defineStore('auth', {
         return;
       }
 
-      this.user = await verifyToken(token);
-
-      if (this.user === null) {
+      try {
+        this.user = await verifyToken(token);
+      } catch (error) {
+        console.log(error);
         Cookies.remove('authorization_token');
       }
     },

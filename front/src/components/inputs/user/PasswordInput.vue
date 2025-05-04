@@ -4,9 +4,12 @@
     label="Senha"
     type="password"
     :rules="rules"
-    filled
     dense
-  />
+    rounded
+    outlined
+  >
+    <template v-slot:prepend> <q-icon name="password" /> </template>
+  </q-input>
 </template>
 
 <script setup lang="ts">

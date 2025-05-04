@@ -13,6 +13,7 @@ import AppBrand from 'src/components/AppBrand.vue';
 const drawer = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
+const user = authStore.user;
 
 const logout = async () => {
   authStore.logout();
@@ -34,11 +35,22 @@ watch(
         <AppBrand />
         <q-space />
         <q-btn
+          v-if="!!user"
           icon="account_circle"
           round
           flat
           dense
           @click="drawer = !drawer"
+        ></q-btn>
+
+        <q-btn
+          v-if="!user"
+          icon="login"
+          round
+          flat
+          dense
+          v-ripple
+          @click="$router.push({ name: Routes.SIGN_IN })"
         ></q-btn>
       </q-toolbar>
     </q-header>

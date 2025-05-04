@@ -1,0 +1,47 @@
+@import 'quasar.variables.scss';
+
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  background-color: $blue-10;
+}
+
+.left-section {
+  background-color: $grey-5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+.right-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .grid-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .left-section {
+    display: none;
+  }
+
+  .right-section {
+    height: 100vh;
+    border-radius: 30px;
+  }
+}

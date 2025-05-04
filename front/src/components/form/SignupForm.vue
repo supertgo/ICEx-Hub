@@ -57,8 +57,13 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <q-card class="q-pa-md" style="max-width: 800px; width: 100%">
-    <h2 class="text-h6 text-center">Cadastrar</h2>
+  <q-card
+    class="q-pa-md"
+    style="max-width: 800px; width: 100%; border-radius: 8px; margin: 1rem"
+  >
+    <h2 class="text-h6 text-center" style="font-family: Poppins, sans-serif">
+      Cadastre-se
+    </h2>
     <q-form @submit="onSubmit">
       <q-card-section class="row q-gutter-md">
         <NameInput class="col" v-model="name" :rules="[required]" />
@@ -95,17 +100,17 @@ const onSubmit = async (event: Event) => {
         <q-btn
           type="submit"
           label="Registrar"
-          color="primary"
+          color="blue-10"
           class="full-width"
         ></q-btn>
       </div>
     </q-form>
     <q-btn
-      class="q-pt-md"
+      class="full-width q-mt-sm"
       flat
       dense
       no-caps
-      color="primary"
+      color="blue-10"
       label="Já possui cadastro? Faça login"
       @click="$router.push({ name: Routes.SIGN_IN })"
     ></q-btn>
