@@ -1,11 +1,13 @@
 import { DisciplineInMemoryRepository } from '@/discipline/infrastructure/database/in-memory/repositories/discipline-in-memory.repository';
-import { DisciplineWithEmailNotFoundError } from '@/discipline/domain/errors/discipline-with-email-not-found-error';
-import { faker } from '@faker-js/faker';
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
-import { DisciplineEntity, DisciplineProps } from '@/discipline/domain/entities/discipline.entity';
-import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import {
+  DisciplineEntity,
+  DisciplineProps,
+} from '@/discipline/domain/entities/discipline.entity';
 
-function createDisciplineEntity(disciplineProps: Partial<DisciplineProps> = {}) {
+function createDisciplineEntity(
+  disciplineProps: Partial<DisciplineProps> = {},
+) {
   return new DisciplineEntity(DisciplineDataBuilder(disciplineProps));
 }
 
@@ -27,8 +29,7 @@ describe('discipline in memory repository', () => {
       expect(result).toStrictEqual(items);
       expect(spyFilter).not.toHaveBeenCalled();
     });
-
   });
 
-  describe('apply sort method', () => { });
+  describe('apply sort method', () => {});
 });

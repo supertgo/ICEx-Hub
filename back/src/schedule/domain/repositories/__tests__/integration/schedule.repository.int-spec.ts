@@ -18,6 +18,7 @@ import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discip
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
 import { CourseDataBuilderAsEntity } from '@/user/domain/testing/helper/course-data-builder';
 import { CoursePeriodDataBuilder } from '@/course/domain/testing/helper/course-period-data-builder';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Schedule prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -31,9 +32,10 @@ describe('Schedule prisma repository integration tests', () => {
     const course = CourseDataBuilderAsEntity();
     const coursePeriodProps = CoursePeriodDataBuilder({});
 
-    const courseData = await prismaService.course.create({
-      data: course,
-    });
+    const courseData = await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      course,
+    );
 
     const coursePeriodData = await prismaService.coursePeriod.create({
       data: {
