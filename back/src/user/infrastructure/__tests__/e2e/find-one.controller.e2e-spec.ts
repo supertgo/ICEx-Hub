@@ -88,9 +88,9 @@ describe('Find one user e2e tests', () => {
       'id',
       'name',
       'email',
+      'createdAt',
       'courseId',
       'coursePeriodId',
-      'createdAt',
     ]);
 
     expect(response.body.data).toMatchObject({

@@ -1,5 +1,6 @@
 import { fakeScheduleProps } from '@/schedule/domain/testing/helper/schedule-data-builder';
 import { ClassroomBulding, PrismaClient, Schedule } from '@prisma/client';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 type ScheduleIncludes = {
   discipline: {
@@ -31,9 +32,7 @@ export class SchedulePrismaTestingHelper {
       const { course, coursePeriodProps, discipline, classroom, ...entity } =
         fakeScheduleProps();
 
-      await prisma.course.create({
-        data: course,
-      });
+      await CoursePrismaTestingHelper.createSanitizedCourse(prisma, course);
 
       const coursePeriodData = await prisma.coursePeriod.create({
         data: {

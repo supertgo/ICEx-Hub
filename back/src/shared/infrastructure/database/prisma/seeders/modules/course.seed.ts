@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 export const courses = [
   {
     name: 'Ciência da Computação',
@@ -45,6 +46,7 @@ export const courseSeed = async (prisma: PrismaClient) => {
       create: {
         id: course.id,
         name: course.name,
+        sanitized_name: sanitizeString(course.name),
         code: course.code,
       },
     });

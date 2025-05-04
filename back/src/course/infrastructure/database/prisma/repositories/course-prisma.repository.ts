@@ -5,13 +5,17 @@ import { CourseModelMapper } from '@/course/infrastructure/database/prisma/model
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { Course } from '@prisma/client';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 export class CoursePrismaRepository implements CourseRepository.Repository {
   constructor(private prismaService: PrismaService) {}
 
   async insert(entity: CourseEntity): Promise<CourseEntity> {
     const created = await this.prismaService.course.create({
-      data: entity.toJSON(),
+      data: {
+        ...entity.toJSON(),
+        sanitized_name: sanitizeString(entity.name),
+      },
     });
 
     return CourseModelMapper.toEntity(created as Course);
@@ -79,8 +83,8 @@ export class CoursePrismaRepository implements CourseRepository.Repository {
           where: {
             OR: [
               {
-                name: {
-                  contains: searchInput.filter,
+                sanitized_name: {
+                  contains: sanitizeString(searchInput.filter),
                   mode: 'insensitive',
                 },
               },

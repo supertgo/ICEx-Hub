@@ -12,6 +12,7 @@ import request from 'supertest';
 import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Index Course E2E Tests', () => {
   let app: INestApplication;
@@ -42,9 +43,10 @@ describe('Index Course E2E Tests', () => {
       }),
     );
 
-    await prismaService.course.create({
-      data: entity1,
-    });
+    await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      entity1,
+    );
 
     const entity2 = new CourseEntity(
       CourseDataBuilder({
@@ -52,10 +54,10 @@ describe('Index Course E2E Tests', () => {
         code: 'asdfkhgasdkljf',
       }),
     );
-
-    await prismaService.course.create({
-      data: entity2,
-    });
+    await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      entity2,
+    );
 
     const entity3 = new CourseEntity(
       CourseDataBuilder({
@@ -64,9 +66,10 @@ describe('Index Course E2E Tests', () => {
       }),
     );
 
-    await prismaService.course.create({
-      data: entity3,
-    });
+    await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      entity3,
+    );
 
     const response = await request(app.getHttpServer())
       .get('/course')

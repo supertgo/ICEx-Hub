@@ -137,15 +137,16 @@ model Classroom {
 }
 
 model Course {
-  id          String         @id @default(uuid()) @db.Uuid
-  code        String         @unique @db.VarChar(20)
-  name        String         @db.VarChar(100)
-  periods     CoursePeriod[]
-  disciplines Discipline[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  Student     Student[]
-  User        User[]
+  id             String         @id @default(uuid()) @db.Uuid
+  code           String         @unique @db.VarChar(20)
+  name           String         @db.VarChar(100)
+  sanitized_name String         @db.VarChar(100)
+  periods        CoursePeriod[]
+  disciplines    Discipline[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  Student        Student[]
+  User           User[]
 
   @@index([code])
   @@map("courses")

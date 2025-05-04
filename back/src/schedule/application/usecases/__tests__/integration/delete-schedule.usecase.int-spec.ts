@@ -10,6 +10,7 @@ import { DeleteScheduleUsecase } from '@/schedule/application/usecases/delete-sc
 import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { fakeScheduleProps } from '@/schedule/domain/testing/helper/schedule-data-builder';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Delete Schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -49,9 +50,10 @@ describe('Delete Schedule usecase integration tests', () => {
     const { course, coursePeriodProps, discipline, classroom, ...entity } =
       fakeScheduleProps();
 
-    await prismaService.course.create({
-      data: course,
-    });
+    await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      course,
+    );
 
     const coursePeriodData = await prismaService.coursePeriod.create({
       data: {
