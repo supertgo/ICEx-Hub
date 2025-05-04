@@ -94,9 +94,9 @@ describe('Update user e2e tests', () => {
       'id',
       'name',
       'email',
+      'createdAt',
       'courseId',
       'coursePeriodId',
-      'createdAt',
     ]);
 
     const user = await repository.findById(response.body.data.id);
