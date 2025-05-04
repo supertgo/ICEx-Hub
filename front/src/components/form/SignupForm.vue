@@ -57,7 +57,10 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <q-card class="q-pa-md" style="max-width: 800px; width: 100%">
+  <q-card
+    class="q-pa-md"
+    style="max-width: 800px; width: 100%; border-radius: 8px; margin: 1rem"
+  >
     <h2 class="text-h6 text-center" style="font-family: Poppins, sans-serif">
       Cadastre-se
     </h2>
