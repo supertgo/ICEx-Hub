@@ -1,4 +1,7 @@
-import { resetDatabase, setUpPrismaTest } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
+import {
+  resetDatabase,
+  setUpPrismaTest,
+} from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { PrismaClient } from '@prisma/client';
 import { CoursePrismaRepository } from '@/course/infrastructure/database/prisma/repositories/course-prisma.repository';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -7,6 +10,7 @@ import { CourseEntity } from '@/course/domain/entities/course.entity';
 import { faker } from '@faker-js/faker';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Course prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -40,9 +44,10 @@ describe('Course prisma repository integration tests', () => {
   it('should find course by id', async () => {
     const entity = new CourseEntity(CourseDataBuilder({}));
 
-    const createdCourse = await prismaService.course.create({
-      data: entity.toJSON(),
-    });
+    const createdCourse = await CoursePrismaTestingHelper.createSanitizedCourse(
+      prismaService,
+      entity,
+    );
 
     const course = await sut.findById(createdCourse.id);
 
