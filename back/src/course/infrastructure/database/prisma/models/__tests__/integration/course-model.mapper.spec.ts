@@ -8,6 +8,7 @@ import {
   setUpPrismaTest,
 } from '@/shared/infrastructure/database/prisma/testing/set-up-prisma-test';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Course model mapper integration tests', () => {
   let prismaService: PrismaService;
@@ -38,9 +39,7 @@ describe('Course model mapper integration tests', () => {
   });
 
   it('should map course model to entity', async () => {
-    const model = await prismaService.course.create({
-      data: props,
-    });
+    const model = await CoursePrismaTestingHelper.createCourse(prismaService);
 
     const sut = CourseModelMapper.toEntity(model as Course);
 

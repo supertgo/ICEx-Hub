@@ -10,6 +10,7 @@ import { GetCourseUsecase } from '@/course/application/usecases/get-course.useca
 import { faker } from '@faker-js/faker';
 import { CourseDataBuilder } from '@/user/domain/testing/helper/course-data-builder';
 import { CourseWithIdNotFoundError } from '@/course/infrastructure/errors/course-with-id-not-found-error';
+import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 
 describe('Get course usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -45,13 +46,12 @@ describe('Get course usecase integration tests', () => {
   });
 
   it('should retrieve a course', async () => {
-    const course = await prismaService.course.create({
-      data: CourseDataBuilder({}),
-    });
+    const course = await CoursePrismaTestingHelper.createCourse(prismaService);
 
     const output = await sut.execute({ id: course.id });
 
     expect(output).toBeDefined();
-    expect(output).toMatchObject(course);
+    const { sanitized_name, ...expectedCourse } = course;
+    expect(output).toMatchObject(expectedCourse);
   });
 });
