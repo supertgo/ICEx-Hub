@@ -55,14 +55,26 @@ const onSubmit = async (event: Event) => {
 </script>
 
 <template>
-  <q-card class="q-pa-md" style="max-width: 500px; width: 100%">
+  <q-card
+    class="q-pa-md"
+    style="max-width: 500px; width: 100%; border-radius: 8px"
+  >
     <h2 class="text-h6 text-center">
       <AppBrand></AppBrand>
     </h2>
     <q-form @submit="onSubmit">
-      <EmailInput v-model="emailRef" :rules="[required, email]" />
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          margin-bottom: 16px;
+        "
+      >
+        <EmailInput v-model="emailRef" :rules="[required, email]" />
 
-      <PasswordInput v-model="password" :rules="[required]" />
+        <PasswordInput v-model="password" :rules="[required]" />
+      </div>
 
       <div>
         <q-btn
