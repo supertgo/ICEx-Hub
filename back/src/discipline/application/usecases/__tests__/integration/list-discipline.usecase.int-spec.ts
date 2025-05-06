@@ -13,6 +13,7 @@ import { faker } from '@faker-js/faker';
 import { DisciplinePrismaTestingHelper } from '@/discipline/infrastructure/database/prisma/testing/discipline-prisma.testing-helper';
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-period-prisma.testing-helper';
+import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 
 describe('List disciplines usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -187,5 +188,20 @@ describe('List disciplines usecase integration tests', () => {
 
     expect(output.items).toHaveLength(0);
     expect(output.total).toBe(0);
+  });
+
+  it('should get discipline regardless of special characters using name filter', async () => {
+    await DisciplinePrismaTestingHelper.createDiscipline(prismaService, {
+      name: 'çáãéíóú',
+    });
+
+    const output = await sut.execute({
+      filter: {
+        name: 'caaeiou',
+      },
+    });
+
+    expect(output.items).toHaveLength(1);
+    expect(output.items[0].name).toBe('çáãéíóú');
   });
 });

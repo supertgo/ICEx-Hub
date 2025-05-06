@@ -101,7 +101,7 @@ describe('Discipline prisma repository integration tests', () => {
       });
 
     createdDiscipline.name = 'New Name';
-    await repository.update(createdDiscipline as DisciplineEntity);
+    await repository.update(createdDiscipline as unknown as DisciplineEntity);
 
     const updatedDiscipline = await prismaService.discipline.findUnique({
       where: { id: createdDiscipline.id },

@@ -11,6 +11,7 @@ import { CoursePeriodPrismaTestingHelper } from '@/course/infrastructure/databas
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
 import { faker } from '@faker-js/faker';
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 describe('Delete Discipline usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -53,6 +54,7 @@ describe('Delete Discipline usecase integration tests', () => {
     const discipline = await prismaService.discipline.create({
       data: {
         name: 'Original Discipline Name',
+        sanitized_name: sanitizeString('Original Discipline Name'),
         code: 'DISC123',
         courseId: course.id,
         coursePeriodId: period.id,

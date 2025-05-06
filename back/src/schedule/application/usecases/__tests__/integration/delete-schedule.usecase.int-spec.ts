@@ -11,6 +11,7 @@ import { faker } from '@faker-js/faker';
 import { ScheduleWithIdNotFoundError } from '@/schedule/infrastructure/errors/schedule-with-id-not-found-error';
 import { fakeScheduleProps } from '@/schedule/domain/testing/helper/schedule-data-builder';
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 describe('Delete Schedule usecase integration tests', () => {
   const prismaService = new PrismaClient();
@@ -74,6 +75,7 @@ describe('Delete Schedule usecase integration tests', () => {
       data: {
         id: discipline.id,
         name: discipline.name,
+        sanitized_name: sanitizeString(discipline.name),
         code: discipline.code,
         coursePeriodId: coursePeriodData.id,
         courseId: course.id,

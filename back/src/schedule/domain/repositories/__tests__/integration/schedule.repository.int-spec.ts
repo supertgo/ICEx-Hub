@@ -19,6 +19,7 @@ import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity
 import { CourseDataBuilderAsEntity } from '@/user/domain/testing/helper/course-data-builder';
 import { CoursePeriodDataBuilder } from '@/course/domain/testing/helper/course-period-data-builder';
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 describe('Schedule prisma repository integration tests', () => {
   const prismaService = new PrismaClient();
@@ -55,6 +56,7 @@ describe('Schedule prisma repository integration tests', () => {
     const disciplineData = await prismaService.discipline.create({
       data: {
         name: discipline.name,
+        sanitized_name: sanitizeString(discipline.name),
         code: discipline.code,
         course: {
           connect: {
