@@ -3,6 +3,7 @@ import { DisciplineProps } from '@/discipline/domain/entities/discipline.entity'
 import { DisciplineDataBuilder } from '@/discipline/domain/testing/helper/discipline-data-builder';
 import { DisciplineEntity } from '@/discipline/domain/entities/discipline.entity';
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 export class DisciplinePrismaTestingHelper {
   static async createDiscipline(
@@ -24,9 +25,13 @@ export class DisciplinePrismaTestingHelper {
           },
         })
       ).id;
+
+    const completeProps = DisciplineDataBuilder(props);
+
     return prisma.discipline.create({
       data: {
-        ...DisciplineDataBuilder(props),
+        ...completeProps,
+        sanitized_name: sanitizeString(completeProps.name),
         code: props.code ?? 'DEFAULT_CODE',
         courseId: courseId,
         coursePeriodId: coursePeriod,
@@ -54,6 +59,7 @@ export class DisciplinePrismaTestingHelper {
     return prisma.discipline.createMany({
       data: entities.map((entity) => ({
         ...entity.toJSON(),
+        sanitized_name: sanitizeString(entity.name),
         coursePeriodId: coursePeriod.id,
         courseId: course.id,
         ...overrides,

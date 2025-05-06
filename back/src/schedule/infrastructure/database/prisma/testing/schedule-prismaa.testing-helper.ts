@@ -1,6 +1,7 @@
 import { fakeScheduleProps } from '@/schedule/domain/testing/helper/schedule-data-builder';
 import { ClassroomBulding, PrismaClient, Schedule } from '@prisma/client';
 import { CoursePrismaTestingHelper } from '@/course/infrastructure/database/prisma/testing/course-prisma.testing-helper';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 type ScheduleIncludes = {
   discipline: {
@@ -53,6 +54,7 @@ export class SchedulePrismaTestingHelper {
         data: {
           id: discipline.id,
           name: discipline.name,
+          sanitized_name: sanitizeString(discipline.name),
           code: discipline.code,
           coursePeriodId: coursePeriodData.id,
           courseId: course.id,
