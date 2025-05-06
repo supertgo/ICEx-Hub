@@ -5,6 +5,7 @@ import { PrismaService } from '@/shared/infrastructure/database/prisma/prisma.se
 import { DisciplineWithIdNotFoundError } from '@/discipline/infrastructure/errors/discipline-with-id-not-found-error';
 import { DisciplineModelMapper } from '@/discipline/infrastructure/database/prisma/models/discipline-model.mapper';
 import { SortOrderEnum } from '@/shared/domain/repositories/searchable-repository-contracts';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 export class DisciplinePrismaRepository
   implements DisciplineRepository.Repository
@@ -54,8 +55,8 @@ export class DisciplinePrismaRepository
 
     if (filter.name) {
       andConditions.push({
-        name: {
-          contains: filter.name,
+        sanitized_name: {
+          contains: sanitizeString(filter.name),
           mode: 'insensitive',
         },
       });
@@ -114,6 +115,7 @@ export class DisciplinePrismaRepository
     const data = {
       id: entity.id,
       name: entity.name,
+      sanitized_name: sanitizeString(entity.name),
       code: entity.code,
       courseId: entity.courseId,
       coursePeriodId: entity.coursePeriodId,
@@ -142,6 +144,7 @@ export class DisciplinePrismaRepository
     const data = {
       id: entity.id,
       name: entity.name,
+      sanitizeString: sanitizeString(entity.name),
       code: entity.code,
       courseId: entity.courseId,
       coursePeriodId: entity.coursePeriodId,
