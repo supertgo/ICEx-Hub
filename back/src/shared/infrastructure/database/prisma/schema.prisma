@@ -89,6 +89,7 @@ model CoursePeriod {
 model Discipline {
   id             String       @id @default(uuid()) @db.Uuid
   name           String       @db.VarChar(100)
+  sanitized_name String       @db.VarChar(100)
   code           String       @db.VarChar(20)
   courseId       String       @db.Uuid
   course         Course       @relation(fields: [courseId], references: [id])
