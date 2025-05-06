@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 import { courses } from './course.seed';
 import { coursePeriods } from './course.period.seed';
+import { sanitizeString } from '@/shared/domain/helper/sanitize-string.helper';
 
 const courseSI = courses.find((course) => course.code === 'SI');
 export const disciplinesSI = [
@@ -276,6 +277,7 @@ export const disciplineSeed = async (prisma: PrismaClient) => {
       create: {
         id: discipline.id,
         name: discipline.name,
+        sanitized_name: sanitizeString(discipline.name),
         code: discipline.code,
         courseId: discipline.course.id,
         coursePeriodId: disciplineCoursePeriod.id,
