@@ -8,7 +8,7 @@ import request from 'supertest';
 
 const email = faker.internet.email();
 
-@Controller('/stub')
+@Controller('/stubController')
 class StubController {
   @Get()
   index() {
@@ -20,14 +20,15 @@ describe('ConflictErrorFilter', () => {
   let app: INestApplication;
   let module: TestingModule;
 
-  beforeAll(async () => {
+  beforeAll(() => {
     module = await Test.createTestingModule({
       controllers: [StubController],
-    }).compile();
+    });
+
     app = module.createNestApplication();
 
     app.useGlobalFilters(new ConflictErrorFilter());
-    await app.init();
+    app.init();
   });
 
   afterAll(async () => {
@@ -40,12 +41,14 @@ describe('ConflictErrorFilter', () => {
 
   it('should catch error correctly', async () => {
     await request(app.getHttpServer())
-      .get('/stub')
-      .expect(409)
+      .get('/stub-controller')
+      .expect(888)
       .expect({
         statusCode: 409,
         error: 'Conflict',
         message: `User with email ${email} already exists`,
       });
   });
+
+  console.log('testing response ' + response);
 });
