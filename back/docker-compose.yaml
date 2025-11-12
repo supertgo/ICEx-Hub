@@ -1,13 +1,13 @@
 services:
-  db:
-    build: .
-    container_name: api-db
+  icex-dp:
+    image: postgres:17
+    container_name: icex-api-db
     restart: always
     tty: true
     ports:
-      - "5432:5432"
+      - '5433:5432'
     volumes:
-      - .docker/db-data:/var/lib/postgresql/data
+      - .docker/db-data-hub:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: api

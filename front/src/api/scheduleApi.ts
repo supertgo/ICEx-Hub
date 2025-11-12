@@ -9,7 +9,7 @@ export const listSchedules = async ({
   coursePeriodId,
   page,
 }: ListScheduleParams): Promise<ScheduleData> => {
-  const url = new URL(process.env.VITE_API_URL ?? 'http://localhost:3000');
+  const url = new URL(process.env.VITE_API_URL ?? 'http://localhost:3001');
   const params = new URLSearchParams(url.search);
 
   if (name) {
