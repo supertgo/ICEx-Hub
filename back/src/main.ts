@@ -17,7 +17,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: ['http://localhost:9000'],
+    origin: ['http://localhost:9001'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -42,7 +42,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   applyGlobalConfig(app);
-  await app.listen(3000, '0.0.0.0');
+  await app.listen(3001, '0.0.0.0');
 }
 
 bootstrap();

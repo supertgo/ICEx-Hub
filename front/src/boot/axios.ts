@@ -47,4 +47,20 @@ const getAxiosWithAuth = () => {
   });
 };
 
-export { api, getAxiosWithAuth };
+const getAxiosFeatureFlagClient = () => {
+  const clientFeatureFlagBaseUrl = import.meta.env.FEATURE_FLAG_API;
+  const token = import.meta.env.TOKEN;
+
+  if (!clientFeatureFlagBaseUrl) {
+    throw new Error('FEATURE_FLAG_API environment variable is not defined');
+  }
+
+  return axios.create({
+    baseURL: clientFeatureFlagBaseUrl,
+    headers: {
+      ['x-api-token']: token,
+    },
+  });
+};
+
+export { api, getAxiosWithAuth, getAxiosFeatureFlagClient };
