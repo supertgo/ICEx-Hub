@@ -47,4 +47,13 @@ const getAxiosWithAuth = () => {
   });
 };
 
-export { api, getAxiosWithAuth };
+const getAxiosFeatureFlagClient = () => {
+  return axios.create({
+    baseURL: process.env.FEATURE_FLAG_API!,
+    headers: {
+      ['x-api-token']: process.env.TOKEN,
+    },
+  });
+};
+
+export { api, getAxiosWithAuth, getAxiosFeatureFlagClient };
