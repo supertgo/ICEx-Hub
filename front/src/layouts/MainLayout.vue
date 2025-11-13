@@ -16,7 +16,7 @@ const drawer = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 const user = authStore.user;
-const changeNameFlag = ref<boolean>(true);
+const changeNameFlag = ref<boolean>(FEATURE_FLAGS.CHANGE_NAME.defaultValue);
 
 onMounted(async () => {
   await loadFeatureFlag();
