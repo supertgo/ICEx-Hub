@@ -48,8 +48,8 @@ const getAxiosWithAuth = () => {
 };
 
 const getAxiosFeatureFlagClient = () => {
-  const clientFeatureFlagBaseUrl = import.meta.env.FEATURE_FLAG_API;
-  const token = import.meta.env.TOKEN;
+  const clientFeatureFlagBaseUrl = process.env.FEATURE_FLAG_API;
+  const token = process.env.TOKEN!;
 
   if (!clientFeatureFlagBaseUrl) {
     throw new Error('FEATURE_FLAG_API environment variable is not defined');

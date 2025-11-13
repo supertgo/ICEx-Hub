@@ -3,17 +3,31 @@
 </style>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useAuthStore } from 'stores/auth';
 import { useRouter } from 'vue-router';
 import { Routes } from 'src/enums/Routes';
 import UserInfo from 'src/components/UserInfo.vue';
 import AppBrand from 'src/components/AppBrand.vue';
+import { FeatureFlagClient } from 'src/feature-flags/client';
+import { FEATURE_FLAGS } from 'src/feature-flags/config';
 
 const drawer = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 const user = authStore.user;
+const changeNameFlag = ref<boolean>(true);
+
+onMounted(async () => {
+  await loadFeatureFlag();
+});
+
+async function loadFeatureFlag() {
+  changeNameFlag.value = await FeatureFlagClient.isEnabled(
+    FEATURE_FLAGS.CHANGE_NAME,
+    authStore.user?.id,
+  );
+}
 
 const logout = async () => {
   authStore.logout();
@@ -78,6 +92,7 @@ watch(
           </q-item>
 
           <q-item
+            v-if="changeNameFlag"
             clickable
             v-ripple
             @click="$router.push({ name: Routes.UPDATE_NAME })"
