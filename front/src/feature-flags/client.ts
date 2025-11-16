@@ -44,7 +44,7 @@ export class FeatureFlagClient {
       return response.data.data.enabled;
     } catch (error) {
       console.warn(
-        `Feature flag "${flag.name}" (${flag.id}) check failed, using default value: ${flag.defaultValue}`,
+        `Feature flag "${flag.name}" check failed, using default value: ${flag.defaultValue}`,
         error,
       );
       return flag.defaultValue;
