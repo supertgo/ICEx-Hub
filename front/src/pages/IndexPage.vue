@@ -47,6 +47,7 @@
 
     <div class="filter-grid q-mb-md">
       <q-input
+        v-if="featureFlags.PESQUISA"
         borderless
         dense
         debounce="300"
@@ -74,6 +75,7 @@
       />
 
       <q-select
+        v-if="featureFlags.FILTRAR_POR_DIAS"
         dense
         v-model="selectedDayPatterns"
         :options="dayPatternOptions"
@@ -88,6 +90,7 @@
 
       <q-btn
         flat
+        v-if="featureFlags.LIMPAR_FILTROS"
         dense
         color="grey-7"
         icon="close"
@@ -149,6 +152,9 @@ import { computed, onMounted, ref, watch, nextTick } from 'vue';
 import type { Component } from 'vue';
 import axios from 'axios';
 import { Notify } from 'quasar';
+import { FEATURE_FLAGS } from 'src/feature-flags/config';
+import type { FeatureFlagRecord } from 'src/feature-flags/config';
+import { FeatureFlagClient } from 'src/feature-flags/client';
 
 const name = ref<string>('');
 const selectedTimeSlots = ref<TimeSlotEnum[]>([]);
@@ -161,6 +167,11 @@ const userFiltersEnabled = ref({
 const loading = ref(false);
 const nextPage = ref(1);
 const lastPage = ref(0);
+const featureFlags = ref<FeatureFlagRecord>({
+  PESQUISA: FEATURE_FLAGS.PESQUISA.defaultValue,
+  FILTRAR_POR_DIAS: FEATURE_FLAGS.FILTRAR_POR_DIAS.defaultValue,
+  LIMPAR_FILTROS: FEATURE_FLAGS.LIMPAR_FILTROS.defaultValue,
+});
 
 const hasCourseFilters = computed(() => {
   return (
@@ -201,6 +212,7 @@ const rows = ref<ScheduleRows[]>([]);
 const scheduleStore = useScheduleStore();
 
 onMounted(async () => {
+  await loadFeatureFlags();
   await loadSchedules();
 });
 
@@ -211,6 +223,21 @@ watch(
     await loadSchedules(...newValue);
   },
 );
+
+async function loadFeatureFlags() {
+  const flags = [
+    FEATURE_FLAGS.PESQUISA,
+    FEATURE_FLAGS.FILTRAR_POR_DIAS,
+    FEATURE_FLAGS.LIMPAR_FILTROS,
+  ];
+
+  for (const flag of flags) {
+    featureFlags.value[flag.name] = await FeatureFlagClient.isEnabled(
+      flag,
+      user?.id,
+    );
+  }
+}
 
 async function loadSchedules(
   name = '',

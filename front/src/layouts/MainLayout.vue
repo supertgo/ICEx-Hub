@@ -16,7 +16,7 @@ const drawer = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 const user = authStore.user;
-const changeNameFlag = ref<boolean>(FEATURE_FLAGS.CHANGE_NAME.defaultValue);
+const changeNameFlag = ref<boolean>(FEATURE_FLAGS.ALTERAR_NOME.defaultValue);
 
 onMounted(async () => {
   await loadFeatureFlag();
@@ -24,7 +24,7 @@ onMounted(async () => {
 
 async function loadFeatureFlag() {
   changeNameFlag.value = await FeatureFlagClient.isEnabled(
-    FEATURE_FLAGS.CHANGE_NAME,
+    FEATURE_FLAGS.ALTERAR_NOME,
     authStore.user?.id,
   );
 }
