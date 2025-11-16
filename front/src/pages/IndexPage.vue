@@ -168,9 +168,9 @@ const loading = ref(false);
 const nextPage = ref(1);
 const lastPage = ref(0);
 const featureFlags = ref<FeatureFlagRecord>({
-  PESQUISA: FEATURE_FLAGS.PESQUISA.defaultValue,
+  // PESQUISA: FEATURE_FLAGS.PESQUISA.defaultValue,
   FILTRAR_POR_DIAS: FEATURE_FLAGS.FILTRAR_POR_DIAS.defaultValue,
-  LIMPAR_FILTROS: FEATURE_FLAGS.LIMPAR_FILTROS.defaultValue,
+  // LIMPAR_FILTROS: FEATURE_FLAGS.LIMPAR_FILTROS.defaultValue,
 });
 
 const hasCourseFilters = computed(() => {
@@ -226,9 +226,9 @@ watch(
 
 async function loadFeatureFlags() {
   const flags = [
-    FEATURE_FLAGS.PESQUISA,
+    // FEATURE_FLAGS.PESQUISA,
     FEATURE_FLAGS.FILTRAR_POR_DIAS,
-    FEATURE_FLAGS.LIMPAR_FILTROS,
+    //FEATURE_FLAGS.LIMPAR_FILTROS,
   ];
 
   for (const flag of flags) {
