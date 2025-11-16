@@ -25,7 +25,7 @@ export class FeatureFlagClient {
   ): Promise<boolean> {
     try {
       const params = new URLSearchParams({
-        featureFlagId: flag.id,
+        featureFlagName: flag.name,
       });
 
       if (appUserId) {
